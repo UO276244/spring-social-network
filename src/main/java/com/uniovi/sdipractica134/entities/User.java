@@ -1,6 +1,7 @@
 package com.uniovi.sdipractica134.entities;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 @Entity
 public class User {
@@ -18,6 +19,12 @@ public class User {
     @OneToMany(mappedBy = "from")
     private Set<FriendshipInvites> friendShipsSent;
 
+
+
+    public User(){
+
+    }
+
     private String name;
     private String surname;
 
@@ -25,5 +32,36 @@ public class User {
 
     private String role;
 
+    public Set<FriendshipInvites> getFriendShipsSent() {
+        return friendShipsSent;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public String getEmail(){
+        return this.email;
+    }
+
+    public Set<Post> getPosts() {
+        return new HashSet<Post>(this.posts);
+
+    }
+
+    public Long getId() {
+        return id;
+    }
 }
