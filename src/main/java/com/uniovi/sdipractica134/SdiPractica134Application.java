@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SdiPractica134Application {
 
     public static void main(String[] args) {
+
         SpringApplication.run(SdiPractica134Application.class, args);
     }
 
