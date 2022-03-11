@@ -5,16 +5,30 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "FROM_ID", "TO_ID" })})
 public class FriendshipInvites {
 
-    @EmbeddedId
-    private FriendshipInviteId id;
 
-    @OneToMany()
-    private Set<User> from;
+    @Id
+    private Long id;
 
-    @OneToMany()
-    private Set<User> to;
+    @ManyToOne()
+    @JoinColumn(name="from_id")
+    private User from;
+
+    @ManyToOne()
+    @JoinColumn(name="to_id")
+    private User to;
 
     private String state;
+
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
 }
