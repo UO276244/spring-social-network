@@ -1,4 +1,4 @@
-package com.uniovi.sdipractica134.entities;
+package com.uniovi.sdipractica134.controllers;
 
 
 import org.springframework.stereotype.Controller;

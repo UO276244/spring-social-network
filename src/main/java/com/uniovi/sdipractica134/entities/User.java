@@ -29,6 +29,15 @@ public class User {
     private String surname;
 
     private String password;
+    private String passwordConfirm;
+
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
 
     private String role;
 
@@ -54,6 +63,38 @@ public class User {
 
     public String getEmail(){
         return this.email;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
+
+    public void setFriendShipsSent(Set<FriendshipInvites> friendShipsSent) {
+        this.friendShipsSent = friendShipsSent;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Set<Post> getPosts() {
