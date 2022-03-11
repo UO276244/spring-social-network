@@ -16,7 +16,7 @@ public class User {
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private Set<Post> posts;
 
-    @OneToMany(mappedBy = "from")
+    @OneToMany(mappedBy = "from",cascade = CascadeType.ALL)
     private Set<FriendshipInvites> friendShipsSent;
 
 

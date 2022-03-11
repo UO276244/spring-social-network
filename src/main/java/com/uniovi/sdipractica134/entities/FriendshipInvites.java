@@ -13,11 +13,11 @@ public class FriendshipInvites {
     @Id
     private Long id;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="from_id")
     private User from;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="to_id")
     private User to;
 

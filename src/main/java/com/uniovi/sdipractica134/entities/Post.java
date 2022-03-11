@@ -13,7 +13,7 @@ public class Post {
     private Date dateOfCreation;
     private String pictureURL;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="user_id")
     private User owner;
 
