@@ -9,11 +9,30 @@ public class Post {
     @GeneratedValue
     private Long id;
     private String title;
+    private String content;
     private Date dateOfCreation;
+    private String pictureURL;
+
     @ManyToOne
     @JoinColumn(name="user_id")
     private User owner;
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+
+    public String getPictureURL() {
+        return pictureURL;
+    }
+
+    public void setPictureURL(String pictureURL) {
+        this.pictureURL = pictureURL;
+    }
     public String getTitle() {
         return title;
     }
