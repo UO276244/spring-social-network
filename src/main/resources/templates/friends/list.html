@@ -1,0 +1,39 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head" ></head>
+<body>
+
+<div class="container" id="main-container">
+  <h2 th:text="#{friends.title}"></h2>
+  <form class="form-inline" action="/friends/list">
+    <div class="form-group">
+      <input name="searchText" type="text" class="form-control" size="50"
+             th:placeholder="#{friends.search}">
+    </div>
+    <button type="submit" th:text="#{search.message}" class="btn btn-primary"></button>
+  </form>
+  <p th:text="#{friends.message}"></p>
+  <div class="table-responsive">
+    <table>
+      <thead>
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellidos</th>
+        <th scope="col">Email</th>
+      </tr>
+      </thead>
+    </table>
+    <tbody>
+    <tr th:each="user : ${friendList}">
+      <td th:text="${user.name}"></td>
+      <td th:text="${user.surname}"></td>
+      <td th:text="${user.email}"></td>
+    </tr>
+    </tbody>
+  </div>
+</div>
+
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>

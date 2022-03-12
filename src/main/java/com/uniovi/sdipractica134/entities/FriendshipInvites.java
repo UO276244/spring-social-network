@@ -6,7 +6,8 @@ import java.util.Set;
 
 @Entity
 @Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "FROM_ID", "TO_ID" })})
+        @UniqueConstraint(columnNames = { "FROM_ID", "TO_ID" })},
+        name = "FriendshipInvites")
 public class FriendshipInvites {
 
 
