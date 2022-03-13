@@ -22,7 +22,7 @@ public class User {
 
 
     public User(){
-
+        this.role = "ROLE_USER";
     }
 
     private String name;
