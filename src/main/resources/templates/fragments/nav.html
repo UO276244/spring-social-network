@@ -7,13 +7,13 @@
             class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="myNavbar">
 
-        <ul class="navbar-nav mr-auto" >
+        <ul class="navbar-nav mr-auto">
             <li class="nav-item ">
                 <a class="nav-link" href="/home">Home<span class="sr-only">(current)</span> </a>
             </li>
             <li class="nav-item dropdown active">
                 <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
-                    data-toggle="dropdown" href="#" id="accountDropdown" role="button"> Mi Cuenta </a>
+                   data-toggle="dropdown" href="#" id="accountDropdown" role="button"> Mi Cuenta </a>
                 <div aria-labelledby="navbarDropdown" class="dropdown-menu">
                     <a class="dropdown-item" href="/post/list">Mis publicaciones</a>
 
@@ -26,7 +26,7 @@
                    data-toggle="dropdown" href="#" id="friendsDropdown" role="button"> Amigos </a>
                 <div aria-labelledby="navbarDropdown" class="dropdown-menu">
                     <a class="dropdown-item" href="/post/list">Listar amigos</a>
-                   <!---La opción de listar publis estará en la tabla en la q se muestren los amigos.-->
+                    <!---La opción de listar publis estará en la tabla en la q se muestren los amigos.-->
 
 
                 </div>
@@ -52,17 +52,20 @@
 
         </ul>
         <ul class="navbar-nav justify-content-end">
-            <li class="nav-item dropdown"><a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
-                                             data-toggle="dropdown"
-                                             href="#" id="btnLanguage" role="button"> <span
-                    th:text="#{language.change}"></span> </a>
-                <div aria-labelledby="navbarDropdown" class="dropdown-menu" id="languageDropdownMenuButton">
-                    <a class="dropdown-item" id="btnEnglish" value="EN">
-                        <img style="border: 0; float: left; margin-right: 15px" th:src="@{/images/if_uk_flag.png}"/>
+            <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="btnLanguage"
+                                             role="button" data-toggle="dropdown" aria-haspopup="true"
+                                             aria-expanded="false"> <span th:text="#{language.change}"></span> </a>
+
+                <div id="languageDropdownMenuButton" class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                    <a
+                            class="dropdown-item" id="btnEnglish" value="EN"> <img
+                            th:src="@{/images/if_uk_flag.png}"
+                            style="border: 0; float: left; margin-right: 15px"/>
                         <span th:text="#{language.en}">Inglés</span> </a> <a class="dropdown-item" id="btnSpanish"
                                                                              value="ES"> <img
-                        style="border: 0; float: left; margin-right: 15px" th:src="@{/images/if_spain_flag.png}"/> <span
-                        th:text="#{language.es}">Español</span> </a></div>
+                        th:src="@{/images/if_spain_flag.png}" style="border: 0; float: left; margin-right: 15px"/>
+                    <span th:text="#{language.es}">Español</span> </a></div>
             </li>
 
             </li>
