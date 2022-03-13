@@ -13,7 +13,7 @@
             </li>
             <li class="nav-item dropdown active">
                 <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
-                    data-toggle="dropdown" href="#" id="navbarDropdown" role="button"> Mi Cuenta </a>
+                    data-toggle="dropdown" href="#" id="accountDropdown" role="button"> Mi Cuenta </a>
                 <div aria-labelledby="navbarDropdown" class="dropdown-menu">
                     <a class="dropdown-item" href="/post/list">Mis publicaciones</a>
 
@@ -23,7 +23,7 @@
             </li>
             <li class="nav-item dropdown active">
                 <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
-                   data-toggle="dropdown" href="#" id="navbarDropdown" role="button"> Amigos </a>
+                   data-toggle="dropdown" href="#" id="friendsDropdown" role="button"> Amigos </a>
                 <div aria-labelledby="navbarDropdown" class="dropdown-menu">
                     <a class="dropdown-item" href="/post/list">Listar amigos</a>
                    <!---La opción de listar publis estará en la tabla en la q se muestren los amigos.-->
@@ -33,7 +33,7 @@
             </li>
             <li class="nav-item dropdown active">
                 <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
-                   data-toggle="dropdown" href="#" id="navbarDropdown" role="button"> Usuarios </a>
+                   data-toggle="dropdown" href="#" id="userDropdown" role="button"> Usuarios </a>
                 <div aria-labelledby="navbarDropdown" class="dropdown-menu">
                     <a class="dropdown-item" href="/post/list">Listar usuarios</a>
                     <a class="dropdown-item" href="/post/list">Buscar usuarios</a>
@@ -43,7 +43,7 @@
             </li>
             <li class="nav-item dropdown active">
                 <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
-                   data-toggle="dropdown" href="#" id="navbarDropdown" role="button"> Notificaciones </a>
+                   data-toggle="dropdown" href="#" id="friendshipsDropdown" role="button"> Notificaciones </a>
                 <div aria-labelledby="navbarDropdown" class="dropdown-menu">
                     <a class="dropdown-item" href="/post/list">Peticiones de amistad</a>
 
@@ -67,13 +67,13 @@
 
             </li>
             <!--Las opciones de registro e inicio de sesión solo se muestran si NO se está autenticado-->
-            <li class="nav-item" sec:authorize="!isAuthenticated()"><a class="nav-link" href="/signup">
+            <li class="nav-item" sec:authorize="!isAuthenticated()">
                 <a class="nav-link" href="/signup" th:text="#{signup.message}">
-                    <i class='fas fa-user-alt' style='font-size:16px'></i> Registrate</a>
+                    <i class='fas fa-user-alt' style='font-size:16px'></i><span> Registrate</span></a>
             </li>
-            <li class="nav-item" sec:authorize="!isAuthenticated()"><a class="nav-link" href="/login">
+            <li class="nav-item" sec:authorize="!isAuthenticated()">
                 <a class="nav-link" href="/login" th:text="#{login.message}">
-                    <i class='fas fa-sign-in-alt' style='font-size:16px'></i> Identifícate</a>
+                    <i class='fas fa-sign-in-alt' style='font-size:16px'></i> <span>Identifícate</span></a>
             </li>
             <!--En caso de estar identificado , se puede desconectar.-->
             <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" href="/logout">

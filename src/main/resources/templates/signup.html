@@ -2,9 +2,8 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head"><title></title></head>
 <body> <!-- Barra de Navegación superior -->
-<!--nav th:replace="fragments/nav"></nav-->
+<nav th:replace="fragments/nav"></nav>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">THIS IS THE NAV</nav>
 <div class="container"><h2>Regístrate como usuario</h2>
     <form class="form-horizontal" method="post" action="/signup" th:object="${user}">
         <div class="form-group"><label class="control-label col-sm-2" for="email">EMAIL:</label>
