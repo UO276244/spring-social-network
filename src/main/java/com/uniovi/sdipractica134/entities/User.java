@@ -11,7 +11,7 @@ public class User {
     private Long id;
 
     @Column(unique = true)
-    private String email;
+    private String username;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private Set<Post> posts;
@@ -25,8 +25,8 @@ public class User {
         this.role = "ROLE_USER";
     }
 
-    public User(String email, String name, String surname) {
-        this.email = email;
+    public User(String username, String name, String surname) {
+        this.username = username;
         this.name = name;
         this.surname = surname;
     }
@@ -67,16 +67,16 @@ public class User {
         return role;
     }
 
-    public String getEmail(){
-        return this.email;
+    public String getUsername(){
+        return this.username;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void setPosts(Set<Post> posts) {

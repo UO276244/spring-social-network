@@ -74,13 +74,13 @@ class SdiPractica134ApplicationTests {
         PO_SignUpView.fillForm(driver,"martin@gmail.com","Martin","Beltran",
                 "password","password");
 
-        Assertions.assertTrue(usersRepository.findByEmail("martin@gmail.com") != null);
+        Assertions.assertTrue(usersRepository.findByUsername("martin@gmail.com") != null);
         Assertions.assertTrue(usersRepository.countUsers() ==1);
 
     }
 
 
-    //[Prueba1-2] Registro de Usuario con datos inválidos (email vacío, nombre vacío, apellidos vacíos).
+    //[Prueba1-2] Registro de Usuario con datos inválidos (username vacío, nombre vacío, apellidos vacíos).
     @Test
     @Order(2)
     void PR01B() {
@@ -106,7 +106,7 @@ class SdiPractica134ApplicationTests {
 
     }
 
-    //[Prueba1-4] Registro de Usuario con datos inválidos (email existente).
+    //[Prueba1-4] Registro de Usuario con datos inválidos (username existente).
     @Test
     @Order(4)
     public void PR01D() {
@@ -116,7 +116,7 @@ class SdiPractica134ApplicationTests {
         PO_SignUpView.fillForm(driver,"martin@gmail.com","Martin","Beltran",
                 "password","password");
 
-        Assertions.assertTrue(usersRepository.findByEmail("martin@gmail.com") != null);
+        Assertions.assertTrue(usersRepository.findByUsername("martin@gmail.com") != null);
 
         PO_SignUpView.goToSignUpPage(driver);
         PO_SignUpView.fillForm(driver,"martin@gmail.com","Martin","Beltran",
