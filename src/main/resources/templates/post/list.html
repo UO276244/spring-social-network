@@ -22,24 +22,9 @@
 
 
 
-    <button class="btn btn-default" id="updateButton" type="button">Actualizar</button>
-    <!--Debemos preparar el script para incluir parámetros Thymeleaft (incluimos el th:inline=“javascript” y el CDATA).-->
-    <script th:inline="javascript"> /*<![CDATA[*/
-    $("#updateButton").click(function () {
-        var numberPage = [[${param.page}]];
-        var urlUpdate = '/mark/list/update';
-        if (numberPage != null) {
-            urlUpdate += "?page=" + numberPage[0];
-        }
-        $("#tableMarks").load(urlUpdate);
-    }); /*]]>*/ </script>
-
-    <!--Al pulsarlo se realiza una llamada con JQUERY a la URL /list/update sustituyendo el contenido antiguo
-    de la tabla por el que acaba de obtener (usando la función l oad)-->
-
     <div class="table-responsive">
-        <!--Al especificar el fragmento. este será lo unico que se actualice-->
-        <table class="table table-hover" id="tableMarks" th:fragment="tableMarks">
+
+        <table class="table table-hover" id="tableMarks" th:fragment="tablePosts">
             <thead>
             <tr>
                 <th scope="col">Fecha</th>
@@ -52,9 +37,9 @@
             </thead>
             <tbody>
             <tr th:each="post ${postList}">
-                <td scope="row" th:text="${post.dateOfCreation}"> 23/09/2021</td>
-                <td th:text="${post.títle}">10</td>
-                <td th:text="${post.description}"> Ejercicio 1</td>
+                <td scope="row" th:text="${post.dateOfCreation}"> 23/12/2021</td>
+                <td th:text="${post.títle}">Vacaciones de navidad</td>
+                <td th:text="${post.description}"> Me encanta estar con mi familia</td>
 
             </tr>
             </tbody>
