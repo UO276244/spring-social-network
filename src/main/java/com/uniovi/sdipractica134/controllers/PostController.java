@@ -39,7 +39,7 @@ public class PostController {
     public String publishPost(Principal principal, @Validated Post post, BindingResult result){
         postFormValidator.validate(post, result);
         if(result.hasErrors()){
-            return "post/add";
+            return "add";//Return to the view when the publication could not be performed
         }
 
         post.setDateOfCreation(new Date());
@@ -50,8 +50,11 @@ public class PostController {
 
         return "redirect:/post/list";
     }
-    @RequestMapping("post/add")
-    public String getPost(){
-        return "post/add";
+    @RequestMapping(value="/add" , method=RequestMethod.GET)
+    public String getPost(Model model){
+
+        model.addAttribute("post",new Post());
+        //The controller that answers the form must include an empty entity in the view.
+        return "add";
     }
 }
