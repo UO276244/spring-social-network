@@ -31,6 +31,14 @@ public class UsersService {
         usersRepository.findAll().forEach(users::add);
         return users;
     }
+    public List<User> getUsersAdminView(String id){
+        List<User> users = new ArrayList<>();
+        return usersRepository.getUsersAdminView(id);
+    }
+    public List<User> getUsersNormalUserView(String id){
+        List<User> users = new ArrayList<>();
+        return usersRepository.getUsersNormalUserView(id);
+    }
 
     public User getUser(Long id) {
         return usersRepository.findById(id).get();

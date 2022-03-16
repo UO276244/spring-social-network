@@ -6,12 +6,16 @@ import com.uniovi.sdipractica134.services.SecurityService;
 import com.uniovi.sdipractica134.services.UsersService;
 import com.uniovi.sdipractica134.validators.SignUpFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.Locale;
 
 @Controller
 public class UserController {
@@ -53,5 +57,18 @@ public class UserController {
     public String login(Model model) {
         model.addAttribute("user", new User());
         return "login";
+    }
+
+    @RequestMapping("/user/list")
+    public String getList(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User authenticated = usersService.getUserByEmail(auth.getName());
+        if(authenticated.getRole().toUpperCase().equals(rolesService.getRoles()[RolesService.ADMIN])){
+            model.addAttribute("usersList", usersService.getUsersAdminView(authenticated.getEmail()));
+        }else{
+            model.addAttribute("usersList", usersService.getUsersNormalUserView(authenticated.getEmail()));
+        }
+
+        return "user/list";
     }
 }
