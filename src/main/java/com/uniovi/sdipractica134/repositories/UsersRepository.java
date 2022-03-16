@@ -20,7 +20,7 @@ public interface UsersRepository extends CrudRepository<User, Long> {
      * @param id
      * @return List<User> users
      */
-    @Query("Select u FROM User u WHERE u.id<>?1")
+    @Query("Select u FROM User u WHERE u.email<>?1")
     List<User> getUsersAdminView(String id);
     /**
      * A normal user can list the rest of users but him and administrators.
