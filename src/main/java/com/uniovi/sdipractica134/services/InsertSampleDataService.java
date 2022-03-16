@@ -70,8 +70,8 @@ public class InsertSampleDataService {
         user14.setPassword("user14");
         user14.setRole(rolesService.getRoles()[RolesService.USER]);
 
-        User user15 = new User("user14@email.com", "User14Nombre", "User14Apellido");
-        user15.setPassword("user14");
+        User user15 = new User("user15@email.com", "User15Nombre", "User15Apellido");
+        user15.setPassword("user15");
         user15.setRole(rolesService.getRoles()[RolesService.USER]);
         User user16 = new User("admin@email.com", "AdminNombre", "AdminApellido");
         user16.setPassword("admin");
@@ -92,5 +92,5 @@ public class InsertSampleDataService {
         usersService.addUser(user14);
         usersService.addUser(user15);
         usersService.addUser(user16);
-}
+    }
 }
