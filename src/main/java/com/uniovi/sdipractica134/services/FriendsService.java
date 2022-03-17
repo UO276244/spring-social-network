@@ -1,5 +1,6 @@
 package com.uniovi.sdipractica134.services;
 
+import com.uniovi.sdipractica134.entities.FriendshipInvites;
 import com.uniovi.sdipractica134.entities.User;
 import com.uniovi.sdipractica134.repositories.FriendsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,18 @@ public class FriendsService {
 
     public Page<User> searchFriendsByNameForUser(Pageable pageable, String searchText, User user) {
         Page<User> friends = new PageImpl<>(new LinkedList<User>());
-        //friends = friendsRepository.findFriendsByUser(pageable, user);
+        //friends = friendsRepository.findFriendsByUser(pageable, user); TODO
         return friends;
+    }
+
+    public Page<FriendshipInvites> getFriendInvitesForUser(Pageable pageable, User user) {
+        Page<FriendshipInvites> invites = friendsRepository.findInvitesForUser(pageable, user);
+        return invites;
+    }
+
+    public Page<FriendshipInvites> searchFriendInvitesByNameForUser(Pageable pageable, String searchText, User user) {
+        Page<FriendshipInvites> invites = friendsRepository.findInvitesForUser(pageable, user);
+        // TODO
+        return invites;
     }
 }

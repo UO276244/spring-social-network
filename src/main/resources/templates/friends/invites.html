@@ -1,0 +1,43 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/head" ></head>
+<body>
+<nav th:replace="fragments/nav"/>
+
+<div class="container" id="main-container">
+    <h2 th:text="#{invites.title}"></h2>
+    <form class="form-inline" action="/friends/invites">
+        <div class="form-group">
+            <input name="searchText" type="text" class="form-control" size="50"
+                   th:placeholder="#{friends.search}">
+        </div>
+        <button type="submit" th:text="#{search.message}" class="btn btn-primary"></button>
+    </form>
+    <p th:text="#{invites.message}"></p>
+    <div class="table-responsive">
+        <table class="table table-hover" th:fragment="tableInvites" id="tableInvites">
+            <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellidos</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+        </table>
+        <tbody>
+        <tr th:each="invite : ${inviteList}">
+            <td th:text="${invite.getFrom().name}"></td>
+            <td th:text="${invite.getFrom().surname}"></td>
+        </tr>
+        </tbody>
+    </div>
+
+    <!-- does not work :D <footer th:replace="fragments/pagination"></footer>-->
+</div>
+
+<footer th:replace="fragments/footer"></footer>
+</body>
+</html>
