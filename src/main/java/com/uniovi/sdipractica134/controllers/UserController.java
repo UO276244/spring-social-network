@@ -47,4 +47,11 @@ public class UserController {
         model.addAttribute("user", new User());
         return "signup";
     }
+
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(Model model) {
+        model.addAttribute("user", new User());
+        return "login";
+    }
 }
