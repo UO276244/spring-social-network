@@ -17,8 +17,8 @@ public class PostFormValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         Post post=(Post) target;
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"title","Error.empty");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"description","Error.empty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"title","Error.posts.add.emptyField");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors,"description","Error.posts.add.emptyField");
 
     }
 

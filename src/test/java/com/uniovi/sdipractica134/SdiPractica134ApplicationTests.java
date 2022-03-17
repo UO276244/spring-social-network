@@ -1,8 +1,11 @@
 package com.uniovi.sdipractica134;
 
 import com.uniovi.sdipractica134.entities.User;
+import com.uniovi.sdipractica134.pageobjects.PO_PostFormView;
 import com.uniovi.sdipractica134.pageobjects.PO_Properties;
 import com.uniovi.sdipractica134.pageobjects.PO_SignUpView;
+import com.uniovi.sdipractica134.pageobjects.PO_View;
+import com.uniovi.sdipractica134.repositories.PostsRepository;
 import com.uniovi.sdipractica134.repositories.UsersRepository;
 import com.uniovi.sdipractica134.services.UsersService;
 import org.junit.jupiter.api.*;
@@ -31,6 +34,11 @@ class SdiPractica134ApplicationTests {
 
     @Autowired
     private UsersRepository usersRepository;
+
+
+    @Autowired
+    private PostsRepository postsRepository;
+
 
     //Común a Windows y a MACOSX
     public static WebDriver getDriver(String PathFirefox, String Geckodriver) {
@@ -123,6 +131,53 @@ class SdiPractica134ApplicationTests {
                 "password","password");
 
         Assertions.assertTrue(usersRepository.countUsers() ==1);
+    }
+
+    //[Prueba24] Ir al formulario de crear publicaciones , rellenarlo con datos VÁLIDOS y pulsar el botón de enviar.
+    @Test
+    @Order(5)
+    public void PR012A() {
+        //El usuario debe estar registrado para hacer un post , por tanto
+
+        //Una vez autenticado el usuario,rellena el formulario
+        PO_PostFormView.goToPostFormView(driver);
+        PO_PostFormView.fillForm(driver,"Días de vacaciones", "Me lo he pasado genial en málaga! :)");
+
+        //Vamos a la última página
+       List<WebElement> elements= PO_View.checkElementBy(driver, "free", "//a[contains(@class, 'page-link')]");
+        //Nos vamos a la última página
+        elements.get(3).click();
+        elements=PO_View.checkElementBy(driver, "text", "Días de vacaciones");
+        //Comprobamos que aparece la nueva publicación.
+        Assertions.assertEquals("Días de vacaciones",elements.get(0).getText());
+
+    }
+    @Test
+    @Order(6)
+    public void PR012B() {
+        //El usuario debe estar registrado para hacer un post , por tanto
+
+        //Una vez autenticado el usuario,rellena el formulario
+        PO_PostFormView.goToPostFormView(driver);
+        PO_PostFormView.fillForm(driver,"", "Me lo he pasado genial en málaga! :)");
+
+        List<WebElement> emptyMessage= PO_View.checkElementBy(driver, "text", PO_View.getP().getString("Error.posts.add.emptyField",PO_Properties.getSPANISH()));
+        Assertions.assertEquals("Debes rellenar este campo antes de publicar.",emptyMessage.get(0).getText());
+
+    }
+    //Comprobar que no se puede realizar una publicación sin cuerpo.
+    @Test
+    @Order(6)
+    public void PR012B2() {
+        //El usuario debe estar registrado para hacer un post , por tanto
+
+        //Una vez autenticado el usuario,rellena el formulario
+        PO_PostFormView.goToPostFormView(driver);
+        PO_PostFormView.fillForm(driver,"Vacaciones!", "");
+        //TODO . PREGUNTAR SI SE PUEDE PUBLICAR SIN CUERPO.
+        List<WebElement> emptyMessage= PO_View.checkElementBy(driver, "text", PO_View.getP().getString("Error.posts.add.emptyField",PO_Properties.getSPANISH()));
+        Assertions.assertEquals("Debes rellenar este campo antes de publicar.",emptyMessage.get(0).getText());
+
     }
 
 
