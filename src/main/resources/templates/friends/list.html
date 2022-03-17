@@ -3,6 +3,7 @@
 
 <head th:replace="fragments/head" ></head>
 <body>
+<nav th:replace="fragments/nav"/>
 
 <div class="container" id="main-container">
   <h2 th:text="#{friends.title}"></h2>
@@ -14,19 +15,22 @@
     <button type="submit" th:text="#{search.message}" class="btn btn-primary"></button>
   </form>
   <p th:text="#{friends.message}"></p>
-  <div class="table-responsive">
-    <table>
+  <div class="table-responsive" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+    <table class="table table-hover" th:fragment="tableFriends" id="tableFriends">
       <thead>
       <tr>
         <th scope="col">Nombre</th>
         <th scope="col">Apellidos</th>
         <th scope="col">Email</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
       </tr>
       </thead>
     </table>
     <tbody>
     <tr th:each="user : ${friendList}">
-      <td th:text="${user.name}"></td>
+      <td><a th:href="${'/post/' + user.id}" th:text="${user.name}"/></td>
       <td th:text="${user.surname}"></td>
       <td th:text="${user.email}"></td>
     </tr>
