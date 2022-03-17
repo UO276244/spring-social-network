@@ -31,6 +31,10 @@
         <tr th:each="invite : ${inviteList}">
             <td th:text="${invite.getFrom().name}"></td>
             <td th:text="${invite.getFrom().surname}"></td>
+            <button type="submit" class="btn btn-primary" th:text="#{invites.accept}"></button>
+            <script>
+                <!-- TODO accept invitation -->
+            </script>
         </tr>
         </tbody>
     </div>
