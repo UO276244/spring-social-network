@@ -78,28 +78,6 @@ public class UserController {
         return "login";
     }
 
-/*
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(@Validated User user, BindingResult result) {
-
-
-
-        securityService.autoLogin(user.getUsername(), user.getPassword());
-
-        String userName = securityService.findLoggedInUsername();
-        if (userName == null) {
-            loggerService.createLOGIN_ERRLog(user.getUsername());
-            return "index";
-        }else{
-            loggerService.createLOGIN_EXLog(user.getUsername());
-            return "index";
-        }
-
-
-
-
-    }*/
-
 
 
     @RequestMapping(value = "/prevlogout", method = RequestMethod.GET)

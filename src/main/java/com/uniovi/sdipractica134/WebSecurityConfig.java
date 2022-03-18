@@ -1,5 +1,7 @@
 package com.uniovi.sdipractica134;
 
+import com.uniovi.sdipractica134.handler.CustomFailureHandler;
+import com.uniovi.sdipractica134.handler.CustomSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
@@ -24,6 +27,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public CustomSuccessHandler successHandler() {
+        return new CustomSuccessHandler();
+    }
+    @Bean
+    public CustomFailureHandler failureHandler() {
+        return new CustomFailureHandler();
     }
 
     @Bean
@@ -46,8 +58,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .successHandler(successHandler())
+                .failureHandler(failureHandler())
                 .permitAll()
-                .defaultSuccessUrl("/home")
+
                 .and()
                 .logout()
                 .permitAll();
