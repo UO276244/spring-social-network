@@ -82,10 +82,8 @@ public class FriendsController {
     }
 
     @RequestMapping("/invite/accept/{id}")
-    public String delete(Model model, Pageable pageable, Principal principal, @PathVariable Long id) {
-        String username = principal.getName();
-        User user = usersService.getUserByUsername(username);
-        friendsService.acceptFriendshipInvite(pageable, user, id);
+    public String delete(@PathVariable Long id) {
+        friendsService.acceptFriendshipInvite(id);
         return "redirect:/friends/invites";
     }
 }

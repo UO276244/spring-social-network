@@ -52,7 +52,7 @@ public class FriendsService {
         return invites;
     }
 
-    public void acceptFriendshipInvite(Pageable pageable, User user, Long id) {
+    public void acceptFriendshipInvite(Long id) {
         Optional<FriendshipInvites> inviteOp = friendsRepository.findById(id);
         FriendshipInvites invite;
         if (inviteOp.isPresent()) {
