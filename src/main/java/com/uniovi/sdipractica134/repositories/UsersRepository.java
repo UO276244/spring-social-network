@@ -17,20 +17,20 @@ public interface UsersRepository extends CrudRepository<User, Long> {
     int countUsers();
 
     /**
-     * An Admin can list all the users but her/him, as he cannot delete himself, it's better to not
+     * An Admin can list all the users but her/him, as he cannot delete (him/her)self, it's better to not
      * include him/her.
-     * @param email
+     * @param id Long of the admin to be excluded
      * @return List<User> users
      */
-    @Query("Select u FROM User u WHERE u.email<>?1")
-    List<User> getUsersAdminView(String email);
+    @Query("Select u FROM User u WHERE u.id<>?1")
+    Page<User> getUsersAdminView(Pageable pageable, Long id);
     /**
      * A normal user can list the rest of users but him and administrators.
-     * @param email
+     * @param id Long of the user that request the list, in order to exclude him from it.
      * @return List<User> users
      */
-    @Query("Select u FROM User u WHERE u.email <> ?1 and upper(u.role)='ROLE_USER'")
-    List<User> getUsersNormalUserView(String email);
+    @Query("Select u FROM User u WHERE u.id <> ?1 and upper(u.role)='ROLE_USER'")
+    Page<User> getUsersNormalUserView(Pageable pageable, Long id);
 
     @Modifying
     @Transactional
@@ -39,5 +39,5 @@ public interface UsersRepository extends CrudRepository<User, Long> {
 
     @Query("SELECT u FROM User u WHERE (LOWER(u.email) LIKE LOWER(?2) OR LOWER(u.name) LIKE LOWER(?2) OR LOWER(u.surname) LIKE LOWER(?2))" +
             " AND u.id<>?1 and upper(u.role)='ROLE_USER'")
-    List<User> getUsersNormalUserViewSearch(Long id, String searchText);
+    Page<User> getUsersNormalUserViewSearch(Pageable pageable, Long id, String searchText);
 }

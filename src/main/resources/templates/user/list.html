@@ -5,20 +5,24 @@ springsecurity4">
 <body>
 <nav th:replace="fragments/nav"/>
 <div class="container">
-    <form sec:authorize="hasRole('ROLE_USER')" class="form-inline" action="/user/list">
-        <div class="form-group">
-            <input name="searchText" type="text" class="form-control" size="50"
-                   placeholder="Buscar por email,nombre,apellido del usuario">
-        </div>
-        <button type="submit" class="btn btn-primary">Buscar</button>
-    </form>
+    <div class="container">
+        <form sec:authorize="hasRole('ROLE_USER')" class="form-inline" action="/user/list">
+            <div class="form-group">
+                <input name="searchText" type="text" class="form-control" size="50"
+                       placeholder="Buscar por email,nombre,apellido del usuario">
+            </div>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+    </div>
+
+    <div class="container">
     <table class="table table-hover" th:fragment="tableUsers" id="tableUsers">
         <thead>
         <tr>
             <th scope="col">Email</th>
             <th scope="col">Nombre</th>
             <th scope="col">Apellidos</th>
-            <th scope="col"></th>
+            <th sec:authorize="hasRole('ROLE_ADMIN')" scope="col">Eliminar</th>
             <th scope="col"></th>
             <th scope="col"></th>
         </tr>
@@ -32,7 +36,9 @@ springsecurity4">
         </tr>
         </tbody>
     </table>
-    <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" id="deleteButton" class="btn btn-default">Delete</button>
+    <footer sec:authorize="hasRole('ROLE_USER')" th:replace="fragments/pagination"/> <!-- Only users with ROLE_USER have pagination -->
+    </div>
+    <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" id="deleteButton" class="btn btn-danger">Delete</button>
     <script th:inline="javascript">
         /*<![CDATA[*/
 
@@ -54,6 +60,7 @@ springsecurity4">
         });
         /*]]>*/
     </script>
+
 </div>
 <footer th:replace="fragments/footer"/>
 </body>

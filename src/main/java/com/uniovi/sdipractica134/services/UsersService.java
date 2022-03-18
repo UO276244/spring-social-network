@@ -20,6 +20,8 @@ public class UsersService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    private RolesService rolesService;
 
     @PostConstruct
     public void init(){
@@ -31,14 +33,11 @@ public class UsersService {
         usersRepository.findAll().forEach(users::add);
         return users;
     }
-    public List<User> getUsersAdminView(String email){
+    public Page<User> getUsersAdminView(Pageable pageable, Long id){
         List<User> users = new ArrayList<>();
-        return usersRepository.getUsersAdminView(email);
+        return usersRepository.getUsersAdminView(pageable, id);
     }
-    public List<User> getUsersNormalUserView(String email){
-        List<User> users = new ArrayList<>();
-        return usersRepository.getUsersNormalUserView(email);
-    }
+
 
     public User getUser(Long id) {
         return usersRepository.findById(id).get();
@@ -55,12 +54,22 @@ public class UsersService {
         usersRepository.deleteById(id);
     }
 
-    public void deleteById(List<Long> ids){
+    public void deleteByIds(List<Long> ids){
         usersRepository.deleteByIds(ids);
     }
 
-    public List<User> getUsersNormalUserViewSearch(Long id, String searchText) {
-        searchText = "%" + searchText + "%";
-        return usersRepository.getUsersNormalUserViewSearch(id,searchText);
+
+
+    public Page<User> getUsersView(Pageable pageable, User authenticated, String searchText) {
+        if(authenticated.getRole().toUpperCase().equals(rolesService.getRoles()[RolesService.ADMIN])){
+            return usersRepository.getUsersAdminView(Pageable.unpaged(), authenticated.getId());
+        }else{
+            if(searchText != null && !searchText.isEmpty()){
+                searchText = "%" + searchText + "%";
+               return usersRepository.getUsersNormalUserViewSearch(pageable, authenticated.getId(), searchText);
+            }else{
+                return usersRepository.getUsersNormalUserView(pageable, authenticated.getId());
+            }
+        }
     }
 }

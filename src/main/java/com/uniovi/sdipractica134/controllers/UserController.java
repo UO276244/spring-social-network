@@ -6,6 +6,8 @@ import com.uniovi.sdipractica134.services.SecurityService;
 import com.uniovi.sdipractica134.services.UsersService;
 import com.uniovi.sdipractica134.validators.SignUpFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Locale;
 
 @Controller
 public class UserController {
@@ -63,29 +64,24 @@ public class UserController {
     }
 
     @RequestMapping("/user/list")
-    public String getList(Model model, @RequestParam(value="", required = false)String searchText) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User authenticated = usersService.getUserByEmail(auth.getName());
-        if(authenticated.getRole().toUpperCase().equals(rolesService.getRoles()[RolesService.ADMIN])){
-            model.addAttribute("usersList", usersService.getUsersAdminView(authenticated.getEmail()));
-        }else{
-            if(searchText != null && !searchText.isEmpty()){
-                model.addAttribute("usersList", usersService.getUsersNormalUserViewSearch(authenticated.getId(), searchText));
-            }else{
-                model.addAttribute("usersList", usersService.getUsersNormalUserView(authenticated.getEmail()));
-            }
-
-        }
-
+    public String getList(Model model, Pageable pageable, @RequestParam(value="", required = false)String searchText) {
+        User authenticated = getAuthenticatedUser();
+        Page<User> users = usersService.getUsersView(pageable, authenticated, searchText);
+        model.addAttribute("page", users);
+        model.addAttribute("usersList", users.getContent());
         return "user/list";
     }
 
     @RequestMapping(value="/user/list/delete/{userIds}")
     public String deleteUsers(Model model, @PathVariable List<Long> userIds) {
-        usersService.deleteById(userIds);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User authenticated = usersService.getUserByEmail(auth.getName());
-        model.addAttribute("usersList", usersService.getUsersAdminView(authenticated.getEmail()));
+        usersService.deleteByIds(userIds);
+        User authenticated = getAuthenticatedUser();
+        model.addAttribute("usersList", usersService.getUsersAdminView(Pageable.unpaged(), authenticated.getId()).getContent());
         return "user/list :: tableUsers";
+    }
+
+    private User getAuthenticatedUser(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return usersService.getUserByEmail(auth.getName());  //the username of the authenticated person is his/hers email.
     }
 }
