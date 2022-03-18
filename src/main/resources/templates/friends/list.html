@@ -33,7 +33,7 @@
       <td><a th:href="${'/post/' + user.id}" th:text="${user.name}"/></td>
       <!-- poner link a las publicaciones del usuario -->
       <td th:text="${user.surname}"></td>
-      <td th:text="${user.email}"></td>
+      <td th:text="${user.username}"></td>
     </tr>
     </tbody>
     <div th:if="${#lists.isEmpty(friendList)}" th:text="#{nofriends.message}"></div>

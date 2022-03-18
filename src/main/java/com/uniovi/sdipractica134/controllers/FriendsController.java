@@ -68,8 +68,8 @@ public class FriendsController {
 
     @RequestMapping("/friends/invites")
     public String getInvites(Model model, Pageable pageable, Principal principal, @RequestParam(value = "", required = false) String searchText){
-        String email = principal.getName();
-        User user = usersService.getUserByEmail(email);
+        String username = principal.getName();
+        User user = usersService.getUserByUsername(username);
         Page<FriendshipInvites> invites = null;
         if (searchText != null && !searchText.isEmpty()){
             invites = friendsService.searchFriendInvitesByNameForUser(pageable, searchText, user);
@@ -83,8 +83,8 @@ public class FriendsController {
 
     @RequestMapping("/invite/accept/{id}")
     public String delete(Model model, Pageable pageable, Principal principal, @PathVariable Long id) {
-        String email = principal.getName();
-        User user = usersService.getUserByEmail(email);
+        String username = principal.getName();
+        User user = usersService.getUserByUsername(username);
         friendsService.acceptFriendshipInvite(pageable, user, id);
         return "redirect:/friends/invites";
     }

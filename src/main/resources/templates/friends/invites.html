@@ -34,6 +34,7 @@
             <td><a th:text="#{invites.accept}" th:href="${'/invite/accept/' + invite.getId()}"/></td>
         </tr>
         </tbody>
+        <div th:if="${#lists.isEmpty(inviteList)}" th:text="#{noinvites.message}"></div>
     </div>
 
     <!-- does not work :D <footer th:replace="fragments/pagination"></footer>-->
