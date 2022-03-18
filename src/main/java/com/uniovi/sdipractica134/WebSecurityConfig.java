@@ -51,8 +51,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/css/**", "/images/**", "/script/**", "/", "/signup","/login", "/login/**").permitAll()
                 .antMatchers("/friends/list").hasAuthority("ROLE_USER")
+                .antMatchers("/user/list").authenticated()
                 .antMatchers("/logout").authenticated()
-                .antMatchers("/prevlogout").authenticated()
+                .antMatchers("/logs/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -61,7 +62,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(successHandler())
                 .failureHandler(failureHandler())
                 .permitAll()
-
                 .and()
                 .logout()
                 .permitAll();
