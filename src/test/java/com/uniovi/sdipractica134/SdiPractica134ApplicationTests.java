@@ -161,24 +161,48 @@ class SdiPractica134ApplicationTests {
         PO_PostFormView.goToPostFormView(driver);
         PO_PostFormView.fillForm(driver,"", "Me lo he pasado genial en málaga! :)");
 
-        List<WebElement> emptyMessage= PO_View.checkElementBy(driver, "text", PO_View.getP().getString("Error.posts.add.emptyField",PO_Properties.getSPANISH()));
-        Assertions.assertEquals("Debes rellenar este campo antes de publicar.",emptyMessage.get(0).getText());
+        List<WebElement> emptyMessage= PO_View.checkElementBy(driver, "text", PO_View.getP().getString("Error.posts.add.empty.title",PO_Properties.getSPANISH()));
+        Assertions.assertEquals("El título de la publicación no puede estar vacío.",emptyMessage.get(0).getText());
 
     }
     //Comprobar que no se puede realizar una publicación sin cuerpo.
     @Test
-    @Order(6)
+    @Order(7)
     public void PR012B2() {
         //El usuario debe estar registrado para hacer un post , por tanto
 
         //Una vez autenticado el usuario,rellena el formulario
         PO_PostFormView.goToPostFormView(driver);
         PO_PostFormView.fillForm(driver,"Vacaciones!", "");
-        //TODO . PREGUNTAR SI SE PUEDE PUBLICAR SIN CUERPO.
-        List<WebElement> emptyMessage= PO_View.checkElementBy(driver, "text", PO_View.getP().getString("Error.posts.add.emptyField",PO_Properties.getSPANISH()));
-        Assertions.assertEquals("Debes rellenar este campo antes de publicar.",emptyMessage.get(0).getText());
+        List<WebElement> emptyMessage= PO_View.checkElementBy(driver, "text", PO_View.getP().getString("Error.posts.add.empty.description",PO_Properties.getSPANISH()));
+        Assertions.assertEquals("La descripción de la publicación no puede estar vacía.",emptyMessage.get(0).getText());
 
     }
+    //Comprobar que no se puede realizar una publicación con un título demasiado corto (menor a 10 caracteres)
+    @Test
+    @Order(8)
+    public void PR012C() {
+        //El usuario debe estar registrado para hacer un post , por tanto
 
+        //Una vez autenticado el usuario,rellena el formulario
+        PO_PostFormView.goToPostFormView(driver);
+        PO_PostFormView.fillForm(driver,"corto", "Descripción de más de 15 caracteres");
+        List<WebElement> emptyMessage= PO_View.checkElementBy(driver, "text", PO_View.getP().getString("Error.posts.add.title.tooShort",PO_Properties.getSPANISH()));
+        Assertions.assertEquals("El título debe tener al menos 10 caracteres.",emptyMessage.get(0).getText());
+
+    }
+    //Comprobar que no se puede realizar una publicación con una descripción demasiado corta (menor a 15 caracteres)
+    @Test
+    @Order(8)
+    public void PR012D() {
+        //El usuario debe estar registrado para hacer un post , por tanto
+
+        //Una vez autenticado el usuario,rellena el formulario
+        PO_PostFormView.goToPostFormView(driver);
+        PO_PostFormView.fillForm(driver,"Vacaciones!", "hola");
+        List<WebElement> emptyMessage= PO_View.checkElementBy(driver, "text", PO_View.getP().getString("Error.posts.add.description.tooShort",PO_Properties.getSPANISH()));
+        Assertions.assertEquals("La descripción debe tener al menos 15 caracteres.",emptyMessage.get(0).getText());
+
+    }
 
 }
