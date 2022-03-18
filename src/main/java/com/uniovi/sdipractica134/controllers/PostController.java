@@ -30,9 +30,11 @@ public class PostController {
     private PostFormValidator postFormValidator;
 
     @RequestMapping("post/list")
-    public String listOwnPosts(Model model, Pageable pageable, Principal principal, @RequestParam(value="",required=false)String searchTest){
-
-        return "list";
+    public String listOwnPosts(Model model, Pageable pageable, Principal principal){
+        String email=principal.getName();//El usuario incicia sesión empleando mail y contraseña
+        User user =usersService.getUserByEmail(email);
+        model.addAttribute("postsList",postsService.getPostsByUser(pageable,user));
+        return "/posts/list";
     }
 
     @RequestMapping(value="post/add", method= RequestMethod.POST)
