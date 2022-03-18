@@ -1,5 +1,6 @@
 package com.uniovi.sdipractica134.controllers;
 
+import com.uniovi.sdipractica134.entities.FriendshipInvites;
 import com.uniovi.sdipractica134.entities.User;
 import com.uniovi.sdipractica134.services.FriendsService;
 import com.uniovi.sdipractica134.services.LoggerService;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -64,4 +66,24 @@ public class FriendsController {
         return "friends/list";
     }
 
+    @RequestMapping("/friends/invites")
+    public String getInvites(Model model, Pageable pageable, Principal principal, @RequestParam(value = "", required = false) String searchText){
+        String username = principal.getName();
+        User user = usersService.getUserByUsername(username);
+        Page<FriendshipInvites> invites = null;
+        if (searchText != null && !searchText.isEmpty()){
+            invites = friendsService.searchFriendInvitesByNameForUser(pageable, searchText, user);
+        } else {
+            invites = friendsService.getFriendInvitesForUser(pageable, user);
+        }
+        model.addAttribute("inviteList", invites.getContent());
+
+        return "friends/invites";
+    }
+
+    @RequestMapping("/invite/accept/{id}")
+    public String delete(@PathVariable Long id) {
+        friendsService.acceptFriendshipInvite(id);
+        return "redirect:/friends/invites";
+    }
 }
