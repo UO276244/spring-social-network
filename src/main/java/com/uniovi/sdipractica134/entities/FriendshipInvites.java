@@ -12,6 +12,7 @@ public class FriendshipInvites {
 
 
     @Id
+    @GeneratedValue
     private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -24,6 +25,16 @@ public class FriendshipInvites {
 
     private String state;
 
+    public FriendshipInvites(User from, User to, String state){
+        super();
+        this.from = from;
+        this.to = to;
+        this.state = state;
+    }
+
+    public FriendshipInvites() {
+
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -31,5 +42,13 @@ public class FriendshipInvites {
 
     public Long getId() {
         return id;
+    }
+
+    public User getFrom() {
+        return from;
+    }
+
+    public void accept() {
+        this.state = "ACCEPTED";
     }
 }
