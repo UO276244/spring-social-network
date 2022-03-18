@@ -22,7 +22,13 @@ public class User {
 
 
     public User(){
-        this.role="ROLE_USER";
+        this.role = "ROLE_USER";
+    }
+
+    public User(String email, String name, String surname) {
+        this.email = email;
+        this.name = name;
+        this.surname = surname;
     }
 
     private String name;
