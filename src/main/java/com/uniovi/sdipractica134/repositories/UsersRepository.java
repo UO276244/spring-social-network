@@ -37,7 +37,7 @@ public interface UsersRepository extends CrudRepository<User, Long> {
     @Query("delete from User u where u.id in(:ids)")
     void deleteByIds(List<Long> ids);
 
-    @Query("SELECT u FROM User u WHERE (LOWER(u.email) LIKE LOWER(?2) OR LOWER(u.name) LIKE LOWER(?2) OR LOWER(u.surname) LIKE LOWER(?2))" +
+    @Query("SELECT u FROM User u WHERE (LOWER(u.username) LIKE LOWER(?2) OR LOWER(u.name) LIKE LOWER(?2) OR LOWER(u.surname) LIKE LOWER(?2))" +
             " AND u.id<>?1 and upper(u.role)='ROLE_USER'")
     Page<User> getUsersNormalUserViewSearch(Pageable pageable, Long id, String searchText);
 }

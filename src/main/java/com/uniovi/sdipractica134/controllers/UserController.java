@@ -9,6 +9,10 @@ import com.uniovi.sdipractica134.validators.SignUpFormValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -124,6 +128,9 @@ public class UserController {
         Page<User> users = usersService.getUsersView(pageable, authenticated, searchText);
         model.addAttribute("page", users);
         model.addAttribute("usersList", users.getContent());
+        logger.info(
+                loggerService.createPETLog("UserController --> /user/list","GET", new String[] {})
+        );
         return "user/list";
     }
 
@@ -132,11 +139,16 @@ public class UserController {
         usersService.deleteByIds(userIds);
         User authenticated = getAuthenticatedUser();
         model.addAttribute("usersList", usersService.getUsersAdminView(Pageable.unpaged(), authenticated.getId()).getContent());
+        //TODO añadir los ids como parametros en el logger....
+        logger.info(
+                loggerService.createPETLog("UserController --> /user/list/delete/{userIds} Falta Mirar IDs params","GET", new String[] {})
+        );
+
         return "user/list :: tableUsers";
     }
 
     private User getAuthenticatedUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return usersService.getUserByEmail(auth.getName());  //the username of the authenticated person is his/hers email.
+        return usersService.getUserByUsername(auth.getName());  //the username of the authenticated person is his/hers email.
     }
 }
