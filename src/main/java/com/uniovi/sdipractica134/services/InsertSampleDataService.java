@@ -118,5 +118,5 @@ public class InsertSampleDataService {
         usersService.addUser(user14);
         usersService.addUser(user15);
         usersService.addUser(user16);
-}
+    }
 }

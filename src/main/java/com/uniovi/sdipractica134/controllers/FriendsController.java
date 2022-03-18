@@ -3,7 +3,11 @@ package com.uniovi.sdipractica134.controllers;
 import com.uniovi.sdipractica134.entities.FriendshipInvites;
 import com.uniovi.sdipractica134.entities.User;
 import com.uniovi.sdipractica134.services.FriendsService;
+import com.uniovi.sdipractica134.services.LoggerService;
 import com.uniovi.sdipractica134.services.UsersService;
+import net.bytebuddy.implementation.auxiliary.AuxiliaryType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,11 +33,27 @@ public class FriendsController {
     @Autowired
     private FriendsService friendsService;
 
+    @Autowired
+    private LoggerService loggerService;
+
+    Logger logger = LoggerFactory.getLogger(FriendsController.class);
+
 
     @RequestMapping("/friends/list")
-    public String getList(Model model, Pageable pageable, Principal principal, @RequestParam(value = "", required = false) String searchText){
-        String email = principal.getName();
-        User user = usersService.getUserByEmail(email);
+    public String getList(Model model,
+                          Pageable pageable,
+                          Principal principal,
+                          @RequestParam(value = "", required = false) String searchText){
+
+
+        logger.info(
+                loggerService.createPETLog("FriendsController --> /friends/list",
+                        "GET",
+                        new String[] {"searchText="+searchText})
+        );
+
+        String username = principal.getName();
+        User user = usersService.getUserByUsername(username);
         Page<User> friends = null;
         if (searchText != null && !searchText.isEmpty()){
             friends = friendsService.searchFriendsByNameForUser(pageable, searchText, user);
