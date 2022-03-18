@@ -17,7 +17,7 @@ public class LoggerService {
     private LogRepository logRepo;
 
 
-    public void createPETLog(String controller, String httpMethod, String... params){
+    public String createPETLog(String controller, String httpMethod, String... params){
 
         String description = "Controller: " + controller + " - Method " + httpMethod + " - Params: ";
 
@@ -27,9 +27,10 @@ public class LoggerService {
 
         insertLog(LogType.PET,description);
 
+        return description;
     }
 
-    public void createALTALog(String controller, String httpMethod, String... params){
+    public String createALTALog(String controller, String httpMethod, String... params){
 
         String description = "Controller: " + controller + " - Method " + httpMethod + " - Params: ";
 
@@ -39,35 +40,38 @@ public class LoggerService {
 
         insertLog(LogType.ALTA,description);
 
+        return description;
     }
 
 
-    public void createLOGIN_EXLog(String username){
+    public String createLOGIN_EXLog(String username){
 
         String description = "LogIn success by user: " + username;
 
 
         insertLog(LogType.LOGIN_EX,description);
 
+        return description;
     }
 
-    public void createLOGIN_ERRLog(String username){
+    public String createLOGIN_ERRLog(String username){
 
         String description = "LogIn error by user: " + username;
 
 
         insertLog(LogType.LOGIN_ERR,description);
 
-
+        return description;
     }
 
-    public void createLOGOUTLog(String username){
+    public String createLOGOUTLog(String username){
 
         String description = "LogOut by user: " + username;
 
 
         insertLog(LogType.LOGOUT,description);
 
+        return description;
     }
 
 
@@ -78,7 +82,6 @@ public class LoggerService {
                 ,description);
         logRepo.save(l);
 
-        System.out.println(l.toString());
 
     }
 

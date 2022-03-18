@@ -6,6 +6,8 @@ import com.uniovi.sdipractica134.services.RolesService;
 import com.uniovi.sdipractica134.services.SecurityService;
 import com.uniovi.sdipractica134.services.UsersService;
 import com.uniovi.sdipractica134.validators.SignUpFormValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +34,9 @@ public class UserController {
     @Autowired
     private LoggerService loggerService;
 
+    Logger logger = LoggerFactory.getLogger(UserController.class);
+
+
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public String signup(@Validated User user, BindingResult result) {
 
@@ -41,8 +46,10 @@ public class UserController {
                 "name="+user.getName(),
                 "surname="+user.getSurname()};
 
-        loggerService.createPETLog("UserController --> /signup","POST",params);
 
+        logger.info(
+                loggerService.createPETLog("UserController --> /signup","POST",params)
+        );
 
         signUpFormValidator.validate(user,result);
         if(result.hasErrors()){
@@ -53,8 +60,9 @@ public class UserController {
         usersService.addUser(user);
 
 
-
-        loggerService.createALTALog("UserController","POST",params );
+        logger.info(
+                loggerService.createALTALog("UserController","POST",params )
+        );
 
         securityService.autoLogin(user.getUsername(), user.getPasswordConfirm());
 
@@ -65,7 +73,12 @@ public class UserController {
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String signup(Model model) {
-        loggerService.createPETLog("UserController --> /signup","GET", new String[] {});
+
+
+        logger.info(
+                loggerService.createPETLog("UserController --> /signup","GET", new String[] {})
+        );
+
         model.addAttribute("user", new User());
         return "signup";
     }
@@ -73,7 +86,12 @@ public class UserController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model) {
-        loggerService.createPETLog("UserController --> /login","GET", new String[] {});
+
+        logger.info(
+                loggerService.createPETLog("UserController --> /login","GET", new String[] {})
+        );
+
+
         model.addAttribute("user", new User());
         return "login";
     }
@@ -84,7 +102,12 @@ public class UserController {
     public String prevlogout() {
 
         String loggedIn = securityService.findLoggedInUsername();
-        loggerService.createLOGOUTLog(loggedIn);
+
+        logger.info(
+                loggerService.createLOGOUTLog(loggedIn)
+        );
+
+
 
         return "redirect:logout";
     }
