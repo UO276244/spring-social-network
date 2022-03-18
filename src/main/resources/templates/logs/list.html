@@ -30,17 +30,24 @@
     <script th:inline="javascript"> /*<![CDATA[*/
 
 
-    $("#updateButton").click(function () {
-        var urlUpdate = '/logs/list/update';
+        $("#updateButton").click(function () {
+            var urlUpdate = '/logs/list/update';
 
-        var select = document.getElementById('typesCombo');
-        var value = select.options[select.selectedIndex].value
+            var select = document.getElementById('typesCombo');
+            var value = select.options[select.selectedIndex].value
 
-        var strType = "?logType=" + value.toString();
+            var strType = "?logType=" + value.toString();
 
 
-        $("#tableLogs").load(urlUpdate+strType);
-    }); /*]]>*/ </script>
+            $("#tableLogs").load(urlUpdate+strType);
+        });
+
+        function loadAfterDelete(logId) {
+            $("#tableLogs").load("/logs/delete/"+logId);
+        }
+
+
+    /*]]>*/ </script>
 
 
 
@@ -62,7 +69,9 @@
                         <td th:text="${log.getLogType()}"> Type</td>
                         <td th:text="${log.getDescription()}">10</td>
                         <td th:text="${log.stampToDate()}">Fecha</td>
-                        <td><a sec:authorize="hasRole('ROLE_ADMIN')" th:href="${'/logs/delete/' + log.getId()}"
+                        <td><a class="btn btn-secundary" sec:authorize="hasRole('ROLE_ADMIN')"
+
+                               th:onclick="|loadAfterDelete('${log.getId()}')|"
                                th:text="#{logs.remove}" >eliminar</a>
                         </td>
                     </tr>

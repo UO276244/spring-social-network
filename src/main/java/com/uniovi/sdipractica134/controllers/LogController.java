@@ -38,8 +38,16 @@ public class LogController {
                         new String[] {"logType="+logType})
         );
 
-        System.out.println(logType);
-        List<Log> logs = loggerService.getAllByType(logType);
+        findLogsAndReturnFragment(logType,model);
+
+        return "logs/list";
+    }
+
+    @RequestMapping("/logs/delete/{id}")
+    public String deleteLog(Model model, @PathVariable Long id) {
+        loggerService.deleteLog(id);
+
+        List<Log> logs = loggerService.getAllByType("");
 
         //Se ordena de más antiguo a más reciente
         Collections.sort(logs);
@@ -47,31 +55,32 @@ public class LogController {
         //Hay que darle la vuelta para mostrar los logs de más reciente a más antiguo
         Collections.reverse(logs);
 
-
         model.addAttribute("logsList", logs);
 
-        return "logs/list";
+        return "logs/list :: tableLogs";
     }
 
-    @RequestMapping("/logs/delete/{id}")
-    public String deleteLog(@PathVariable Long id) {
-        loggerService.deleteLog(id);
-        return "redirect:/logs/list";
-    }
-
+//th:href="${'/logs/delete/' + log.getId()}"
 
 
     @RequestMapping("/logs/list/update")
     public String update(Model model, @RequestParam(value = "", required = false) String logType) {
 
 
+        /*
         logger.info(
                 loggerService.createPETLog("LogController --> /logs/list/update",
                         "GET",
                         new String[] {"logType="+logType})
         );
+*/
 
-        System.out.println(logType);
+        return findLogsAndReturnFragment(logType,model);
+    }
+
+
+    private String findLogsAndReturnFragment(String logType, Model model){
+
         List<Log> logs = loggerService.getAllByType(logType);
 
         //Se ordena de más antiguo a más reciente
@@ -83,6 +92,7 @@ public class LogController {
         model.addAttribute("logsList", logs);
 
         return "logs/list :: tableLogs";
+
     }
 
 }

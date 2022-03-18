@@ -2,8 +2,9 @@ package com.uniovi.sdipractica134;
 
 import com.uniovi.sdipractica134.entities.User;
 import com.uniovi.sdipractica134.pageobjects.*;
+import com.uniovi.sdipractica134.repositories.LogRepository;
 import com.uniovi.sdipractica134.repositories.UsersRepository;
-import com.uniovi.sdipractica134.services.UsersService;
+import org.apache.logging.log4j.spi.LoggerRegistry;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -31,6 +32,9 @@ class SdiPractica134ApplicationTests {
     @Autowired
     private UsersRepository usersRepository;
 
+    @Autowired
+    private LogRepository logRepository;
+
     //Común a Windows y a MACOSX
     public static WebDriver getDriver(String PathFirefox, String Geckodriver) {
         System.setProperty("webdriver.firefox.bin", PathFirefox);
@@ -48,7 +52,7 @@ class SdiPractica134ApplicationTests {
     public void tearDown() {
         driver.manage().deleteAllCookies();
 
-        usersRepository.deleteAll();
+
     }
 
     //Antes de la primera prueba
@@ -69,13 +73,15 @@ class SdiPractica134ApplicationTests {
     @Test
     @Order(1)
     void PR01A() {
+        int userBefore = usersRepository.countUsers();
         PO_SignUpView.goToSignUpPage(driver);
-        PO_SignUpView.fillForm(driver,"martin@gmail.com","Martin","Beltran",
+        PO_SignUpView.fillForm(driver,"martin@email.com","Martin","Beltran",
                 "password","password");
 
-        Assertions.assertTrue(usersRepository.findByUsername("martin@gmail.com") != null);
-        Assertions.assertTrue(usersRepository.countUsers() ==1);
+        Assertions.assertTrue(usersRepository.findByUsername("martin@email.com") != null);
+        Assertions.assertTrue(usersRepository.countUsers() > userBefore);
 
+        usersRepository.deleteByUsername("martin@email.com");
     }
 
 
@@ -83,11 +89,14 @@ class SdiPractica134ApplicationTests {
     @Test
     @Order(2)
     void PR01B() {
+
+        int userBefore = usersRepository.countUsers();
         PO_SignUpView.goToSignUpPage(driver);
         PO_SignUpView.fillForm(driver,"","","",
                 "password","password");
 
-        Assertions.assertTrue(usersRepository.countUsers() ==0);
+        Assertions.assertTrue(usersRepository.countUsers() ==userBefore);
+
     }
 
 
@@ -95,12 +104,13 @@ class SdiPractica134ApplicationTests {
     @Test
     @Order(3)
     public void PR01C() {
-
+        int userBefore = usersRepository.countUsers();
         PO_SignUpView.goToSignUpPage(driver);
-        PO_SignUpView.fillForm(driver,"martin@gmail.com","Martin","Beltran",
+        PO_SignUpView.fillForm(driver,"martin@email.com","Martin","Beltran",
                 "pass","pass");
 
-        Assertions.assertTrue(usersRepository.countUsers() ==0);
+        Assertions.assertTrue(usersRepository.countUsers() ==userBefore);
+
 
 
     }
@@ -110,18 +120,18 @@ class SdiPractica134ApplicationTests {
     @Order(4)
     public void PR01D() {
 
-
         PO_SignUpView.goToSignUpPage(driver);
-        PO_SignUpView.fillForm(driver,"martin@gmail.com","Martin","Beltran",
+        PO_SignUpView.fillForm(driver,"martin@email.com","Martin","Beltran",
                 "password","password");
 
-        Assertions.assertTrue(usersRepository.findByUsername("martin@gmail.com") != null);
+        int userBefore = usersRepository.countUsers();
+        Assertions.assertTrue(usersRepository.findByUsername("martin@email.com") != null);
 
         PO_SignUpView.goToSignUpPage(driver);
-        PO_SignUpView.fillForm(driver,"martin@gmail.com","Martin","Beltran",
+        PO_SignUpView.fillForm(driver,"martin@email.com","Martin","Beltran",
                 "password","password");
 
-        Assertions.assertTrue(usersRepository.countUsers() ==1);
+        Assertions.assertTrue(usersRepository.countUsers() ==userBefore);
     }
 
 
@@ -160,7 +170,7 @@ class SdiPractica134ApplicationTests {
     @Order(31)
     void PR016_2() {
 
-        PO_LogsView.goToLogsPage(driver);
+        PO_FriendsView.goToListFriendsInvitations(driver);
         List<WebElement> welcomeMessageElement = PO_LoginView.getLoginText(driver,PO_Properties.getSPANISH());
 
         Assertions.assertEquals(welcomeMessageElement.get(0).getText(),
@@ -177,12 +187,22 @@ class SdiPractica134ApplicationTests {
     @Test
     @Order(32)
     void PR016_3() {
+
         PO_SignUpView.goToSignUpPage(driver);
-        PO_SignUpView.fillForm(driver,"martin@gmail.com","Martin","Beltran",
+        PO_SignUpView.fillForm(driver,"martin@email.com","Martin","Beltran",
                 "password","password");
 
-        Assertions.assertTrue(usersRepository.findByUsername("martin@gmail.com") != null);
-        Assertions.assertTrue(usersRepository.countUsers() ==1);
+        PO_LoginView.goToLoginPage(driver);
+        PO_LoginView.fillForm(driver,"martin@email.com","password");
+
+        PO_LogsView.goToLogsPage(driver);
+
+        List<WebElement> ohohMessage = PO_ErrorView.getErrorText(driver,PO_Properties.getSPANISH());
+
+        Assertions.assertEquals(ohohMessage.get(0).getText(), "OhOh");
+
+
+
 
     }
 
@@ -194,12 +214,24 @@ class SdiPractica134ApplicationTests {
     @Test
     @Order(33)
     void PR016_4() {
-        PO_SignUpView.goToSignUpPage(driver);
-        PO_SignUpView.fillForm(driver,"martin@gmail.com","Martin","Beltran",
-                "password","password");
 
-        Assertions.assertTrue(usersRepository.findByUsername("martin@gmail.com") != null);
-        Assertions.assertTrue(usersRepository.countUsers() ==1);
+        //Generate several logs of different types
+       PO_LogsView.generateBatchLogs(driver);
+
+       String[] types = {"PET","LOGOUT","LOGIN_EX","LOGIN_ERR","ALTA"};
+
+        List<WebElement> logsListed;
+        for(String type : types){
+
+           //Primer log de los PET
+            logsListed = PO_LogsView.getLogListedInPosition(driver, type, 1);
+           Assertions.assertEquals(logsListed.get(0).getText(), type);
+
+           //Primer log de los PET
+           logsListed = PO_LogsView.getLogListedInPosition(driver, type, 2);
+           Assertions.assertEquals(logsListed.get(0).getText(), type);
+       }
+
 
     }
 
@@ -210,12 +242,18 @@ class SdiPractica134ApplicationTests {
     @Test
     @Order(34)
     void PR016_5() {
-        PO_SignUpView.goToSignUpPage(driver);
-        PO_SignUpView.fillForm(driver,"martin@gmail.com","Martin","Beltran",
-                "password","password");
+        PO_LoginView.goToLoginPage(driver);
+        PO_LoginView.fillForm(driver,"user01@email.com","user01");
+        PO_LogsView.goToLogsPage(driver);
 
-        Assertions.assertTrue(usersRepository.findByUsername("martin@gmail.com") != null);
-        Assertions.assertTrue(usersRepository.countUsers() ==1);
+        int sizeBeforeDeletion = logRepository.findAll().size();
+        Assertions.assertTrue( sizeBeforeDeletion >= 0);
+
+
+        PO_LogsView.deleteFirstLog(driver);
+
+        int sizeAfterDeletion = logRepository.findAll().size();
+        Assertions.assertTrue(sizeAfterDeletion + 1 == sizeBeforeDeletion);
 
     }
 

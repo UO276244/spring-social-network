@@ -16,7 +16,7 @@ public class HomeController {
 
     Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-    @RequestMapping(value = {"/"})
+    @RequestMapping(value = {"/","/home"})
     public String index(){
 
 
