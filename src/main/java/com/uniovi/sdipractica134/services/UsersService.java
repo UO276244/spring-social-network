@@ -54,4 +54,8 @@ public class UsersService {
     public void deleteUser(Long id) {
         usersRepository.deleteById(id);
     }
+
+    public void deleteById(List<Long> ids){
+        usersRepository.deleteByIds(ids);
+    }
 }
