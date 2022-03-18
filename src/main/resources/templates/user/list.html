@@ -5,6 +5,13 @@ springsecurity4">
 <body>
 <nav th:replace="fragments/nav"/>
 <div class="container">
+    <form sec:authorize="hasRole('ROLE_USER')" class="form-inline" action="/user/list">
+        <div class="form-group">
+            <input name="searchText" type="text" class="form-control" size="50"
+                   placeholder="Buscar por email,nombre,apellido del usuario">
+        </div>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
     <table class="table table-hover" th:fragment="tableUsers" id="tableUsers">
         <thead>
         <tr>
@@ -25,7 +32,7 @@ springsecurity4">
         </tr>
         </tbody>
     </table>
-    <button type="button" id="deleteButton" class="btn btn-default">Delete</button>
+    <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" id="deleteButton" class="btn btn-default">Delete</button>
     <script th:inline="javascript">
         /*<![CDATA[*/
 

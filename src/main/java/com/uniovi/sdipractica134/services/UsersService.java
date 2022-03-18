@@ -31,13 +31,13 @@ public class UsersService {
         usersRepository.findAll().forEach(users::add);
         return users;
     }
-    public List<User> getUsersAdminView(String id){
+    public List<User> getUsersAdminView(String email){
         List<User> users = new ArrayList<>();
-        return usersRepository.getUsersAdminView(id);
+        return usersRepository.getUsersAdminView(email);
     }
-    public List<User> getUsersNormalUserView(String id){
+    public List<User> getUsersNormalUserView(String email){
         List<User> users = new ArrayList<>();
-        return usersRepository.getUsersNormalUserView(id);
+        return usersRepository.getUsersNormalUserView(email);
     }
 
     public User getUser(Long id) {
@@ -57,5 +57,10 @@ public class UsersService {
 
     public void deleteById(List<Long> ids){
         usersRepository.deleteByIds(ids);
+    }
+
+    public List<User> getUsersNormalUserViewSearch(Long id, String searchText) {
+        searchText = "%" + searchText + "%";
+        return usersRepository.getUsersNormalUserViewSearch(id,searchText);
     }
 }

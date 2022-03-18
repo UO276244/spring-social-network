@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Locale;
@@ -62,13 +63,18 @@ public class UserController {
     }
 
     @RequestMapping("/user/list")
-    public String getList(Model model) {
+    public String getList(Model model, @RequestParam(value="", required = false)String searchText) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User authenticated = usersService.getUserByEmail(auth.getName());
         if(authenticated.getRole().toUpperCase().equals(rolesService.getRoles()[RolesService.ADMIN])){
             model.addAttribute("usersList", usersService.getUsersAdminView(authenticated.getEmail()));
         }else{
-            model.addAttribute("usersList", usersService.getUsersNormalUserView(authenticated.getEmail()));
+            if(searchText != null && !searchText.isEmpty()){
+                model.addAttribute("usersList", usersService.getUsersNormalUserViewSearch(authenticated.getId(), searchText));
+            }else{
+                model.addAttribute("usersList", usersService.getUsersNormalUserView(authenticated.getEmail()));
+            }
+
         }
 
         return "user/list";
