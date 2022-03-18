@@ -21,4 +21,7 @@ public class PostsService {
         return posts;
     }
 
+    public void addNewPost(Post post) {
+        postsRepository.save(post);
+    }
 }
