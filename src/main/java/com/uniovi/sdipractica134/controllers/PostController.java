@@ -12,13 +12,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+
 
 import java.security.Principal;
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Controller
 public class PostController {
@@ -34,7 +35,7 @@ public class PostController {
         String email=principal.getName();//El usuario incicia sesión empleando mail y contraseña
         User user =usersService.getUserByEmail(email);
         model.addAttribute("postsList",postsService.getPostsByUser(pageable,user));
-        return "/posts/list";
+        return "/post/list";
     }
 
     @RequestMapping(value="post/add", method= RequestMethod.POST)
@@ -44,7 +45,7 @@ public class PostController {
             return "add";//Return to the view when the publication could not be performed
         }
 
-        post.setDateOfCreation(new Date());
+        post.setDateOfCreation(LocalDate.now());
         User owner=usersService.getUserByEmail(principal.getName());
 
         post.setOwner(owner);
