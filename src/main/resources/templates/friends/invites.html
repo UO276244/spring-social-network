@@ -16,24 +16,22 @@
     </form>
     <p th:text="#{invites.message}"></p>
     <div class="table-responsive">
-        <table class="table table-hover" th:fragment="tableInvites" id="tableInvites">
+        <table class="table table-hover" id="tableInvites">
             <thead>
             <tr>
                 <th scope="col">Nombre</th>
                 <th scope="col">Apellidos</th>
                 <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
             </tr>
             </thead>
+            <tbody>
+            <tr th:each="invite : ${inviteList}">
+                <td th:text="${invite.getFrom().name}"></td>
+                <td th:text="${invite.getFrom().surname}"></td>
+                <td><a th:text="#{invites.accept}" th:href="${'/invite/accept/' + invite.getId()}"/></td>
+            </tr>
+            </tbody>
         </table>
-        <tbody>
-        <tr th:each="invite : ${inviteList}">
-            <td th:text="${invite.getFrom().name}"></td>
-            <td th:text="${invite.getFrom().surname}"></td>
-            <td><a th:text="#{invites.accept}" th:href="${'/invite/accept/' + invite.getId()}"/></td>
-        </tr>
-        </tbody>
         <div th:if="${#lists.isEmpty(inviteList)}" th:text="#{noinvites.message}"></div>
     </div>
 
