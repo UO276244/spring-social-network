@@ -17,11 +17,11 @@ public class Post {
     @JoinColumn(name="user_id")
     private User owner;
 
-    public String getContent() {
+    public String getDescription() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setDescription(String content) {
         this.content = content;
     }
 
