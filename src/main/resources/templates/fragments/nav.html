@@ -25,7 +25,7 @@
                 <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
                    data-toggle="dropdown" href="#" id="friendsDropdown" role="button"> Amigos </a>
                 <div aria-labelledby="navbarDropdown" class="dropdown-menu">
-                    <a class="dropdown-item" href="/post/list">Listar amigos</a>
+                    <a class="dropdown-item" href="/friends/list">Listar amigos</a>
                     <!---La opción de listar publis estará en la tabla en la q se muestren los amigos.-->
 
 
@@ -45,7 +45,7 @@
                 <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
                    data-toggle="dropdown" href="#" id="friendshipsDropdown" role="button"> Notificaciones </a>
                 <div aria-labelledby="navbarDropdown" class="dropdown-menu">
-                    <a class="dropdown-item" href="/post/list">Peticiones de amistad</a>
+                    <a class="dropdown-item" href="/friends/invites">Peticiones de amistad</a>
 
                 </div>
             </li>
@@ -79,7 +79,7 @@
                     <i class='fas fa-sign-in-alt' style='font-size:16px'></i> <span>Identifícate</span></a>
             </li>
             <!--En caso de estar identificado , se puede desconectar.-->
-            <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" href="/logout">
+            <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" href="/prevlogout">
                 <i class='fas fa-sign-out-alt' style='font-size:16px'></i>
                 <span>Desconectar</span> </a>
             </li>

@@ -19,22 +19,33 @@ public class SecurityService {
     private AuthenticationManager authenticationManager;
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private LoggerService loggerService;
 
-    public String findLoggedInDni() {
-        Object userDetails = SecurityContextHolder.getContext().getAuthentication().getDetails();
+    public String findLoggedInUsername() {
+        Object userDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(userDetails.toString());
         if (userDetails instanceof UserDetails) {
             return ((UserDetails) userDetails).getUsername();
         }
         return null;
     }
 
-    public void autoLogin(String email, String password) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
+
+
+    public void autoLogin(String username, String password) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken aToken = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
         authenticationManager.authenticate(aToken);
         if (aToken.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(aToken);
-            logger.debug(String.format("Auto login %s successfully!", email));
+            logger.debug(String.format("Auto login %s successfully!", username));
+
+
+            loggerService.createLOGIN_EXLog(username );
+        }else{
+            loggerService.createLOGIN_ERRLog(username );
         }
     }
 }

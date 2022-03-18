@@ -11,7 +11,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public interface UsersRepository extends CrudRepository<User, Long> {
-    User findByEmail(String email);
+    User findByUsername(String username);
 
     @Query("SELECT count(r) FROM User r")
     int countUsers();

@@ -27,18 +27,18 @@ public class SignUpFormValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         User user = (User) target;
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "Error.empty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "Error.empty");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", "Error.empty");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "surname", "Error.empty");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "Error.empty");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordConfirm", "Error.empty");
-        if (!VALID_EMAIL_ADDRESS_REGEX.matcher(user.getEmail()).matches()) {
+        if (!VALID_EMAIL_ADDRESS_REGEX.matcher(user.getUsername()).matches()) {
 
-            errors.rejectValue("email", "Error.signup.email.length");
+            errors.rejectValue("username", "Error.signup.username.length");
 
         }
-        if (usersService.getUserByEmail(user.getEmail()) != null) {
-            errors.rejectValue("email", "Error.signup.email.duplicate");
+        if (usersService.getUserByUsername(user.getUsername()) != null) {
+            errors.rejectValue("username", "Error.signup.username.duplicate");
 
         }
 
