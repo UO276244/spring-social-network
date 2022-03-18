@@ -5,6 +5,8 @@ import com.uniovi.sdipractica134.services.FriendsService;
 import com.uniovi.sdipractica134.services.LoggerService;
 import com.uniovi.sdipractica134.services.UsersService;
 import net.bytebuddy.implementation.auxiliary.AuxiliaryType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +34,8 @@ public class FriendsController {
     @Autowired
     private LoggerService loggerService;
 
+    Logger logger = LoggerFactory.getLogger(FriendsController.class);
+
 
     @RequestMapping("/friends/list")
     public String getList(Model model,
@@ -39,9 +43,12 @@ public class FriendsController {
                           Principal principal,
                           @RequestParam(value = "", required = false) String searchText){
 
-        loggerService.createPETLog("FriendsController --> /friends/list",
-                "GET",
-                new String[] {"searchText="+searchText});
+
+        logger.info(
+                loggerService.createPETLog("FriendsController --> /friends/list",
+                        "GET",
+                        new String[] {"searchText="+searchText})
+        );
 
         String username = principal.getName();
         User user = usersService.getUserByUsername(username);

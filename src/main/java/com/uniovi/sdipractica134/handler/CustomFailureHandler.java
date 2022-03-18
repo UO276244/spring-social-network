@@ -1,6 +1,8 @@
 package com.uniovi.sdipractica134.handler;
 
 import com.uniovi.sdipractica134.services.LoggerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -20,10 +22,16 @@ public class CustomFailureHandler implements AuthenticationFailureHandler {
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
+    Logger logger = LoggerFactory.getLogger(CustomFailureHandler.class);
+
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
             throws IOException, ServletException {
 
-        loggerService.createLOGIN_ERRLog(request.getParameter("username"));
+
+        logger.info(
+                loggerService.createLOGIN_ERRLog(request.getParameter("username"))
+        );
+
         redirectStrategy.sendRedirect(request,response,"/login");
 
     }
