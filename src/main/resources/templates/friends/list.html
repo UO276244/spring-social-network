@@ -36,6 +36,7 @@
       <td th:text="${user.email}"></td>
     </tr>
     </tbody>
+    <div th:if="${#lists.isEmpty(friendList)}" th:text="#{nofriends.message}"></div>
   </div>
 
   <footer th:replace="fragments/pagination"></footer>

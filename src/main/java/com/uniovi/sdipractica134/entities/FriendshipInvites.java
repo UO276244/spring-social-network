@@ -47,4 +47,8 @@ public class FriendshipInvites {
     public User getFrom() {
         return from;
     }
+
+    public void accept() {
+        this.state = "ACCEPTED";
+    }
 }

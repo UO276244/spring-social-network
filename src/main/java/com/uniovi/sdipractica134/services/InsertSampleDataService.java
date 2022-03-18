@@ -88,6 +88,20 @@ public class InsertSampleDataService {
             }
         };
         user1.setFriendShipsSent(user1Friends);
+        Set user2Friends = new HashSet<FriendshipInvites>() {
+            {
+                add(new FriendshipInvites(user2, user5, "PENDING"));
+                add(new FriendshipInvites(user2, user3, "ACCEPTED"));
+            }
+        };
+        user2.setFriendShipsSent(user2Friends);
+        Set user3Friends = new HashSet<FriendshipInvites>() {
+            {
+                add(new FriendshipInvites(user3, user10, "ACCEPTED"));
+                add(new FriendshipInvites(user3, user5, "PENDING"));
+            }
+        };
+        user3.setFriendShipsSent(user3Friends);
         usersService.addUser(user1);
         usersService.addUser(user2);
         usersService.addUser(user3);

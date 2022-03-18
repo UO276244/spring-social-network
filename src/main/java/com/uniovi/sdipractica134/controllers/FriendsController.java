@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -60,4 +61,11 @@ public class FriendsController {
         return "friends/invites";
     }
 
+    @RequestMapping("/invite/accept/{id}")
+    public String delete(Model model, Pageable pageable, Principal principal, @PathVariable Long id) {
+        String email = principal.getName();
+        User user = usersService.getUserByEmail(email);
+        friendsService.acceptFriendshipInvite(pageable, user, id);
+        return "redirect:/friends/invites";
+    }
 }

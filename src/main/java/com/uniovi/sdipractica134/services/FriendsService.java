@@ -51,4 +51,14 @@ public class FriendsService {
         Page<FriendshipInvites> invites = friendsRepository.findInvitesByNameForUser(pageable, searchText, user);
         return invites;
     }
+
+    public void acceptFriendshipInvite(Pageable pageable, User user, Long id) {
+        Optional<FriendshipInvites> inviteOp = friendsRepository.findById(id);
+        FriendshipInvites invite;
+        if (inviteOp.isPresent()) {
+            invite = inviteOp.get();
+            invite.accept();
+            friendsRepository.save(invite);
+        }
+    }
 }
