@@ -20,6 +20,15 @@ public class PostFormValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors,"title","Error.posts.add.emptyField");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors,"description","Error.posts.add.emptyField");
 
+
+        if(((Post) target).getTitle().length()<10){
+            errors.rejectValue("title", "Error.posts.add.empty.title");
+        }
+        if(((Post) target).getDescription().length()<15){
+            errors.rejectValue("description", "Error.posts.add.empty.description");
+        }
+
+
     }
 
 }

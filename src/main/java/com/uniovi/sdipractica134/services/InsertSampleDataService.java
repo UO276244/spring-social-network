@@ -1,12 +1,15 @@
 package com.uniovi.sdipractica134.services;
 
+import com.uniovi.sdipractica134.entities.FriendshipInvites;
 import com.uniovi.sdipractica134.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.HashSet;
+import java.util.Set;
 
-//@Service  //descomentar si se quiere insertar datos
+@Service  //descomentar si se quiere insertar datos
 public class InsertSampleDataService {
     @Autowired
     private UsersService usersService;
@@ -70,12 +73,21 @@ public class InsertSampleDataService {
         user14.setPassword("user14");
         user14.setRole(rolesService.getRoles()[RolesService.USER]);
 
-        User user15 = new User("user14@email.com", "User14Nombre", "User14Apellido");
-        user15.setPassword("user14");
+        User user15 = new User("user15@email.com", "User15Nombre", "User15Apellido");
+        user15.setPassword("user15");
         user15.setRole(rolesService.getRoles()[RolesService.USER]);
         User user16 = new User("admin@email.com", "AdminNombre", "AdminApellido");
         user16.setPassword("admin");
         user16.setRole(rolesService.getRoles()[RolesService.ADMIN]);
+        Set user1Friends = new HashSet<FriendshipInvites>() {
+            {
+                add(new FriendshipInvites(user1, user2, "ACCEPTED"));
+                add(new FriendshipInvites(user1, user3, "ACCEPTED"));
+                add(new FriendshipInvites(user1, user5, "PENDING"));
+                add(new FriendshipInvites(user1, user7, "ACCEPTED"));
+            }
+        };
+        user1.setFriendShipsSent(user1Friends);
         usersService.addUser(user1);
         usersService.addUser(user2);
         usersService.addUser(user3);

@@ -1,10 +1,7 @@
 package com.uniovi.sdipractica134;
 
 import com.uniovi.sdipractica134.entities.User;
-import com.uniovi.sdipractica134.pageobjects.PO_PostFormView;
-import com.uniovi.sdipractica134.pageobjects.PO_Properties;
-import com.uniovi.sdipractica134.pageobjects.PO_SignUpView;
-import com.uniovi.sdipractica134.pageobjects.PO_View;
+import com.uniovi.sdipractica134.pageobjects.*;
 import com.uniovi.sdipractica134.repositories.PostsRepository;
 import com.uniovi.sdipractica134.repositories.UsersRepository;
 import com.uniovi.sdipractica134.services.UsersService;
@@ -23,7 +20,7 @@ class SdiPractica134ApplicationTests {
 
     static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
-    static String Geckodriver = "C:\\Users\\usuario\\Desktop\\Eii\\AÑO 3 GRADO INGENIERIA INFORMATICA\\Sistemas Distribuidos e Internet\\Lab\\sesion05\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+    static String Geckodriver = "C:\\Users\\uo269546\\Downloads\\geckodriver-v0.27.0-win64\\geckodriver.exe";
 
     //static String PathFirefox = "/Applications/Firefox.app/Contents/MacOS/firefox-bin";
     // static String Geckodriver = "/Users/USUARIO/selenium/geckodriver-v0.30.0-macos";
@@ -138,7 +135,7 @@ class SdiPractica134ApplicationTests {
     @Order(5)
     public void PR012A() {
         //El usuario debe estar registrado para hacer un post , por tanto
-
+        PO_LoginView.login(driver,"user01@email.com","user01@email.com");
         //Una vez autenticado el usuario,rellena el formulario
         PO_PostFormView.goToPostFormView(driver);
         PO_PostFormView.fillForm(driver,"Días de vacaciones", "Me lo he pasado genial en málaga! :)");
@@ -156,7 +153,7 @@ class SdiPractica134ApplicationTests {
     @Order(6)
     public void PR012B() {
         //El usuario debe estar registrado para hacer un post , por tanto
-
+        PO_LoginView.login(driver,"user01@email.com","user01@email.com");
         //Una vez autenticado el usuario,rellena el formulario
         PO_PostFormView.goToPostFormView(driver);
         PO_PostFormView.fillForm(driver,"", "Me lo he pasado genial en málaga! :)");
@@ -170,7 +167,7 @@ class SdiPractica134ApplicationTests {
     @Order(7)
     public void PR012B2() {
         //El usuario debe estar registrado para hacer un post , por tanto
-
+        PO_LoginView.login(driver,"user01@email.com","user01@email.com");
         //Una vez autenticado el usuario,rellena el formulario
         PO_PostFormView.goToPostFormView(driver);
         PO_PostFormView.fillForm(driver,"Vacaciones!", "");
@@ -183,7 +180,7 @@ class SdiPractica134ApplicationTests {
     @Order(8)
     public void PR012C() {
         //El usuario debe estar registrado para hacer un post , por tanto
-
+        PO_LoginView.login(driver,"user01@email.com","user01@email.com");
         //Una vez autenticado el usuario,rellena el formulario
         PO_PostFormView.goToPostFormView(driver);
         PO_PostFormView.fillForm(driver,"corto", "Descripción de más de 15 caracteres");
@@ -196,7 +193,7 @@ class SdiPractica134ApplicationTests {
     @Order(8)
     public void PR012D() {
         //El usuario debe estar registrado para hacer un post , por tanto
-
+        PO_LoginView.login(driver,"user01@email.com","user01@email.com");
         //Una vez autenticado el usuario,rellena el formulario
         PO_PostFormView.goToPostFormView(driver);
         PO_PostFormView.fillForm(driver,"Vacaciones!", "hola");
