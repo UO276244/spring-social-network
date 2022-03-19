@@ -15,6 +15,8 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -24,10 +26,18 @@ import java.util.List;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class SdiPractica134ApplicationTests {
 
+
+    static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
+    //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
+    static String Geckodriver = "C:\\Users\\usuario\\Desktop\\Eii\\AÑO 3 GRADO INGENIERIA INFORMATICA\\Sistemas Distribuidos e Internet\\Lab\\sesion05\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+
+
+
+    /* SARA
     static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
     static String Geckodriver = "C:\\Users\\Sara\\Desktop\\Universidad\\3-tercer curso\\segundo cuatri\\(SDI)-Sistemas Distribuidos e Internet\\Sesión5-material\\geckodriver-v0.30.0-win64.exe";
-
+*/
     //static String PathFirefox = "/Applications/Firefox.app/Contents/MacOS/firefox-bin";
     // static String Geckodriver = "/Users/USUARIO/selenium/geckodriver-v0.30.0-macos";
 
@@ -63,7 +73,6 @@ class SdiPractica134ApplicationTests {
     public void tearDown() {
         driver.manage().deleteAllCookies();
 
-        usersRepository.deleteAll();
     }
 
     //Antes de la primera prueba
@@ -155,6 +164,11 @@ class SdiPractica134ApplicationTests {
 
 
         //Si se ha logeado bien, podrá encontrar el boton de logout
+        WebElement myDynamicElement = (new WebDriverWait(driver,
+                10))
+                .until(ExpectedConditions.presenceOfElementLocated(By.id("logout")));
+
+
         WebElement logoutButton = driver.findElement(By.id("logout"));
         Assertions.assertTrue(logoutButton != null);
 
@@ -175,6 +189,9 @@ class SdiPractica134ApplicationTests {
 
 
         //Si se ha logeado bien, podrá encontrar el boton de logout
+        WebElement myDynamicElement = (new WebDriverWait(driver,
+                10))
+                .until(ExpectedConditions.presenceOfElementLocated(By.id("logout")));
         WebElement logoutButton = driver.findElement(By.id("logout"));
         Assertions.assertTrue(logoutButton != null);
 
