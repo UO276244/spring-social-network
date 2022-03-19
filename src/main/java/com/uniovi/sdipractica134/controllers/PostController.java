@@ -11,7 +11,6 @@ import org.springframework.data.domain.Page;
 import com.uniovi.sdipractica134.services.LoggerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,18 +33,20 @@ public class PostController {
     private UsersService usersService;
     @Autowired
     private PostFormValidator postFormValidator;
+    @Autowired
+    private LoggerService loggerService;
 
     @RequestMapping("post/list")
     public String listOwnPosts(Model model, Pageable pageable, Principal principal){
         String email=principal.getName();//El usuario incicia sesión empleando mail y contraseña
-        User user =usersService.getUserByEmail(email);
+        User user =usersService.getUserByUsername(email);
         Page<Post> posts=postsService.getPostsByUser(pageable,user);
         model.addAttribute("postList",posts.getContent());
         model.addAttribute("page",posts);
         logger.info(
                 loggerService.createPETLog("PostController --> post/list",
                         "GET",
-                        new String[] {"searchText="+searchTest})
+                        new String[] {"User: " + principal.getName()})
         );
         return "/post/list";
     }
@@ -58,7 +59,7 @@ public class PostController {
         }
 
         post.setDateOfCreation(LocalDate.now());
-        User owner=usersService.getUserByEmail(principal.getName());
+        User owner=usersService.getUserByUsername(principal.getName());
 
         post.setOwner(owner);
         postsService.addNewPost(post);
@@ -77,4 +78,6 @@ public class PostController {
         //The controller that answers the form must include an empty entity in the view.
         return "post/add";
     }
+
+    Logger logger = LoggerFactory.getLogger(FriendsController.class);
 }
