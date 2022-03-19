@@ -62,6 +62,6 @@ public class PostController {
 
         model.addAttribute("post",new Post());
         //The controller that answers the form must include an empty entity in the view.
-        return "add";
+        return "post/add";
     }
 }

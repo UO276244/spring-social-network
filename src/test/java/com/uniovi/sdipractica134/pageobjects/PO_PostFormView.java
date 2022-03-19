@@ -7,10 +7,10 @@ import org.openqa.selenium.WebElement;
 public class PO_PostFormView {
     static public void fillForm(WebDriver driver, String title, String description) {
         //Write in the title
-        WebElement titleElemnt = driver.findElement(By.name("title"));
-        titleElemnt.click();
-        titleElemnt.clear();
-        titleElemnt.sendKeys(title);
+        WebElement titleElement = driver.findElement(By.name("title"));
+        titleElement.click();
+        titleElement.clear();
+        titleElement.sendKeys(title);
 
         //Write in the description
         WebElement descriptionElement = driver.findElement(By.name("description"));
@@ -24,5 +24,7 @@ public class PO_PostFormView {
     }
 
     public static void goToPostFormView(WebDriver driver) {
+        driver.get("localhost:8090/post/add");
+
     }
 }
