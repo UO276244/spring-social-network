@@ -7,6 +7,7 @@ import com.uniovi.sdipractica134.services.PostsService;
 import com.uniovi.sdipractica134.services.UsersService;
 import com.uniovi.sdipractica134.validators.PostFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,8 +35,9 @@ public class PostController {
     public String listOwnPosts(Model model, Pageable pageable, Principal principal){
         String email=principal.getName();//El usuario incicia sesión empleando mail y contraseña
         User user =usersService.getUserByEmail(email);
-        model.addAttribute("postList",postsService.getPostsByUser(pageable,user));
-        model.addAttribute("page",pageable);
+        Page<Post> posts=postsService.getPostsByUser(pageable,user);
+        model.addAttribute("postList",posts.getContent());
+        model.addAttribute("page",posts);
         return "/post/list";
     }
 
