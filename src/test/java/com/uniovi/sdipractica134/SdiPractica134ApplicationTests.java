@@ -63,7 +63,6 @@ class SdiPractica134ApplicationTests {
     public void tearDown() {
         driver.manage().deleteAllCookies();
 
-        usersRepository.deleteAll();
     }
 
     //Antes de la primera prueba
