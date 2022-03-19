@@ -61,4 +61,14 @@ public class FriendsService {
             friendsRepository.save(invite);
         }
     }
+
+    public void sendInvite(Pageable pageable, User from, User to) {
+        Page<FriendshipInvites> invitesToUser = getFriendInvitesForUser(pageable, to);
+        for (FriendshipInvites i: invitesToUser) {
+            if (i.getFrom().equals(from))
+                return;
+        }
+        FriendshipInvites invite = new FriendshipInvites(from, to, "PENDING");
+        friendsRepository.save(invite);
+    }
 }
