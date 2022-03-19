@@ -45,7 +45,7 @@ public class PostController {
     public String publishPost(Principal principal, @Validated Post post, BindingResult result){
         postFormValidator.validate(post, result);
         if(result.hasErrors()){
-            return "add";//Return to the view when the publication could not be performed
+            return "post/add";//Return to the view when the publication could not be performed
         }
 
         post.setDateOfCreation(LocalDate.now());
