@@ -13,10 +13,10 @@ public class User {
     @Column(unique = true)
     private String username;
 
-    @Transient
+    @OneToMany(mappedBy = "owner",cascade = CascadeType.ALL)
     private Set<Post> posts;
 
-    @Transient
+    @OneToMany(mappedBy = "from",cascade = CascadeType.ALL)
     private Set<FriendshipInvites> friendShipsSent;
 
 
