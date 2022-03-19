@@ -124,4 +124,8 @@ public class User {
     public void addFriend(User to) {
         friends.add(to.getUsername());
     }
+
+    public void removeFriends() {
+        friends.removeAll(friends);
+    }
 }
