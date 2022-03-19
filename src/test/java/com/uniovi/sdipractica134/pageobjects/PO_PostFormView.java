@@ -6,14 +6,15 @@ import org.openqa.selenium.WebElement;
 
 public class PO_PostFormView {
     static public void fillForm(WebDriver driver, String title, String description) {
+        goToPostFormView(driver);
         //Write in the title
-        WebElement titleElement = driver.findElement(By.name("title"));
+        WebElement titleElement = driver.findElement(By.id("title"));
         titleElement.click();
         titleElement.clear();
         titleElement.sendKeys(title);
 
         //Write in the description
-        WebElement descriptionElement = driver.findElement(By.name("description"));
+        WebElement descriptionElement = driver.findElement(By.id("description"));
         descriptionElement .click();
         descriptionElement .clear();
         descriptionElement .sendKeys(description);

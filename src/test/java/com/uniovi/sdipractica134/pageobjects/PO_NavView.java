@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
@@ -55,6 +57,10 @@ public class PO_NavView extends PO_View {
     }
 
     static public void clickLogout(WebDriver driver){
+
+        WebElement myDynamicElement = (new WebDriverWait(driver,
+                10))
+                .until(ExpectedConditions.presenceOfElementLocated(By.id("logout")));
 
         driver.findElement(By.id("logout")).click();
 

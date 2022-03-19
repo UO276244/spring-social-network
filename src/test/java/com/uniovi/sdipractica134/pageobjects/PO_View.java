@@ -9,7 +9,7 @@ import java.util.List;
 public class PO_View {
 	
 	protected static PO_Properties p = new PO_Properties("messages");
-	protected static int timeout = 10;
+	protected static int timeout = 20;
 
 	public static int getTimeout() {
 		return timeout;

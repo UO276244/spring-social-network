@@ -84,6 +84,11 @@ public class InsertSampleDataService {
         User user15 = new User("user15@email.com", "User15Nombre", "User15Apellido");
         user15.setPassword("user15");
         user15.setRole(rolesService.getRoles()[RolesService.USER]);
+
+        User user17 = new User("user17@email.com", "User17Nombre", "User17Apellido");
+        user17.setPassword("user17");//USER CON POSTS
+        user17.setRole(rolesService.getRoles()[RolesService.USER]);
+
         User user16 = new User("admin@email.com", "AdminNombre", "AdminApellido");
         user16.setPassword("admin");
         user16.setRole(rolesService.getRoles()[RolesService.ADMIN]);
@@ -129,19 +134,29 @@ public class InsertSampleDataService {
         usersService.addUser(user16);
 
 
+        Set<Post> posts =new HashSet<>();
         //Creación de posts
         LocalDate date= LocalDate.of(2021,2,21);
-        Post post1=new Post("Hola a todos!",date,"Esta es mi primera publicación!");
+        posts.add(new Post("Hola a todos!",date,"Esta es mi primera publicación!"));
+
         date= LocalDate.of(2022,11,5);
-        Post post2=new Post("Mi verano en la playa",date,"Os voy a contar todo lo que hice en verano");
+        posts.add(new Post("Mi verano en la playa",date,"Os voy a contar todo lo que hice en verano"));
         date= LocalDate.of(2020,3,18);
-        Post post3=new Post("COVID?",date," 15 días sin  cole qué bien");
+        posts.add(new Post("COVID?",date," 15 días sin  cole qué bien"));
         date= LocalDate.of(2020,10,23);
-        Post post4=new Post("COVID:(",date," Pensaba que iban a ser solo 15 días...");
-        postsService.addNewPost(post1);
-        postsService.addNewPost(post2);
-        postsService.addNewPost(post3);
-        postsService.addNewPost(post4);
+        posts.add(new Post("COVID:(",date," Pensaba que iban a ser solo 15 días..."));
+        date= LocalDate.of(2022,01,15);
+        posts.add(new Post("dia de la marmota",date," no puedo más!!!!!!!!!!!!!!!!!!"));
+        user17.setPosts(posts);
+        for (var post:posts) {
+            post.setOwner(user17);
+            postsService.addNewPost(post);
+        }
+
+        usersService.addUser(user17);
+
+
+
 
 
 }
