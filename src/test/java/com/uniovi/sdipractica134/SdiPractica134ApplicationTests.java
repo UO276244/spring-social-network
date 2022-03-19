@@ -282,7 +282,7 @@ class SdiPractica134ApplicationTests {
     @Order(24)
     public void PR012A() {
         //El usuario debe estar registrado para hacer un post , por tanto
-        PO_LoginView.login(driver,"user01@email.com","user01@email.com");
+        PO_LoginView.fillForm(driver,"user01@email.com","user01@email.com");
         //Una vez autenticado el usuario,rellena el formulario
         PO_PostFormView.goToPostFormView(driver);
         PO_PostFormView.fillForm(driver,"Días de vacaciones", "Me lo he pasado genial en málaga! :)");
@@ -300,7 +300,7 @@ class SdiPractica134ApplicationTests {
     @Order(25)
     public void PR012B() {
         //El usuario debe estar registrado para hacer un post , por tanto
-        PO_LoginView.login(driver,"user01@email.com","user01@email.com");
+        PO_LoginView.fillForm(driver,"user01@email.com","user01@email.com");
         //Una vez autenticado el usuario,rellena el formulario
         PO_PostFormView.goToPostFormView(driver);
         PO_PostFormView.fillForm(driver,"", "Me lo he pasado genial en málaga! :)");
@@ -314,7 +314,7 @@ class SdiPractica134ApplicationTests {
     @Order(26)
     public void PR012B2() {
         //El usuario debe estar registrado para hacer un post , por tanto
-        PO_LoginView.login(driver,"user01@email.com","user01@email.com");
+        PO_LoginView.fillForm(driver,"user01@email.com","user01@email.com");
         //Una vez autenticado el usuario,rellena el formulario
         PO_PostFormView.goToPostFormView(driver);
         PO_PostFormView.fillForm(driver,"Vacaciones!", "");
@@ -327,7 +327,7 @@ class SdiPractica134ApplicationTests {
     @Order(27)
     public void PR012C() {
         //El usuario debe estar registrado para hacer un post , por tanto
-        PO_LoginView.login(driver,"user01@email.com","user01@email.com");
+        PO_LoginView.fillForm(driver,"user01@email.com","user01@email.com");
         //Una vez autenticado el usuario,rellena el formulario
         PO_PostFormView.goToPostFormView(driver);
         PO_PostFormView.fillForm(driver,"corto", "Descripción de más de 15 caracteres");
@@ -340,7 +340,7 @@ class SdiPractica134ApplicationTests {
     @Order(28)
     public void PR012D() {
         //El usuario debe estar registrado para hacer un post , por tanto
-        PO_LoginView.login(driver,"user01@email.com","user01@email.com");
+        PO_LoginView.fillForm(driver,"user01@email.com","user01@email.com");
         //Una vez autenticado el usuario,rellena el formulario
         PO_PostFormView.goToPostFormView(driver);
         PO_PostFormView.fillForm(driver,"Vacaciones!", "hola");
