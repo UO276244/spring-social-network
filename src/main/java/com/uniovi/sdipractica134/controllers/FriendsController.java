@@ -98,7 +98,7 @@ public class FriendsController {
     }
 
     @RequestMapping("/invite/send/{id}")
-    public String sendFriendshipInvite(Pageable pageable, Principal principal, @PathVariable Long id){
+    public String sendFriendshipInvite(Pageable pageable, Model model, Principal principal, @PathVariable Long id){
         logger.info(
                 loggerService.createPETLog("FriendsController --> /invite/send/" + id,
                         "GET",
@@ -107,7 +107,11 @@ public class FriendsController {
         String username = principal.getName();
         User from = usersService.getUserByUsername(username);
         User to = usersService.getUser(id);
-        friendsService.sendInvite(pageable, from, to);
+        //we try to send a friendship invite to a user but we had already sent one before
+        if (!friendsService.sendInvite(pageable, from, to))
+            model.addAttribute("alreadySent", true);
+        else
+            model.addAttribute("alreadySent", false);
         return "redirect:/user/list";
     }
 }

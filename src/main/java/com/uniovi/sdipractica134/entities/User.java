@@ -113,6 +113,11 @@ public class User {
         return id;
     }
 
+    /**
+     * Method to check if a user is friends with another user
+     * @param username
+     * @return
+     */
     public boolean isFriendsWith(String username){
         for (String friend: friends) {
             if (friend.equals(username))

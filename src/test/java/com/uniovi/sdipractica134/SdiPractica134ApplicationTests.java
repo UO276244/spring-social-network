@@ -26,7 +26,8 @@ class SdiPractica134ApplicationTests {
 
     static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
-    static String Geckodriver = "C:\\Users\\Sara\\Desktop\\Universidad\\3-tercer curso\\segundo cuatri\\(SDI)-Sistemas Distribuidos e Internet\\Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+    //static String Geckodriver = "C:\\Users\\Sara\\Desktop\\Universidad\\3-tercer curso\\segundo cuatri\\(SDI)-Sistemas Distribuidos e Internet\\Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+    static String Geckodriver = "E:\\UNIOVI\\TERCERO\\Segundo cuatri\\SDI\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
 
     //static String PathFirefox = "/Applications/Firefox.app/Contents/MacOS/firefox-bin";
     // static String Geckodriver = "/Users/USUARIO/selenium/geckodriver-v0.30.0-macos";
@@ -62,8 +63,6 @@ class SdiPractica134ApplicationTests {
     @AfterEach
     public void tearDown() {
         driver.manage().deleteAllCookies();
-
-        usersRepository.deleteAll();
     }
 
     //Antes de la primera prueba
@@ -470,5 +469,11 @@ class SdiPractica134ApplicationTests {
     }
 
 
+    //[Prueba 19]
+    @Test
+    @Order(40)
+    void PR019(){
+
+    }
 
 }

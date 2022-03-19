@@ -41,15 +41,11 @@ springsecurity4">
                 <script th:inline="javascript">
                     /*<![CDATA[*/
                     $("#sendButton" + "[[${user.id}]]").click(function () {
-                        $.get("/invite/send/[[${user.id}]]", function (data) {
-                            var numberPage = [[${param.page}]];
-                            var urlUpdate = '/user/list/update';
-                            if ( numberPage != null ){
-                                urlUpdate += "?page="+numberPage[0];
-                            }
-                            $("#tableUsers").load(urlUpdate);
-                        });
-                    });
+                        if (document.getElementById("sendButton" + "[[${user.id}]]").innerHTML != '<span>SENT</span>')
+                            $.get("/invite/send/[[${user.id}]]", function (data) {
+                                document.getElementById("sendButton" + "[[${user.id}]]").innerHTML = '<span>SENT</span>';
+                            });
+                    })
                     /*]]>*/
                 </script>
             </td>
