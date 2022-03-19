@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -150,5 +151,18 @@ public class UserController {
     private User getAuthenticatedUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return usersService.getUserByUsername(auth.getName());  //the username of the authenticated person is his/hers email.
+    }
+
+    @RequestMapping("/user/list/update")
+    public String updateList(Model model, Pageable pageable, Principal principal){
+        logger.info(
+                loggerService.createPETLog("UserController --> /user/list/update","GET", new String[] {})
+        );
+        User authenticated = getAuthenticatedUser();
+        String searchText = "";
+        Page<User> users = usersService.getUsersView(pageable, authenticated, searchText);
+        model.addAttribute("page", users);
+        model.addAttribute("usersList", users.getContent());
+        return "user/list :: tableUsers";
     }
 }
