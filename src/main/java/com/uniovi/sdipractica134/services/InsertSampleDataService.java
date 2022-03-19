@@ -1,11 +1,17 @@
 package com.uniovi.sdipractica134.services;
 
 import com.uniovi.sdipractica134.entities.FriendshipInvites;
+import com.uniovi.sdipractica134.entities.Post;
+import com.uniovi.sdipractica134.entities.FriendshipInvites;
 import com.uniovi.sdipractica134.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,6 +21,8 @@ public class InsertSampleDataService {
     private UsersService usersService;
     @Autowired
     private RolesService rolesService;
+    @Autowired
+    private PostsService postsService;
     @PostConstruct
     public void init() {
         User user1 = new User("user01@email.com", "User01Nombre", "User01Apellido");
@@ -79,6 +87,7 @@ public class InsertSampleDataService {
         User user16 = new User("admin@email.com", "AdminNombre", "AdminApellido");
         user16.setPassword("admin");
         user16.setRole(rolesService.getRoles()[RolesService.ADMIN]);
+
         Set user1Friends = new HashSet<FriendshipInvites>() {
             {
                 add(new FriendshipInvites(user1, user2, "ACCEPTED"));
@@ -118,5 +127,22 @@ public class InsertSampleDataService {
         usersService.addUser(user14);
         usersService.addUser(user15);
         usersService.addUser(user16);
-    }
+
+
+        //Creación de posts
+        LocalDate date= LocalDate.of(2021,2,21);
+        Post post1=new Post("Hola a todos!",date,"Esta es mi primera publicación!");
+        date= LocalDate.of(2022,11,5);
+        Post post2=new Post("Mi verano en la playa",date,"Os voy a contar todo lo que hice en verano");
+        date= LocalDate.of(2020,3,18);
+        Post post3=new Post("COVID?",date," 15 días sin  cole qué bien");
+        date= LocalDate.of(2020,10,23);
+        Post post4=new Post("COVID:(",date," Pensaba que iban a ser solo 15 días...");
+        postsService.addNewPost(post1);
+        postsService.addNewPost(post2);
+        postsService.addNewPost(post3);
+        postsService.addNewPost(post4);
+
+
+}
 }

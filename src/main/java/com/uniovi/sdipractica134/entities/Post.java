@@ -1,7 +1,8 @@
 package com.uniovi.sdipractica134.entities;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Entity
 public class Post {
@@ -10,18 +11,31 @@ public class Post {
     private Long id;
     private String title;
     private String content;
-    private Date dateOfCreation;
+    private LocalDate dateOfCreation;
+
+    public Post(String title, LocalDate dateOfCreation,String content) {
+        this.title = title;
+        this.content = content;
+        this.dateOfCreation = dateOfCreation;
+
+
+    }
+
     private String pictureURL;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="user_id")
     private User owner;
 
-    public String getContent() {
+    public Post() {
+
+    }
+
+    public String getDescription() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setDescription(String content) {
         this.content = content;
     }
 
@@ -41,11 +55,11 @@ public class Post {
         this.title = title;
     }
 
-    public Date getDateOfCreation() {
+    public LocalDate getDateOfCreation() {
         return dateOfCreation;
     }
 
-    public void setDateOfCreation(Date dateOfCreation) {
+    public void setDateOfCreation(LocalDate dateOfCreation) {
         this.dateOfCreation = dateOfCreation;
     }
 
@@ -58,5 +72,9 @@ public class Post {
 
     public Long getId() {
         return id;
+    }
+
+    public void setOwner(User owner) {
+        this.owner=owner;
     }
 }

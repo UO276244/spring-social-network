@@ -3,8 +3,11 @@ package com.uniovi.sdipractica134;
 import com.uniovi.sdipractica134.entities.Log;
 import com.uniovi.sdipractica134.entities.User;
 import com.uniovi.sdipractica134.pageobjects.*;
+import com.uniovi.sdipractica134.repositories.PostsRepository;
+import com.uniovi.sdipractica134.pageobjects.*;
 import com.uniovi.sdipractica134.repositories.LogRepository;
 import com.uniovi.sdipractica134.repositories.UsersRepository;
+import com.uniovi.sdipractica134.services.UsersService;
 import org.apache.logging.log4j.spi.LoggerRegistry;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
@@ -23,7 +26,7 @@ class SdiPractica134ApplicationTests {
 
     static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
-    static String Geckodriver = "C:\\Users\\usuario\\Desktop\\Eii\\AÑO 3 GRADO INGENIERIA INFORMATICA\\Sistemas Distribuidos e Internet\\Lab\\sesion05\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+    static String Geckodriver = "C:\\Users\\Sara\\Desktop\\Universidad\\3-tercer curso\\segundo cuatri\\(SDI)-Sistemas Distribuidos e Internet\\Sesión5-material\\geckodriver-v0.30.0-win64.exe";
 
     //static String PathFirefox = "/Applications/Firefox.app/Contents/MacOS/firefox-bin";
     // static String Geckodriver = "/Users/USUARIO/selenium/geckodriver-v0.30.0-macos";
@@ -37,6 +40,11 @@ class SdiPractica134ApplicationTests {
 
     @Autowired
     private LogRepository logRepository;
+
+
+    @Autowired
+    private PostsRepository postsRepository;
+
 
     //Común a Windows y a MACOSX
     public static WebDriver getDriver(String PathFirefox, String Geckodriver) {
@@ -55,7 +63,7 @@ class SdiPractica134ApplicationTests {
     public void tearDown() {
         driver.manage().deleteAllCookies();
 
-
+        usersRepository.deleteAll();
     }
 
     //Antes de la primera prueba
@@ -269,7 +277,77 @@ class SdiPractica134ApplicationTests {
 
 
 
+    //[Prueba24] Ir al formulario de crear publicaciones , rellenarlo con datos VÁLIDOS y pulsar el botón de enviar.
+    @Test
+    @Order(24)
+    public void PR012A() {
+        //El usuario debe estar registrado para hacer un post , por tanto
+        PO_LoginView.fillForm(driver,"user01@email.com","user01@email.com");
+        //Una vez autenticado el usuario,rellena el formulario
+        PO_PostFormView.goToPostFormView(driver);
+        PO_PostFormView.fillForm(driver,"Días de vacaciones", "Me lo he pasado genial en málaga! :)");
 
+        //Vamos a la última página
+        List<WebElement> elements= PO_View.checkElementBy(driver, "free", "//a[contains(@class, 'page-link')]");
+        //Nos vamos a la última página
+        elements.get(3).click();
+        elements=PO_View.checkElementBy(driver, "text", "Días de vacaciones");
+        //Comprobamos que aparece la nueva publicación.
+        Assertions.assertEquals("Días de vacaciones",elements.get(0).getText());
+
+    }
+    @Test
+    @Order(25)
+    public void PR012B() {
+        //El usuario debe estar registrado para hacer un post , por tanto
+        PO_LoginView.fillForm(driver,"user01@email.com","user01@email.com");
+        //Una vez autenticado el usuario,rellena el formulario
+        PO_PostFormView.goToPostFormView(driver);
+        PO_PostFormView.fillForm(driver,"", "Me lo he pasado genial en málaga! :)");
+
+        List<WebElement> emptyMessage= PO_View.checkElementBy(driver, "text", PO_View.getP().getString("Error.posts.add.empty.title",PO_Properties.getSPANISH()));
+        Assertions.assertEquals("El título de la publicación no puede estar vacío.",emptyMessage.get(0).getText());
+
+    }
+    //Comprobar que no se puede realizar una publicación sin cuerpo.
+    @Test
+    @Order(26)
+    public void PR012B2() {
+        //El usuario debe estar registrado para hacer un post , por tanto
+        PO_LoginView.fillForm(driver,"user01@email.com","user01@email.com");
+        //Una vez autenticado el usuario,rellena el formulario
+        PO_PostFormView.goToPostFormView(driver);
+        PO_PostFormView.fillForm(driver,"Vacaciones!", "");
+        List<WebElement> emptyMessage= PO_View.checkElementBy(driver, "text", PO_View.getP().getString("Error.posts.add.empty.description",PO_Properties.getSPANISH()));
+        Assertions.assertEquals("La descripción de la publicación no puede estar vacía.",emptyMessage.get(0).getText());
+
+    }
+    //Comprobar que no se puede realizar una publicación con un título demasiado corto (menor a 10 caracteres)
+    @Test
+    @Order(27)
+    public void PR012C() {
+        //El usuario debe estar registrado para hacer un post , por tanto
+        PO_LoginView.fillForm(driver,"user01@email.com","user01@email.com");
+        //Una vez autenticado el usuario,rellena el formulario
+        PO_PostFormView.goToPostFormView(driver);
+        PO_PostFormView.fillForm(driver,"corto", "Descripción de más de 15 caracteres");
+        List<WebElement> emptyMessage= PO_View.checkElementBy(driver, "text", PO_View.getP().getString("Error.posts.add.title.tooShort",PO_Properties.getSPANISH()));
+        Assertions.assertEquals("El título debe tener al menos 10 caracteres.",emptyMessage.get(0).getText());
+
+    }
+    //Comprobar que no se puede realizar una publicación con una descripción demasiado corta (menor a 15 caracteres)
+    @Test
+    @Order(28)
+    public void PR012D() {
+        //El usuario debe estar registrado para hacer un post , por tanto
+        PO_LoginView.fillForm(driver,"user01@email.com","user01@email.com");
+        //Una vez autenticado el usuario,rellena el formulario
+        PO_PostFormView.goToPostFormView(driver);
+        PO_PostFormView.fillForm(driver,"Vacaciones!", "hola");
+        List<WebElement> emptyMessage= PO_View.checkElementBy(driver, "text", PO_View.getP().getString("Error.posts.add.description.tooShort",PO_Properties.getSPANISH()));
+        Assertions.assertEquals("La descripción debe tener al menos 15 caracteres.",emptyMessage.get(0).getText());
+
+    }
 
 
 
@@ -345,21 +423,21 @@ class SdiPractica134ApplicationTests {
     void PR016_4() {
 
         //Generate several logs of different types
-       PO_LogsView.generateBatchLogs(driver);
+        PO_LogsView.generateBatchLogs(driver);
 
-       String[] types = {"PET","LOGOUT","LOGIN_EX","LOGIN_ERR","ALTA"};
+        String[] types = {"PET","LOGOUT","LOGIN_EX","LOGIN_ERR","ALTA"};
 
         List<WebElement> logsListed;
         for(String type : types){
 
-           //Primer log de los PET
+            //Primer log de los PET
             logsListed = PO_LogsView.getLogListedInPosition(driver, type, 1);
-           Assertions.assertEquals(logsListed.get(0).getText(), type);
+            Assertions.assertEquals(logsListed.get(0).getText(), type);
 
-           //Primer log de los PET
-           logsListed = PO_LogsView.getLogListedInPosition(driver, type, 2);
-           Assertions.assertEquals(logsListed.get(0).getText(), type);
-       }
+            //Primer log de los PET
+            logsListed = PO_LogsView.getLogListedInPosition(driver, type, 2);
+            Assertions.assertEquals(logsListed.get(0).getText(), type);
+        }
 
 
     }
