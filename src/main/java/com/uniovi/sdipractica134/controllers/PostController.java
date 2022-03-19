@@ -54,9 +54,10 @@ public class PostController {
         post.setOwner(owner);
         postsService.addNewPost(post);
 
+
         return "redirect:/post/list";
     }
-    @RequestMapping(value="/add" , method=RequestMethod.GET)
+    @RequestMapping(value="post/add" , method=RequestMethod.GET)
     public String getPost(Model model){
 
         model.addAttribute("post",new Post());
