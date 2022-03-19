@@ -52,7 +52,7 @@ public class PO_LogsView extends PO_NavView {
 
         //Se genera un PET, un ALTA y otro LOGOUT
         PO_SignUpView.goToSignUpPage(driver);
-        PO_SignUpView.fillForm(driver,"martin@email.com","Martin",
+        PO_SignUpView.fillForm(driver,"random@email.com","Martin",
                 "beltran","password", "password");
         PO_NavView.clickLogout(driver);
 

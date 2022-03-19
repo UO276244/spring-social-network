@@ -69,7 +69,7 @@
                         <td th:text="${log.getLogType()}"> Type</td>
                         <td th:text="${log.getDescription()}">10</td>
                         <td th:text="${log.stampToDate()}">Fecha</td>
-                        <td><a class="btn btn-secundary" sec:authorize="hasRole('ROLE_ADMIN')"
+                        <td><a id="delete"  sec:authorize="hasRole('ROLE_ADMIN')"
 
                                th:onclick="|loadAfterDelete('${log.getId()}')|"
                                th:text="#{logs.remove}" >eliminar</a>

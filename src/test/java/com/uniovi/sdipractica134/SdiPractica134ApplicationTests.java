@@ -1,5 +1,6 @@
 package com.uniovi.sdipractica134;
 
+import com.uniovi.sdipractica134.entities.Log;
 import com.uniovi.sdipractica134.entities.User;
 import com.uniovi.sdipractica134.pageobjects.*;
 import com.uniovi.sdipractica134.repositories.LogRepository;
@@ -72,7 +73,7 @@ class SdiPractica134ApplicationTests {
     //[Prueba1-1] Registro de Usuario con datos válidos.
     @Test
     @Order(1)
-    void PR01A() {
+    void PR01_1() {
         int userBefore = usersRepository.countUsers();
         PO_SignUpView.goToSignUpPage(driver);
         PO_SignUpView.fillForm(driver,"martin@email.com","Martin","Beltran",
@@ -88,7 +89,7 @@ class SdiPractica134ApplicationTests {
     //[Prueba1-2] Registro de Usuario con datos inválidos (username vacío, nombre vacío, apellidos vacíos).
     @Test
     @Order(2)
-    void PR01B() {
+    void PR01_2() {
 
         int userBefore = usersRepository.countUsers();
         PO_SignUpView.goToSignUpPage(driver);
@@ -103,7 +104,7 @@ class SdiPractica134ApplicationTests {
     //[Prueba1-3] Registro de Usuario con datos inválidos (repetición de contraseña inválida).
     @Test
     @Order(3)
-    public void PR01C() {
+    public void PR01_3() {
         int userBefore = usersRepository.countUsers();
         PO_SignUpView.goToSignUpPage(driver);
         PO_SignUpView.fillForm(driver,"martin@email.com","Martin","Beltran",
@@ -118,7 +119,7 @@ class SdiPractica134ApplicationTests {
     //[Prueba1-4] Registro de Usuario con datos inválidos (username existente).
     @Test
     @Order(4)
-    public void PR01D() {
+    public void PR01_4() {
 
         PO_SignUpView.goToSignUpPage(driver);
         PO_SignUpView.fillForm(driver,"martin@email.com","Martin","Beltran",
@@ -243,16 +244,21 @@ class SdiPractica134ApplicationTests {
     @Order(34)
     void PR016_5() {
         PO_LoginView.goToLoginPage(driver);
-        PO_LoginView.fillForm(driver,"user01@email.com","user01");
+        PO_LoginView.fillForm(driver,"admin@email.com","admin");
         PO_LogsView.goToLogsPage(driver);
 
-        int sizeBeforeDeletion = logRepository.findAll().size();
+        List<Log> prevDelete = logRepository.findAll();
+        int sizeBeforeDeletion = prevDelete.size();
         Assertions.assertTrue( sizeBeforeDeletion >= 0);
 
 
         PO_LogsView.deleteFirstLog(driver);
 
-        int sizeAfterDeletion = logRepository.findAll().size();
+        List<Log> afterDelete = logRepository.findAll();
+        int sizeAfterDeletion = afterDelete.size();
+
+
+
         Assertions.assertTrue(sizeAfterDeletion + 1 == sizeBeforeDeletion);
 
     }
