@@ -7,16 +7,16 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(unique = true)
     private String username;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @Transient
     private Set<Post> posts;
 
-    @OneToMany(mappedBy = "from",cascade = CascadeType.ALL)
+    @Transient
     private Set<FriendshipInvites> friendShipsSent;
 
 
@@ -111,4 +111,5 @@ public class User {
     public Long getId() {
         return id;
     }
+
 }
