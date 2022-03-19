@@ -89,11 +89,25 @@ public class FriendsController {
     @RequestMapping("/invite/accept/{id}")
     public String delete(@PathVariable Long id) {
         logger.info(
-                loggerService.createPETLog("FriendsController --> /invite/accept" + id,
+                loggerService.createPETLog("FriendsController --> /invite/accept/" + id,
                         "GET",
                         new String[] {})
         );
         friendsService.acceptFriendshipInvite(id);
         return "redirect:/friends/invites";
+    }
+
+    @RequestMapping("/invite/send/{id}")
+    public String sendFriendshipInvite(Pageable pageable, Principal principal, @PathVariable Long id){
+        logger.info(
+                loggerService.createPETLog("FriendsController --> /invite/send/" + id,
+                        "GET",
+                        new String[] {})
+        );
+        String username = principal.getName();
+        User from = usersService.getUserByUsername(username);
+        User to = usersService.getUser(id);
+        friendsService.sendInvite(pageable, from, to);
+        return "redirect:/user/list";
     }
 }

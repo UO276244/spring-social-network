@@ -33,9 +33,25 @@ springsecurity4">
             <td th:text="${user.name}"> Ejercicio 1</td>
             <td th:text="${user.surname}">10</td>
             <td><input sec:authorize="hasRole('ROLE_ADMIN')" type="checkbox" th:id="${user.id}"></td>
-            <td> <button th:unless="${user.isFriendsWith(#authentication.getPrincipal().username)}">
+            <td>
+                <button th:unless="${user.isFriendsWith(#authentication.getPrincipal().username)}"
+                    th:id="${'sendButton' + user.id}">
                 Add friend
-            </button>
+                </button>
+                <script th:inline="javascript">
+                    /*<![CDATA[*/
+                    $("#sendButton" + "[[${user.id}]]").click(function () {
+                        $.get("/invite/send/[[${user.id}]]", function (data) {
+                            var numberPage = [[${param.page}]];
+                            var urlUpdate = '/user/list/update';
+                            if ( numberPage != null ){
+                                urlUpdate += "?page="+numberPage[0];
+                            }
+                            $("#tableUsers").load(urlUpdate);
+                        });
+                    });
+                    /*]]>*/
+                </script>
             </td>
         </tr>
         </tbody>
