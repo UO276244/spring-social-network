@@ -58,6 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/friends/**").hasAuthority("ROLE_USER")
                 .antMatchers("/user/list/delete/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/user/list").authenticated()
+                .antMatchers("/post/**").authenticated()
                 .antMatchers("/logout").authenticated()
                 .antMatchers("/logs/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/","home").hasAnyAuthority()
