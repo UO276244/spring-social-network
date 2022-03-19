@@ -116,7 +116,7 @@ class SdiPractica134ApplicationTests {
 
     }
 
-    //[Prueba1-4] Registro de Usuario con datos inválidos (username existente).
+    //[Prueba1-4] Registro de Usuario con datos inválidos (email existente).
     @Test
     @Order(4)
     public void PR01_4() {
