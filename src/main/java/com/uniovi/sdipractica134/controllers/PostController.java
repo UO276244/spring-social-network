@@ -34,7 +34,8 @@ public class PostController {
     public String listOwnPosts(Model model, Pageable pageable, Principal principal){
         String email=principal.getName();//El usuario incicia sesión empleando mail y contraseña
         User user =usersService.getUserByEmail(email);
-        model.addAttribute("postsList",postsService.getPostsByUser(pageable,user));
+        model.addAttribute("postList",postsService.getPostsByUser(pageable,user));
+        model.addAttribute("page",pageable);
         return "/post/list";
     }
 

@@ -27,7 +27,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="post ${postList}">
+            <tr th:each="post : ${postList}">
                 <td scope="row" th:text="${post.dateOfCreation}"> </td>
                 <td th:text="${post.title}"></td>
                 <td th:text="${post.description}"> </td>
