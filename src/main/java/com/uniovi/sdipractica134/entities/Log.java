@@ -4,10 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 @Entity
-public class Log {
+public class Log implements   Comparable<Log>{
 
     @Id
     @GeneratedValue
@@ -33,6 +34,10 @@ public class Log {
 
     public String getLogType() {
         return logType;
+    }
+
+    public LocalDateTime stampToDate(){
+        return this.time.toLocalDateTime();
     }
 
     public Timestamp getTime() {
@@ -63,4 +68,10 @@ public class Log {
     public Long getId() {
         return id;
     }
+
+    @Override
+    public int compareTo(Log o) {
+        return time.compareTo(o.time);
+    }
 }
+

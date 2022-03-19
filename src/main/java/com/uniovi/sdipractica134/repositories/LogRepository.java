@@ -1,20 +1,17 @@
 package com.uniovi.sdipractica134.repositories;
 
 import com.uniovi.sdipractica134.entities.Log;
-import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
 
 
 public interface LogRepository extends CrudRepository<Log, Long> {
 
-    Page<Log> findAll(Pageable pageable);
+    List<Log> findAll();
 
-    @Query("SELECT l FROM Log l WHERE l.logType LIKE (?1)")
-    Page<Log> findByLogType(Pageable pageable, String logType);
+    @Query("SELECT l FROM Log l WHERE l.logType = (?1)")
+    List<Log> findAllByLogtype(String logType);
 
 
 }

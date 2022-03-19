@@ -56,7 +56,7 @@ public class PO_NavView extends PO_View {
 
     static public void clickLogout(WebDriver driver){
 
-        driver.findElement(By.name("logout")).click();
+        driver.findElement(By.id("logout")).click();
 
         }
     }

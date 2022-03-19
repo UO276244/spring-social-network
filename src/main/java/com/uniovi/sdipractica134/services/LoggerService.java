@@ -17,6 +17,24 @@ public class LoggerService {
     private LogRepository logRepo;
 
 
+    public void deleteLog(Long id){
+        logRepo.deleteById(id);
+    }
+
+
+    public List<Log> getAllByType(String logType){
+
+        try{
+            //Si no existe el tipo de log, lanza excepcion
+            LogType.valueOf(logType);
+            return logRepo.findAllByLogtype(logType);
+        }catch(IllegalArgumentException | NullPointerException e){
+            return logRepo.findAll();
+        }
+
+    }
+
+
     public String createPETLog(String controller, String httpMethod, String... params){
 
         String description = "Controller: " + controller + " - Method " + httpMethod + " - Params: ";

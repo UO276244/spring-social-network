@@ -1,6 +1,6 @@
 <!-- nav.html -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary"
-     xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+     xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:th="http://www.thymeleaf.org">
     <a class="navbar-brand" href="#"></a>
     <button aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
             data-target="#myNavbar" data-toggle="collapse" type="button"><span
@@ -11,7 +11,7 @@
             <li class="nav-item ">
                 <a class="nav-link" href="/home">Home<span class="sr-only">(current)</span> </a>
             </li>
-            <li class="nav-item dropdown active">
+            <li class="nav-item dropdown active" sec:authorize="hasRole('ROLE_USER')">
                 <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
                    data-toggle="dropdown" href="#" id="accountDropdown" role="button"> Mi Cuenta </a>
                 <div aria-labelledby="navbarDropdown" class="dropdown-menu">
@@ -21,7 +21,7 @@
 
                 </div>
             </li>
-            <li class="nav-item dropdown active">
+            <li class="nav-item dropdown active" sec:authorize="hasRole('ROLE_USER')">
                 <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
                    data-toggle="dropdown" href="#" id="friendsDropdown" role="button"> Amigos </a>
                 <div aria-labelledby="navbarDropdown" class="dropdown-menu">
@@ -31,7 +31,7 @@
 
                 </div>
             </li>
-            <li class="nav-item dropdown active">
+            <li class="nav-item dropdown active" sec:authorize="isAuthenticated()">
                 <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
                    data-toggle="dropdown" href="#" id="userDropdown" role="button"> Usuarios </a>
                 <div aria-labelledby="navbarDropdown" class="dropdown-menu">
@@ -41,7 +41,7 @@
 
                 </div>
             </li>
-            <li class="nav-item dropdown active">
+            <li class="nav-item dropdown active" sec:authorize="hasRole('ROLE_USER')">
                 <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
                    data-toggle="dropdown" href="#" id="friendshipsDropdown" role="button"> Notificaciones </a>
                 <div aria-labelledby="navbarDropdown" class="dropdown-menu">
@@ -50,9 +50,19 @@
                 </div>
             </li>
 
+
+            <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                <a class="nav-link" href="/logs/list" th:text="#{logs.welcome}">
+                    <i class='fas fa-user-alt' style='font-size:16px'></i><span> Registrate</span></a>
+            </li>
+
+
+
         </ul>
         <ul class="navbar-nav justify-content-end">
-            <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" id="btnLanguage"
+            <li class="nav-item dropdown">
+
+                <a class="nav-link dropdown-toggle" href="#" id="btnLanguage"
                                              role="button" data-toggle="dropdown" aria-haspopup="true"
                                              aria-expanded="false"> <span th:text="#{language.change}"></span> </a>
 
@@ -79,9 +89,10 @@
                     <i class='fas fa-sign-in-alt' style='font-size:16px'></i> <span>Identifícate</span></a>
             </li>
             <!--En caso de estar identificado , se puede desconectar.-->
-            <li class="nav-item" sec:authorize="isAuthenticated()"><a class="nav-link" href="/prevlogout">
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="nav-link" id="logout" href="/logout">
                 <i class='fas fa-sign-out-alt' style='font-size:16px'></i>
-                <span>Desconectar</span> </a>
+                <span th:text="#{logout.message}">Desconectar</span> </a>
             </li>
         </ul>
         <!--<form class="form-inline"> <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"> <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button> </form> -->
