@@ -7,6 +7,8 @@ import com.uniovi.sdipractica134.repositories.LogRepository;
 import com.uniovi.sdipractica134.repositories.UsersRepository;
 import org.apache.logging.log4j.spi.LoggerRegistry;
 import org.junit.jupiter.api.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -116,7 +118,7 @@ class SdiPractica134ApplicationTests {
 
     }
 
-    //[Prueba1-4] Registro de Usuario con datos inválidos (username existente).
+    //[Prueba1-4] Registro de Usuario con datos inválidos (email existente).
     @Test
     @Order(4)
     public void PR01_4() {
@@ -135,9 +137,135 @@ class SdiPractica134ApplicationTests {
         Assertions.assertTrue(usersRepository.countUsers() ==userBefore);
     }
 
+    //[Prueba2-1] Inicio de sesión con datos válidos (administrador).
+    @Test
+    @Order(5)
+    public void PR02_1() {
+
+        PO_LoginView.goToLoginPage(driver);
+        PO_LoginView.fillForm(driver,"admin@email.com","admin");
+
+
+        //Si se ha logeado bien, podrá encontrar el boton de logout
+        WebElement logoutButton = driver.findElement(By.id("logout"));
+        Assertions.assertTrue(logoutButton != null);
+
+        //Para comprobar, checkeamos que el menú de listar logs sea visible (solo admins)
+        WebElement logsButton = driver.findElement(By.id("listLogs"));
+        Assertions.assertTrue(logsButton != null);
+    }
+
+
+    //[Prueba2-2] Inicio de sesión con datos válidos (usuario estándar).
+    @Test
+    @Order(6)
+    public void PR02_2() {
+
+
+        PO_LoginView.goToLoginPage(driver);
+        PO_LoginView.fillForm(driver,"user01@email.com","user01");
+
+
+        //Si se ha logeado bien, podrá encontrar el boton de logout
+        WebElement logoutButton = driver.findElement(By.id("logout"));
+        Assertions.assertTrue(logoutButton != null);
+
+        //Si se ha logeado bien, podra ver el menu de usuario "Mi Cuenta"
+        WebElement myAccountDropdown = driver.findElement(By.id("accountDropdown"));
+        Assertions.assertTrue(logoutButton != null);
 
 
 
+    }
+
+    //[Prueba2-3] Inicio de sesión con datos inválidos (usuario estándar, campo email y contraseña vacíos).
+    @Test
+    @Order(7)
+    public void PR02_3() {
+
+
+        //Te logueas con credenciales vacias
+        PO_LoginView.goToLoginPage(driver);
+        PO_LoginView.fillForm(driver,"","");
+
+        //Sigues en la página de login
+        List<WebElement> welcomeMessageElement = PO_LoginView.getLoginText(driver,PO_Properties.getSPANISH());
+
+        Assertions.assertEquals(welcomeMessageElement.get(0).getText(),
+                PO_View.getP().getString("login.message",
+                        PO_Properties.getSPANISH()));
+
+
+
+    }
+
+    //[Prueba2-4] Inicio de sesión con datos válidos (usuario estándar, email existente, pero contraseña incorrecta).
+    @Test
+    @Order(8)
+    public void PR02_4() {
+
+
+        //Te logueas con email existente pero contraseña invalida
+        PO_LoginView.goToLoginPage(driver);
+        PO_LoginView.fillForm(driver,"user01@email.com","nopassword");
+
+        //Sigues en la página de login
+        List<WebElement> welcomeMessageElement = PO_LoginView.getLoginText(driver,PO_Properties.getSPANISH());
+
+        Assertions.assertEquals(welcomeMessageElement.get(0).getText(),
+                PO_View.getP().getString("login.message",
+                        PO_Properties.getSPANISH()));
+
+
+
+    }
+
+
+    //[Prueba3-1] Hacer clic en la opción de salir de sesión
+    // y comprobar que se redirige a la página de inicio de sesión (Login).
+    @Test
+    @Order(9)
+    public void PR03_1() {
+
+
+        //Te logueas con email existente
+        PO_LoginView.goToLoginPage(driver);
+        PO_LoginView.fillForm(driver,"user01@email.com","user01");
+
+        //Puedes hacer logout
+        PO_NavView.clickLogout(driver);
+
+        //Te vas a la página de login
+        List<WebElement> welcomeMessageElement = PO_LoginView.getLoginText(driver,PO_Properties.getSPANISH());
+
+        Assertions.assertEquals(welcomeMessageElement.get(0).getText(),
+                PO_View.getP().getString("login.message",
+                        PO_Properties.getSPANISH()));
+
+    }
+
+
+    //[Prueba3-2] Comprobar que el botón cerrar sesión no está visible si el usuario no está autenticado
+    @Test
+    @Order(10)
+    public void PR03_2() {
+
+
+        //Si el usuario no esta autenticado y tratamos de buscar el boton,
+        //se lanzará una NoSuchElementException
+        try{
+
+            driver.findElement(By.id("logout"));
+            //El test fallará si encuentra el botón sin logearse
+            Assertions.assertTrue(false);
+        }catch(NoSuchElementException e){
+            //El test pasa si no encuentra el botón sin logearse
+            Assertions.assertTrue(true);
+        }
+
+
+
+    }
 
 
 

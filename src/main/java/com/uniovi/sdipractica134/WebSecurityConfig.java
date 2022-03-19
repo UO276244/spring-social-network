@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
@@ -55,6 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/css/**", "/images/**", "/script/**", "/", "/signup","/login", "/login/**", "/","/home").permitAll()
                 .antMatchers("/friends/**").hasAuthority("ROLE_USER")
+                .antMatchers("/user/list/delete/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/user/list").authenticated()
                 .antMatchers("/logout").authenticated()
                 .antMatchers("/logs/**").hasAuthority("ROLE_ADMIN")
@@ -67,6 +69,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(successHandler())
                 .failureHandler(failureHandler())
                 .permitAll()
+
                 .and()
                 .logout()
                 .logoutSuccessHandler(logoutSuccessHandler())
