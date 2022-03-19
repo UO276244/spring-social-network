@@ -2,14 +2,16 @@ package com.uniovi.sdipractica134.services;
 
 import com.uniovi.sdipractica134.entities.FriendshipInvites;
 import com.uniovi.sdipractica134.entities.Post;
+import com.uniovi.sdipractica134.entities.FriendshipInvites;
 import com.uniovi.sdipractica134.entities.User;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -85,6 +87,7 @@ public class InsertSampleDataService {
         User user16 = new User("admin@email.com", "AdminNombre", "AdminApellido");
         user16.setPassword("admin");
         user16.setRole(rolesService.getRoles()[RolesService.ADMIN]);
+
         Set user1Friends = new HashSet<FriendshipInvites>() {
             {
                 add(new FriendshipInvites(user1, user2, "ACCEPTED"));
@@ -94,6 +97,20 @@ public class InsertSampleDataService {
             }
         };
         user1.setFriendShipsSent(user1Friends);
+        Set user2Friends = new HashSet<FriendshipInvites>() {
+            {
+                add(new FriendshipInvites(user2, user5, "PENDING"));
+                add(new FriendshipInvites(user2, user3, "ACCEPTED"));
+            }
+        };
+        user2.setFriendShipsSent(user2Friends);
+        Set user3Friends = new HashSet<FriendshipInvites>() {
+            {
+                add(new FriendshipInvites(user3, user10, "ACCEPTED"));
+                add(new FriendshipInvites(user3, user5, "PENDING"));
+            }
+        };
+        user3.setFriendShipsSent(user3Friends);
         usersService.addUser(user1);
         usersService.addUser(user2);
         usersService.addUser(user3);

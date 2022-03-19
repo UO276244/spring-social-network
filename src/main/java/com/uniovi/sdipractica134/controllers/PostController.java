@@ -8,6 +8,10 @@ import com.uniovi.sdipractica134.services.UsersService;
 import com.uniovi.sdipractica134.validators.PostFormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import com.uniovi.sdipractica134.services.LoggerService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +42,11 @@ public class PostController {
         Page<Post> posts=postsService.getPostsByUser(pageable,user);
         model.addAttribute("postList",posts.getContent());
         model.addAttribute("page",posts);
+        logger.info(
+                loggerService.createPETLog("PostController --> post/list",
+                        "GET",
+                        new String[] {"searchText="+searchTest})
+        );
         return "/post/list";
     }
 
@@ -53,7 +62,11 @@ public class PostController {
 
         post.setOwner(owner);
         postsService.addNewPost(post);
-
+        logger.info(
+                loggerService.createPETLog("PostController --> post/add",
+                        "GET",
+                        new String[] {})
+        );
 
         return "redirect:/post/list";
     }

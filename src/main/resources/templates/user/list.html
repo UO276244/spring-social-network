@@ -1,0 +1,67 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-
+springsecurity4">
+<head th:replace="fragments/head"/>
+<body>
+<nav th:replace="fragments/nav"/>
+<div class="container">
+    <div class="container">
+        <form sec:authorize="hasRole('ROLE_USER')" class="form-inline" action="/user/list">
+            <div class="form-group">
+                <input name="searchText" type="text" class="form-control" size="50"
+                       th:placeholder="#{search.user.message}">
+            </div>
+            <button type="submit" class="btn btn-primary" th:text="#{search.user.button}"></button>
+        </form>
+    </div>
+
+    <div class="container">
+    <table class="table table-hover" th:fragment="tableUsers" id="tableUsers">
+        <thead>
+        <tr>
+            <th scope="col" >Email</th>
+            <th scope="col" th:text="#{name.message}"></th>
+            <th scope="col" th:text="#{surname.message}"></th>
+            <th sec:authorize="hasRole('ROLE_ADMIN')" scope="col" th:text="#{todelete.message}"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${usersList}">
+            <td th:text="${user.username}"> 1</td>
+            <td th:text="${user.name}"> Ejercicio 1</td>
+            <td th:text="${user.surname}">10</td>
+            <td><input sec:authorize="hasRole('ROLE_ADMIN')" type="checkbox" th:id="${user.id}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <footer sec:authorize="hasRole('ROLE_USER')" th:replace="fragments/pagination"/> <!-- Only users with ROLE_USER have pagination -->
+    </div>
+    <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" id="deleteButton" class="btn btn-danger" th:text="#{delete.button}"></button>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        $( "#deleteButton" ).click(function() {
+            var usersToDelete = new Array();
+            $("input:checkbox:checked").each(function(){
+                usersToDelete.push($(this).attr('id')); //we insert id of user whose checkbox is checked.
+            });
+            var urlDelete = '/user/list/delete/';
+            for (var i = 0; i < usersToDelete.length; i++) {
+                if(i== usersToDelete.length-1){
+                    urlDelete += usersToDelete[i].toString();
+                }else{
+                    urlDelete += usersToDelete[i].toString() + ",";
+                }
+            }
+
+            $("#tableUsers").load(urlDelete);
+        });
+        /*]]>*/
+    </script>
+
+</div>
+<footer th:replace="fragments/footer"/>
+</body>
+</html>

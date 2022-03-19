@@ -43,4 +43,12 @@ public class FriendshipInvites {
     public Long getId() {
         return id;
     }
+
+    public User getFrom() {
+        return from;
+    }
+
+    public void accept() {
+        this.state = "ACCEPTED";
+    }
 }
