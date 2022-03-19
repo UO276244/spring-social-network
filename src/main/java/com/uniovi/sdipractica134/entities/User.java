@@ -19,7 +19,8 @@ public class User {
     @OneToMany(mappedBy = "from",cascade = CascadeType.ALL)
     private Set<FriendshipInvites> friendShipsSent;
 
-
+    @ElementCollection
+    private Set<String> friends = new HashSet<>();
 
     public User(){
         this.role = "ROLE_USER";
@@ -112,4 +113,15 @@ public class User {
         return id;
     }
 
+    public boolean isFriendsWith(String username){
+        for (String friend: friends) {
+            if (friend.equals(username))
+                return true;
+        }
+        return false;
+    }
+
+    public void addFriend(User to) {
+        friends.add(to.getUsername());
+    }
 }

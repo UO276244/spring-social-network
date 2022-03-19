@@ -33,6 +33,10 @@ springsecurity4">
             <td th:text="${user.name}"> Ejercicio 1</td>
             <td th:text="${user.surname}">10</td>
             <td><input sec:authorize="hasRole('ROLE_ADMIN')" type="checkbox" th:id="${user.id}"></td>
+            <td> <button th:unless="${user.isFriendsWith(#authentication.getPrincipal().username)}">
+                Add friend
+            </button>
+            </td>
         </tr>
         </tbody>
     </table>

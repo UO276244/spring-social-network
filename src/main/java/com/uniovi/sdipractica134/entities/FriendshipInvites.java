@@ -25,11 +25,18 @@ public class FriendshipInvites {
 
     private String state;
 
+    private final String ACCEPTED = "ACCEPTED";
+    private final String PENDING = "PENDING";
+
     public FriendshipInvites(User from, User to, String state){
         super();
         this.from = from;
         this.to = to;
         this.state = state;
+        if (state.equals(ACCEPTED)){
+            from.addFriend(to);
+            to.addFriend(from);
+        }
     }
 
     public FriendshipInvites() {
@@ -49,6 +56,8 @@ public class FriendshipInvites {
     }
 
     public void accept() {
-        this.state = "ACCEPTED";
+        this.state = ACCEPTED;
+        from.addFriend(to);
+        to.addFriend(from);
     }
 }
