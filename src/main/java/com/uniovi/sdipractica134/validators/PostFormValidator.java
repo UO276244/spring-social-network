@@ -22,10 +22,10 @@ public class PostFormValidator implements Validator {
 
 
         if(((Post) target).getTitle().length()<10){
-            errors.rejectValue("title", "Error.posts.add.empty.title");
+            errors.rejectValue("title", "Error.posts.add.title.tooShort");
         }
         if(((Post) target).getDescription().length()<15){
-            errors.rejectValue("description", "Error.posts.add.empty.description");
+            errors.rejectValue("description", "Error.posts.add.description.tooShort");
         }
 
 
