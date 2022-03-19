@@ -8,6 +8,7 @@ import com.uniovi.sdipractica134.pageobjects.*;
 import com.uniovi.sdipractica134.repositories.LogRepository;
 import com.uniovi.sdipractica134.repositories.UsersRepository;
 import com.uniovi.sdipractica134.services.UsersService;
+import com.uniovi.sdipractica134.util.SeleniumUtils;
 import org.apache.logging.log4j.spi.LoggerRegistry;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
@@ -17,7 +18,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @SpringBootTest
@@ -26,7 +29,7 @@ class SdiPractica134ApplicationTests {
 
     static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
-    static String Geckodriver = "C:\\Users\\Sara\\Desktop\\Universidad\\3-tercer curso\\segundo cuatri\\(SDI)-Sistemas Distribuidos e Internet\\Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+    static String Geckodriver ="C:\\Users\\sebas\\Downloads\\TERCERO\\SEGUNDO CUATRIMESTRE\\SDI\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
 
     //static String PathFirefox = "/Applications/Firefox.app/Contents/MacOS/firefox-bin";
     // static String Geckodriver = "/Users/USUARIO/selenium/geckodriver-v0.30.0-macos";
@@ -275,7 +278,34 @@ class SdiPractica134ApplicationTests {
 
     }
 
+     //Prueba[4-1] Mostrar el listado de usuarios y comprobar que se muestran todos los que existen en el sistema.
+    @Test
+    @Order(11)
+    public void PRO4_1(){
+        PO_LoginView.goToLoginPage(driver);
+        PO_LoginView.fillForm(driver,"admin@email.com","admin");
+        PO_UsersView.goToUsersList(driver);
 
+        List<User> totalUsers = usersRepository.getUsersAdminView(Pageable.unpaged()).getContent();
+
+        List<WebElement> usersInListView = driver.findElements(By.className("username"));
+
+        Assertions.assertTrue( totalUsers.size() == usersInListView.size(),
+                "Sizes differ: size of users with ROLE_USER in DB differ with size of users displayed");
+        List<String> userNames = new LinkedList<>();
+        for (WebElement element:
+                usersInListView) {
+           userNames.add(element.getText());
+        }
+        for (User user:
+                totalUsers) {
+            Assertions.assertTrue(userNames.contains(user.getUsername()), "Username:"+user.getUsername()+" not present in the view ");
+        }
+
+
+
+
+    }
 
     //[Prueba24] Ir al formulario de crear publicaciones , rellenarlo con datos VÁLIDOS y pulsar el botón de enviar.
     @Test
