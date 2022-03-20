@@ -1,6 +1,7 @@
 package com.uniovi.sdipractica134.services;
 
 import com.uniovi.sdipractica134.entities.User;
+import com.uniovi.sdipractica134.repositories.FriendsRepository;
 import com.uniovi.sdipractica134.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,7 +23,8 @@ public class UsersService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private RolesService rolesService;
-
+    @Autowired
+    private FriendsRepository friendsRepository;
     @PostConstruct
     public void init(){
 
@@ -55,6 +57,9 @@ public class UsersService {
     }
 
     public void deleteByIds(List<Long> ids){
+        Iterable<User> users = usersRepository.findAllById(ids);
+        users.iterator().forEachRemaining( (user) -> user.removeFriends());
+        friendsRepository.deleteFriendshipInvitesBy(ids);
         usersRepository.deleteByIds(ids);
     }
 

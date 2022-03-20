@@ -28,7 +28,6 @@ public class PO_LoginView extends PO_NavView{
         dni.click();
         dni.clear();
         dni.sendKeys(usernamep);
-
         WebElement password = driver.findElement(By.name("password"));
         password.click();
         password.clear();

@@ -8,7 +8,6 @@ import com.uniovi.sdipractica134.pageobjects.*;
 import com.uniovi.sdipractica134.repositories.LogRepository;
 import com.uniovi.sdipractica134.repositories.UsersRepository;
 import com.uniovi.sdipractica134.services.UsersService;
-import com.uniovi.sdipractica134.util.SeleniumUtils;
 import org.apache.logging.log4j.spi.LoggerRegistry;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
@@ -31,16 +30,18 @@ class SdiPractica134ApplicationTests {
     //static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
     //static String Geckodriver = "C:\\Users\\usuario\\Desktop\\Eii\\AÑO 3 GRADO INGENIERIA INFORMATICA\\Sistemas Distribuidos e Internet\\Lab\\sesion05\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+   //sebas
+    static String Geckodriver ="C:\\Users\\sebas\\Downloads\\TERCERO\\SEGUNDO CUATRIMESTRE\\SDI\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
 
     //ce
     static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
-    static String Geckodriver = "E:\\UNIOVI\\TERCERO\\Segundo cuatri\\SDI\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe"; //CASA
+    //static String Geckodriver = "E:\\UNIOVI\\TERCERO\\Segundo cuatri\\SDI\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe"; //CASA
 
 
     /* SARA
     static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
-    static String Geckodriver = "C:\\Users\\Sara\\Desktop\\Universidad\\3-tercer curso\\segundo cuatri\\(SDI)-Sistemas Distribuidos e Internet\\Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+    static String Geckodriver ="C:\\Users\\sebas\\Downloads\\TERCERO\\SEGUNDO CUATRIMESTRE\\SDI\\PL-SDI-Sesión5-material\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
 */
     //static String PathFirefox = "/Applications/Firefox.app/Contents/MacOS/firefox-bin";
     // static String Geckodriver = "/Users/USUARIO/selenium/geckodriver-v0.30.0-macos";
@@ -76,6 +77,7 @@ class SdiPractica134ApplicationTests {
     @AfterEach
     public void tearDown() {
         driver.manage().deleteAllCookies();
+
 
     }
 
@@ -295,6 +297,9 @@ class SdiPractica134ApplicationTests {
 
 
     }
+
+
+
 
 
 
