@@ -137,7 +137,7 @@ public class InsertSampleDataService {
         Set<Post> posts =new HashSet<>();
         //Creación de posts
         LocalDate date= LocalDate.of(2021,2,21);
-        posts.add(new Post("Hola a todos!",date,"Esta es mi primera publicación!"));
+        posts.add(new Post("Hola a todos!",date,"He ido a dar un paseo y me he roto la pierna!"));
 
         date= LocalDate.of(2022,11,5);
         posts.add(new Post("Mi verano en la playa",date,"Os voy a contar todo lo que hice en verano"));
