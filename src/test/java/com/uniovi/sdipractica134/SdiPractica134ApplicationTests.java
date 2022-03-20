@@ -6,6 +6,7 @@ import com.uniovi.sdipractica134.pageobjects.*;
 import com.uniovi.sdipractica134.repositories.PostsRepository;
 import com.uniovi.sdipractica134.repositories.LogRepository;
 import com.uniovi.sdipractica134.repositories.UsersRepository;
+import com.uniovi.sdipractica134.services.InsertSampleDataService;
 import com.uniovi.sdipractica134.util.SeleniumUtils;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
@@ -302,7 +303,7 @@ class SdiPractica134ApplicationTests {
 
     //Prueba[4-1] Mostrar el listado de usuarios y comprobar que se muestran todos los que existen en el sistema.
     @Test
-    @Order(11)
+    @Order(46)
     public void PRO4_1(){
         loginAs("admin@email.com", "admin");
         PO_UsersView.goToUsersList(driver);
@@ -328,7 +329,7 @@ class SdiPractica134ApplicationTests {
     //Prueba[5-1] Ir a la lista de usuarios, borrar el primer usuario de la lista, comprobar que la lista se actualiza
     //y dicho usuario desaparece.
     @Test
-    @Order(12)
+    @Order(47)
     public void PRO5_1(){
         loginAs("admin@email.com", "admin");
         PO_UsersView.goToUsersList(driver);
@@ -339,7 +340,7 @@ class SdiPractica134ApplicationTests {
     //Prueba[5-2] Ir a la lista de usuarios, borrar el último usuario de la lista, comprobar que la lista se actualiza
     //y dicho usuario desaparece.
     @Test
-    @Order(13)
+    @Order(48)
     public void PRO5_2(){
         loginAs("admin@email.com", "admin");
         PO_UsersView.goToUsersList(driver);
@@ -349,7 +350,7 @@ class SdiPractica134ApplicationTests {
     //Prueba[5-3] Ir a la lista de usuarios, borrar 3 usuarios, comprobar que la lista se actualiza y dichos usuarios
     //desaparecen.
     @Test
-    @Order(14)
+    @Order(49)
     public void PRO5_3(){
         loginAs("admin@email.com", "admin");
         PO_UsersView.goToUsersList(driver);
@@ -373,6 +374,12 @@ class SdiPractica134ApplicationTests {
         Assertions.assertTrue(!usersAfterDeleting.contains(firstDeleted), "User with id: "+ idFirstUser+" was not deleted");
         Assertions.assertTrue(!usersAfterDeleting.contains(secondDeleted), "User with id: "+ idFirstUser+" was not deleted");
         Assertions.assertTrue(!usersAfterDeleting.contains(thirdDeleted), "User with id: "+ idFirstUser+" was not deleted");
+        //volvemos a añadir los usuarios eliminados
+
+        usersRepository.save(firstDeleted);
+        usersRepository.save(secondDeleted);
+        usersRepository.save(thirdDeleted);
+
     }
     private User getUser(Long id){
         Optional<User> user = usersRepository.findById(Long.valueOf(id));
@@ -393,10 +400,10 @@ class SdiPractica134ApplicationTests {
 
         List<User> totalUsers = usersRepository.getUsersAdminView(Pageable.unpaged()).getContent();
 
-        WebElement element = driver.findElement(By.xpath(xPath)); //delete user in the path
+        WebElement element = driver.findElement(By.xpath(xPath)); //Eliminaremos el usuario del path
         String userId = element.getAttribute("id");
         User userDeleted = getUser(Long.valueOf(userId));
-        Assertions.assertTrue(totalUsers.contains(userDeleted)); //we check that user is present
+        Assertions.assertTrue(totalUsers.contains(userDeleted)); //Chequeo user is present
         element.click();
         driver.findElement(By.id("deleteButton")).click(); //we delete the user
 
@@ -404,12 +411,15 @@ class SdiPractica134ApplicationTests {
         Assertions.assertTrue(!remainingUsers.contains(userDeleted), "User was not deleted");
         Assertions.assertTrue( totalUsers.size() == remainingUsers.size()+1,
                 "Sizes differ: seems like user was not deleted");
+
+
+        usersRepository.save(userDeleted); //Volvemos a añadir el usuario eliminado
     }
 
     //Prueba[5-2] Mostrar el listado de usuarios y comprobar que se muestran todos los que existen en el sistema,
     //excepto el propio usuario y aquellos que sean Administradores
     @Test
-    @Order(15)
+    @Order(50)
     public void PR06_1(){
         //Login como user01 y nos vamos a la vista de listar usuarios
         loginAs("user01@email.com", "user01");
@@ -461,7 +471,7 @@ class SdiPractica134ApplicationTests {
     //Prueba[7_1]Hacer una búsqueda con el campo vacío y comprobar que se muestra la página que
     //corresponde con el listado usuarios existentes en el sistema.
     @Test
-    @Order(16)
+    @Order(51)
     public void PR07_1(){
         //Login como user01 y nos vamos a la vista de listar usuarios
         loginAs("user01@email.com", "user01");
@@ -473,7 +483,7 @@ class SdiPractica134ApplicationTests {
     //Prueba[7_2]Hacer una búsqueda escribiendo en el campo un texto que no exista y comprobar que se
     //muestra la página que corresponde, con la lista de usuarios vacía.
     @Test
-    @Order(17)
+    @Order(52)
     public void PR07_2(){
         //Login como user01 y nos vamos a la vista de listar usuarios
         loginAs("user01@email.com", "user01");
@@ -487,7 +497,7 @@ class SdiPractica134ApplicationTests {
     //corresponde, con la lista de usuarios en los que el texto especificado sea parte de su nombre, apellidos o
     //de su email.
     @Test
-    @Order(18)
+    @Order(53)
     public void PR07_3(){
         //Login como user01 y nos vamos a la vista de listar usuarios
         loginAs("user01@email.com", "user01");
@@ -498,6 +508,7 @@ class SdiPractica134ApplicationTests {
         List<String> userNamesObtainedWithSearchBy_2_ = new LinkedList<>();
         userNamesObtainedWithSearchBy_2_.add("user02@email.com");
         userNamesObtainedWithSearchBy_2_.add("user12@email.com");
+        userNamesObtainedWithSearchBy_2_.add("martin2@email.com");
         //Por cada username en vista, chequeamos los asertos:
         for (WebElement usernameDisplayed:
                 usernamesDisplayed) {
