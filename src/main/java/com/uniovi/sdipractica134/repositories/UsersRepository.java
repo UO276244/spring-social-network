@@ -22,13 +22,11 @@ public interface UsersRepository extends CrudRepository<User, Long> {
     int countUsers();
 
     /**
-     * An Admin can list all the users but her/him, as he cannot delete (him/her)self, it's better to not
-     * include him/her.
-     * @param id Long of the admin to be excluded
+     * An Admin can list all the users
      * @return List<User> users
      */
-    @Query("Select u FROM User u WHERE u.id<>?1")
-    Page<User> getUsersAdminView(Pageable pageable, Long id);
+    @Query("Select u FROM User u WHERE u.role='ROLE_USER'")
+    Page<User> getUsersAdminView(Pageable pageable);
     /**
      * A normal user can list the rest of users but him and administrators.
      * @param id Long of the user that request the list, in order to exclude him from it.

@@ -139,7 +139,7 @@ public class UserController {
     public String deleteUsers(Model model, @PathVariable List<Long> userIds) {
         usersService.deleteByIds(userIds);
         User authenticated = getAuthenticatedUser();
-        model.addAttribute("usersList", usersService.getUsersAdminView(Pageable.unpaged(), authenticated.getId()).getContent());
+        model.addAttribute("usersList", usersService.getUsersAdminView(Pageable.unpaged()));
         //TODO añadir los ids como parametros en el logger....
         logger.info(
                 loggerService.createPETLog("UserController --> /user/list/delete/{userIds} Falta Mirar IDs params","GET", new String[] {})

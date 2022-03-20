@@ -33,9 +33,9 @@ public class UsersService {
         usersRepository.findAll().forEach(users::add);
         return users;
     }
-    public Page<User> getUsersAdminView(Pageable pageable, Long id){
+    public Page<User> getUsersAdminView(Pageable pageable){
         List<User> users = new ArrayList<>();
-        return usersRepository.getUsersAdminView(pageable, id);
+        return usersRepository.getUsersAdminView(pageable);
     }
 
 
@@ -62,7 +62,7 @@ public class UsersService {
 
     public Page<User> getUsersView(Pageable pageable, User authenticated, String searchText) {
         if(authenticated.getRole().toUpperCase().equals(rolesService.getRoles()[RolesService.ADMIN])){
-            return usersRepository.getUsersAdminView(Pageable.unpaged(), authenticated.getId());
+            return usersRepository.getUsersAdminView(Pageable.unpaged());
         }else{
             if(searchText != null && !searchText.isEmpty()){
                 searchText = "%" + searchText + "%";
