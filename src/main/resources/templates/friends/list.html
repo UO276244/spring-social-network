@@ -26,10 +26,10 @@
       </thead>
       <tbody>
       <tr th:each="user : ${friendList}">
-        <td><a th:href="${'/post/' + user.id}" th:text="${user.name}"/></td>
-        <!-- poner link a las publicaciones del usuario -->
+        <td th:text="${user.name}"/></td>
         <td th:text="${user.surname}"></td>
         <td th:text="${user.username}"></td>
+        <td><a th:href="${'/post/list/' + user.id}" th:text="#{post.list.friends.posts}"/></td>
       </tr>
       </tbody>
     </table>

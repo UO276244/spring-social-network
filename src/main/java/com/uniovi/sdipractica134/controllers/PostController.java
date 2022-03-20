@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -45,6 +46,24 @@ public class PostController {
         model.addAttribute("page",posts);
         logger.info(
                 loggerService.createPETLog("PostController --> post/list",
+                        "GET",
+                        new String[] {"User: " + principal.getName()})
+        );
+        return "/post/list";
+    }
+    @RequestMapping("post/list/{id}")
+    public String listFriendsPosts(@PathVariable Long idFriend, Model model, Pageable pageable, Principal principal){
+        String email=principal.getName();//El usuario incicia sesión empleando mail y contraseña
+        User authenticatedUser =usersService.getUserByUsername(email);
+        User ownerOfPosts =usersService.getUser(idFriend);
+        if(!authenticatedUser.isFriendsWith(ownerOfPosts.getUsername())){
+            return "error";
+        }
+        Page<Post> posts=postsService.getPostsByUser(pageable,ownerOfPosts);
+        model.addAttribute("postList",posts.getContent());
+        model.addAttribute("page",posts);
+        logger.info(
+                loggerService.createPETLog("PostController --> post/list/"+idFriend,
                         "GET",
                         new String[] {"User: " + principal.getName()})
         );
