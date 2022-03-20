@@ -57,7 +57,7 @@ public class PostController {
         User authenticatedUser =usersService.getUserByUsername(principal.getName());
         User ownerOfPosts =usersService.getUserByUsername(ownerUsername);
         //If the user that is trying to list posts is neither friends with the owner nor the owner himself, or if the username does not exist, error page is displayed.
-        if(!authenticatedUser.getUsername().equals(ownerUsername) && !authenticatedUser.isFriendsWith(ownerOfPosts.getUsername())|| ownerOfPosts==null){
+        if(!authenticatedUser.getUsername().equals(ownerUsername) && !authenticatedUser.isFriendsWith(ownerOfPosts)|| ownerOfPosts==null){
              return "error";
         }
         logger.info(

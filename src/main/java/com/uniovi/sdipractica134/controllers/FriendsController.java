@@ -4,6 +4,7 @@ import com.uniovi.sdipractica134.entities.FriendshipInvites;
 import com.uniovi.sdipractica134.entities.User;
 import com.uniovi.sdipractica134.services.FriendsService;
 import com.uniovi.sdipractica134.services.LoggerService;
+import com.uniovi.sdipractica134.services.RolesService;
 import com.uniovi.sdipractica134.services.UsersService;
 import net.bytebuddy.implementation.auxiliary.AuxiliaryType;
 import org.slf4j.Logger;
@@ -36,6 +37,9 @@ public class FriendsController {
     @Autowired
     private LoggerService loggerService;
 
+    @Autowired
+    private RolesService rolesService;
+
     Logger logger = LoggerFactory.getLogger(FriendsController.class);
 
 
@@ -56,9 +60,9 @@ public class FriendsController {
         User user = usersService.getUserByUsername(username);
         Page<User> friends = null;
         if (searchText != null && !searchText.isEmpty()){
-            friends = friendsService.searchFriendsByNameForUser(pageable, searchText, user);
+            friends = friendsService.searchFriendsByNameForUser(searchText, user);
         } else{
-            friends = friendsService.getFriendsForUser(pageable, user);
+            friends = friendsService.getFriendsForUser(user);
         }
         model.addAttribute("friendList", friends.getContent());
         model.addAttribute("page", friends);
@@ -79,7 +83,7 @@ public class FriendsController {
         if (searchText != null && !searchText.isEmpty()){
             invites = friendsService.searchFriendInvitesByNameForUser(pageable, searchText, user);
         } else {
-            invites = friendsService.getFriendInvitesForUser(pageable, user);
+            invites = friendsService.getFriendInvitesForUser(user);
         }
         model.addAttribute("inviteList", invites.getContent());
 
@@ -107,11 +111,9 @@ public class FriendsController {
         String username = principal.getName();
         User from = usersService.getUserByUsername(username);
         User to = usersService.getUser(id);
-        //we try to send a friendship invite to a user but we had already sent one before
-        if (!friendsService.sendInvite(pageable, from, to))
-            model.addAttribute("alreadySent", true);
-        else
-            model.addAttribute("alreadySent", false);
+        //we check that the admin cannot receive an invite
+        if (!to.getRole().equals(rolesService.getRoles()[RolesService.ADMIN]))
+            friendsService.sendInvite(from, to);
         return "redirect:/user/list";
     }
 }

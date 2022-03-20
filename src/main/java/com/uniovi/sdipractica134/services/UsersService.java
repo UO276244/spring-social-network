@@ -57,10 +57,6 @@ public class UsersService {
     }
 
     public void deleteByIds(List<Long> ids){
-        //We get the entities of the users to be deleted
-        Iterable<User> users = usersRepository.findAllById(ids);
-        //We iterate through each one and remove his/her friends
-        users.iterator().forEachRemaining( (user) -> user.removeFriends());
         //we remove every friendship invite involving them
         friendsRepository.deleteFriendshipInvitesBy(ids);
         //lastly, we remove the users.

@@ -551,10 +551,10 @@ class SdiPractica134ApplicationTests {
     @Order(12)
     void PR08_2(){
         PO_LoginView.goToLoginPage(driver);
-        PO_LoginView.fillForm(driver,"user10@email.com","user10");
+        PO_LoginView.fillForm(driver,"user04@email.com","user04");
 
         //send invite
-        By path = By.id("sendButton1");
+        By path = By.xpath("//*[@id=\"sendButton1\"]");
         driver.findElement(path).click();
 
         //check that it was sent
@@ -641,7 +641,7 @@ class SdiPractica134ApplicationTests {
 
         //check correct number of friends (take into account user 5 has accepted the request in previous tests)
         List<WebElement> friendList = SeleniumUtils.waitLoadElementsBy(driver, "free", "//tbody/tr", PO_View.getTimeout());
-        Assertions.assertEquals(4, friendList.size());
+        Assertions.assertEquals(5, friendList.size());
 
         //Check specifically every friend
         String checkText = "User02Nombre";

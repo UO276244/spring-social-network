@@ -18,38 +18,34 @@ public class FriendsService {
     private FriendsRepository friendsRepository;
 
 
-    public Page<User> getFriendsForUser(Pageable pageable, User user) {
-        Page<User> friends = new PageImpl<>(new LinkedList<User>());
-        List<User> friendList = new ArrayList<>();
-        friends = friendsRepository.findFriendsByUserFrom(pageable, user);
-        friendList.addAll(friends.getContent());
-        friends = friendsRepository.findFriendsByUserTo(pageable, user);
-        friendList.addAll(friends.getContent());
-        friends = new PageImpl<>(friendList);
-        return friends;
+    public Page<User> getFriendsForUser(User user) {
+        List<User> friendList = user.getFriends();
+        return new PageImpl<>(friendList);
     }
 
-    public Page<User> searchFriendsByNameForUser(Pageable pageable, String searchText, User user) {
-        Page<User> friends = new PageImpl<>(new LinkedList<User>());
-        List<User> friendList = new ArrayList<>();
-        searchText = "%"+searchText+"%";
-        friends = friendsRepository.searchFriendsSentByNameAndUser(pageable, searchText, user);
-        friendList.addAll(friends.getContent());
-        friends = friendsRepository.searchFriendsSentByNameAndUser(pageable, searchText, user);
-        friendList.addAll(friends.getContent());
-        friends = new PageImpl<>(friendList);
-        return friends;
+    public Page<User> searchFriendsByNameForUser(String searchText, User user) {
+        List<User> friendList = user.getFriends();
+        List<User> result = new ArrayList<>();
+        for (User u : friendList) {
+            if (u.getName().contains(searchText))
+                result.add(u);
+        }
+        return new PageImpl<>(result);
     }
 
-    public Page<FriendshipInvites> getFriendInvitesForUser(Pageable pageable, User user) {
-        Page<FriendshipInvites> invites = friendsRepository.findInvitesForUser(pageable, user);
-        return invites;
+    public Page<FriendshipInvites> getFriendInvitesForUser(User user) {
+        List<FriendshipInvites> invitesList = user.getFriendShipsReceivedNPending();
+        return new PageImpl<>(invitesList);
     }
 
     public Page<FriendshipInvites> searchFriendInvitesByNameForUser(Pageable pageable, String searchText, User user) {
-        searchText = "%"+searchText+"%";
-        Page<FriendshipInvites> invites = friendsRepository.findInvitesByNameForUser(pageable, searchText, user);
-        return invites;
+        List<FriendshipInvites> invitesList = user.getFriendShipsReceivedNPending();
+        List<FriendshipInvites> result = new ArrayList<>();
+        for (FriendshipInvites invite: invitesList) {
+            if (invite.getFrom().getUsername().contains(searchText))
+                result.add(invite);
+        }
+        return new PageImpl<>(result);
     }
 
     public void acceptFriendshipInvite(Long id) {
@@ -62,22 +58,14 @@ public class FriendsService {
         }
     }
 
-    /**
-     * returns true if a new invite has been created
-     * @param pageable
-     * @param from
-     * @param to
-     * @return
-     */
-    public boolean sendInvite(Pageable pageable, User from, User to) {
-        Page<FriendshipInvites> invitesToUser = getFriendInvitesForUser(pageable, to);
+    public void sendInvite(User from, User to) {
+        Page<FriendshipInvites> invitesToUser = getFriendInvitesForUser(to);
         for (FriendshipInvites i: invitesToUser) {
             if (i.getFrom().equals(from)) {
-                return false;
+                return;
             }
         }
         FriendshipInvites invite = new FriendshipInvites(from, to, "PENDING");
         friendsRepository.save(invite);
-        return true;
     }
 }

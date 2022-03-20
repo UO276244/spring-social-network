@@ -1,9 +1,8 @@
 package com.uniovi.sdipractica134.entities;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+
 @Entity
 public class User {
 
@@ -20,8 +19,8 @@ public class User {
     @OneToMany(mappedBy = "from",cascade = CascadeType.ALL)
     private Set<FriendshipInvites> friendShipsSent;
 
-    @ElementCollection
-    private Set<String> friends = new HashSet<>();
+    @OneToMany(mappedBy = "to",cascade = CascadeType.ALL)
+    private Set<FriendshipInvites> friendShipsReceived;
 
     public User(){
         this.role = "ROLE_USER";
@@ -31,6 +30,8 @@ public class User {
         this.username = username;
         this.name = name;
         this.surname = surname;
+        this.friendShipsSent = new HashSet<>();
+        this.friendShipsReceived = new HashSet<>();
     }
 
     private String name;
@@ -87,6 +88,11 @@ public class User {
 
     public void setFriendShipsSent(Set<FriendshipInvites> friendShipsSent) {
         this.friendShipsSent = friendShipsSent;
+
+    }
+
+    private void addFriendshipReceived(FriendshipInvites received) {
+        this.friendShipsReceived.add(received);
     }
 
     public void setName(String name) {
@@ -115,24 +121,21 @@ public class User {
     }
 
     /**
-     * Method to check if a user is friends with another user
+     * Método para comprobar si este usuario puede recibir una invitación del usuario especificado
      * @param username
      * @return
      */
-    public boolean isFriendsWith(String username){
-        for (String friend: friends) {
-            if (friend.equals(username))
+    public boolean canReceiveFriendshipInvite(String username){
+        List<User> friends = getFriends();
+        for (User u: friends) {
+            if (u.getUsername().equals(username))
+                return true;
+        }
+        for (FriendshipInvites received: friendShipsReceived) {
+            if (received.getFrom().getUsername().equals(username))
                 return true;
         }
         return false;
-    }
-
-    public void addFriend(User to) {
-        friends.add(to.getUsername());
-    }
-
-    public void removeFriends() {
-        friends.removeAll(friends);
     }
 
     @Override
@@ -146,5 +149,48 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    /**
+     * Método que devuelve una lista con todos los amigos de un usuario
+     * @return
+     */
+    public List<User> getFriends() {
+        List<User> friends = new ArrayList<>();
+        User friend;
+        for (FriendshipInvites sent: friendShipsSent) {
+            friend = sent.getTo();
+            if (sent.isAccepted() && !friends.contains(friend))
+                friends.add(friend);
+        }
+        for (FriendshipInvites received: friendShipsReceived) {
+            friend = received.getFrom();
+            if (received.isAccepted() && !friends.contains(friend))
+                friends.add(friend);
+        }
+        return friends;
+    }
+
+    /**
+     * Método que devuelve la lista de invitaciones pendientes por aceptar por este usuario
+     * @return
+     */
+    public List<FriendshipInvites> getFriendShipsReceivedNPending() {
+        List<FriendshipInvites> result = new ArrayList<>();
+        for (FriendshipInvites received: friendShipsReceived) {
+            if (received.isPending())
+                result.add(received);
+        }
+        return result;
+    }
+
+    /**
+     * Método que devuelve si este usuario es amigo del especificado
+     * @param user
+     * @return
+     */
+    public boolean isFriendsWith(User user) {
+        List<User> friends = getFriends();
+        return friends.contains(user);
     }
 }
