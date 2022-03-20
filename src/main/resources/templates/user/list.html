@@ -34,7 +34,7 @@ springsecurity4">
             <td th:text="${user.surname}">10</td>
             <td><input sec:authorize="hasRole('ROLE_ADMIN')" type="checkbox" th:id="${user.id}"></td>
             <td>
-                <button th:unless="${user.isFriendsWith(#authentication.getPrincipal().username)}"
+                <button th:unless="${user.canReceiveFriendshipInvite(#authentication.getPrincipal().username)}"
                     th:id="${'sendButton' + user.id}" th:text="#{friends.add}">
 
                 </button>

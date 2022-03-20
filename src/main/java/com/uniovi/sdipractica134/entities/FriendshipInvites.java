@@ -31,10 +31,6 @@ public class FriendshipInvites {
         this.from = from;
         this.to = to;
         this.state = state;
-        if (state.equals(ACCEPTED)){
-            from.addFriend(to);
-            to.addFriend(from);
-        }
     }
 
     public FriendshipInvites() {
@@ -55,8 +51,6 @@ public class FriendshipInvites {
 
     public void accept() {
         this.state = ACCEPTED;
-        from.addFriend(to);
-        to.addFriend(from);
     }
 
     public User getTo() {
@@ -65,5 +59,9 @@ public class FriendshipInvites {
 
     public boolean isPending() {
         return state.equals(PENDING);
+    }
+
+    public boolean isAccepted() {
+        return state.equals(ACCEPTED);
     }
 }
