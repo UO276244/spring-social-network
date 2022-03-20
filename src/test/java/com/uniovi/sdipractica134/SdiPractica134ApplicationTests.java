@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -394,9 +395,53 @@ class SdiPractica134ApplicationTests {
     }
 
 
+    //[PRUEBA 27]Mostrar el listado de publicaciones de un usuario amigo y comprobar que se muestran todas las que existen para dicho usuario.
+    @Test
+    @Order(27)
+    public void PR014A() {
+        //El usuario debe estar registrado para hacer un post , por tanto
+        PO_LoginView.fillForm(driver,"user01@email.com","user01");
+        //El usuario 01 es amigo del usuario 17, que tiene 10 publicaciones.
+        PO_FriendsView.goToListFriends(driver);
+        By enlace = By.id("User17Nombre");
+        driver.findElement(enlace).click();
+        List<WebElement> postMessage= PO_View.checkElementBy(driver, "text", PO_View.getP().getString("posts.list.message",PO_Properties.getSPANISH()));
+        Assertions.assertEquals("Estas son las publicaciones del usuario :",postMessage.get(0).getText());
+        //Una vez el usuario seleccione la opción de ver sus publicaciones, comprobamos que realmente se muestran.
+        PO_ListPostsView.checkPosts(driver,5);//primera página.
+        List<WebElement> elements= PO_View.checkElementBy(driver, "free", "//a[contains(@class, 'page-link')]");
+        //Nos vamos a la última página
+        elements.get(1).click();
+        PO_ListPostsView.checkPosts(driver,5);//segunda página.
+    }
 
 
+    //[PRUEBA 24]Utilizando un acceso vía URL u otra alternativa, tratar de listar las publicaciones de un usuario que no sea amigo del usuario identificado en sesión. Comprobar que el sistema da un error de autorización.
+    @Test
+    @Order(28)
+    public void PR014b() {
+        //El usuario debe estar registrado para hacer un post , por tanto
+        PO_LoginView.fillForm(driver,"user02@email.com","user02");
+        //El usuario 02 NO es amigo del usuario 17, que tiene 10 publicaciones.
+        driver.get("http://localhost:8090/posts/listFor/user17@email.com");
+        List<WebElement> forbiddenMessage= PO_View.checkElementBy(driver, "text", PO_View.getP().getString("error.message",PO_Properties.getSPANISH()));
+        Assertions.assertEquals("Parece que este sitio no existe o no tienes acceso a él :(",forbiddenMessage.get(0).getText());
 
+    }
+    //[PRUEBA EXTRA APARTADO 14]Mostrar el listado de publicaciones de un usuario amigo que no tiene publicaciones.
+    @Test
+    @Order(27)
+    public void PR014C() {
+        //El usuario debe estar registrado para hacer un post , por tanto
+        PO_LoginView.fillForm(driver,"user01@email.com","user01");
+        //El usuario 01 es amigo del usuario 03, que NO tiene publicaciones.
+        PO_FriendsView.goToListFriends(driver);
+        By enlace = By.id("User03Nombre");
+        driver.findElement(enlace).click();
+        //Una vez el usuario seleccione la opción de ver sus publicaciones, comprobamos que realmente se muestran.
+        List<WebElement>  noPostsMsg=PO_View.checkElementBy(driver, "text", PO_View.getP().getString("posts.list.noPosts",PO_Properties.getSPANISH()));
+        Assertions.assertEquals("No hay posts disponibles.",noPostsMsg.get(0).getText());
+    }
 
 
 
