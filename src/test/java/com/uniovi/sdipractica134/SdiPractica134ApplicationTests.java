@@ -4,13 +4,9 @@ import com.uniovi.sdipractica134.entities.Log;
 import com.uniovi.sdipractica134.entities.User;
 import com.uniovi.sdipractica134.pageobjects.*;
 import com.uniovi.sdipractica134.repositories.PostsRepository;
-import com.uniovi.sdipractica134.pageobjects.*;
 import com.uniovi.sdipractica134.repositories.LogRepository;
 import com.uniovi.sdipractica134.repositories.UsersRepository;
-import com.uniovi.sdipractica134.services.UsersService;
 import com.uniovi.sdipractica134.util.SeleniumUtils;
-import org.apache.logging.log4j.spi.LoggerRegistry;
-import org.hibernate.criterion.Projections;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -410,6 +406,104 @@ class SdiPractica134ApplicationTests {
                 "Sizes differ: seems like user was not deleted");
     }
 
+    //Prueba[5-2] Mostrar el listado de usuarios y comprobar que se muestran todos los que existen en el sistema,
+    //excepto el propio usuario y aquellos que sean Administradores
+    @Test
+    @Order(15)
+    public void PR06_1(){
+        //Login como user01 y nos vamos a la vista de listar usuarios
+        loginAs("user01@email.com", "user01");
+        PO_UsersView.goToUsersList(driver);
+
+
+        compareUserListViewWithUserListInSystem();
+
+    }
+
+    private void compareUserListViewWithUserListInSystem() {
+        //Preparar variables para testear: usuario que pedirá la peticion, listado de usernames que se mostrará en la vista
+        // además de listado de posibles usernames de administradores.
+        User userThatAskedForList = usersRepository.findByUsername("user01@email.com");
+        List<String> adminUsernames = new LinkedList<>();
+        for (User admin:
+                usersRepository.finAdminUsers()) {
+            adminUsernames.add(admin.getUsername());
+        }
+        List<String> usernamesThatShouldBeInView = new LinkedList<>();
+        for (User u:
+                usersRepository.getUsersNormalUserView(Pageable.unpaged(), 1L).getContent()) {
+            usernamesThatShouldBeInView.add(u.getUsername());
+        }
+
+
+        //Obtenemos todas las páginas que hay
+        List<WebElement> nextPage= driver.findElements(By.id("pagsiguiente"));
+        List<WebElement> usernamesDisplayed;
+
+        while( !nextPage.isEmpty()){
+
+            nextPage = driver.findElements(By.id("pagsiguiente"));
+            usernamesDisplayed = driver.findElements(By.className("username")); //cogemos los usernames que aparecen en la vista
+            //Por cada username en vista, chequeamos los asertos:
+            for (WebElement usernameDisplayed:
+                    usernamesDisplayed) {
+                Assertions.assertTrue( !adminUsernames.contains(usernameDisplayed.getText()));
+                Assertions.assertTrue( !userThatAskedForList.getUsername().equals(usernameDisplayed.getText()), "The user that asks for the list is displayed");
+                Assertions.assertTrue(usernamesThatShouldBeInView.contains(usernameDisplayed.getText()), "Username: "+ usernameDisplayed + " should not be displayed.");
+            }
+            if(!nextPage.isEmpty()){//Cuando llega al último número d página, no hay más elementos con id 'pagsiguiente'.
+                nextPage.get(0).click();
+            }
+
+        }
+    }
+
+    //Prueba[7_1]Hacer una búsqueda con el campo vacío y comprobar que se muestra la página que
+    //corresponde con el listado usuarios existentes en el sistema.
+    @Test
+    @Order(16)
+    public void PR07_1(){
+        //Login como user01 y nos vamos a la vista de listar usuarios
+        loginAs("user01@email.com", "user01");
+        PO_UsersView.goToUsersList(driver);
+        driver.findElement(By.name("searchText")).sendKeys("");
+        driver.findElement(By.id("searchButton")).click();
+        compareUserListViewWithUserListInSystem();
+    }
+    //Prueba[7_2]Hacer una búsqueda escribiendo en el campo un texto que no exista y comprobar que se
+    //muestra la página que corresponde, con la lista de usuarios vacía.
+    @Test
+    @Order(17)
+    public void PR07_2(){
+        //Login como user01 y nos vamos a la vista de listar usuarios
+        loginAs("user01@email.com", "user01");
+        PO_UsersView.goToUsersList(driver);
+        driver.findElement(By.name("searchText")).sendKeys("¡¡NoExistente!!");
+        driver.findElement(By.id("searchButton")).click();
+        Assertions.assertTrue(driver.findElements(By.className("username")).isEmpty());
+    }
+
+    //Prueba[7_3]Hacer una búsqueda con un texto específico y comprobar que se muestra la página que
+    //corresponde, con la lista de usuarios en los que el texto especificado sea parte de su nombre, apellidos o
+    //de su email.
+    @Test
+    @Order(18)
+    public void PR07_3(){
+        //Login como user01 y nos vamos a la vista de listar usuarios
+        loginAs("user01@email.com", "user01");
+        PO_UsersView.goToUsersList(driver);
+        driver.findElement(By.name("searchText")).sendKeys("2");
+        driver.findElement(By.id("searchButton")).click();
+        List<WebElement> usernamesDisplayed = driver.findElements(By.className("username")); //cogemos los usernames que aparecen en la vista
+        List<String> userNamesObtainedWithSearchBy_2_ = new LinkedList<>();
+        userNamesObtainedWithSearchBy_2_.add("user02@email.com");
+        userNamesObtainedWithSearchBy_2_.add("user12@email.com");
+        //Por cada username en vista, chequeamos los asertos:
+        for (WebElement usernameDisplayed:
+                usernamesDisplayed) {
+          Assertions.assertTrue(userNamesObtainedWithSearchBy_2_.contains(usernameDisplayed.getText()), "Username: "+ usernameDisplayed.getText() + " should not be displayed!");
+        }
+    }
     //[Prueba24] Ir al formulario de crear publicaciones , rellenarlo con datos VÁLIDOS y pulsar el botón de enviar.
     @Test
     @Order(24)

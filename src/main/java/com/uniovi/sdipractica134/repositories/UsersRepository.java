@@ -44,4 +44,8 @@ public interface UsersRepository extends CrudRepository<User, Long> {
             " AND u.id<>?1 and upper(u.role)='ROLE_USER'")
     Page<User> getUsersNormalUserViewSearch(Pageable pageable, Long id, String searchText);
 
+
+    @Query("SELECT u FROM User u WHERE upper(u.role)='ROLE_ADMIN'")
+    List<User> finAdminUsers();
+
 }

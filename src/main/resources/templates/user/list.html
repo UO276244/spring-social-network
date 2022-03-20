@@ -11,7 +11,7 @@ springsecurity4">
                 <input name="searchText" type="text" class="form-control" size="50"
                        th:placeholder="#{search.user.message}">
             </div>
-            <button type="submit" class="btn btn-primary" th:text="#{search.user.button}"></button>
+            <button id="searchButton" type="submit" class="btn btn-primary" th:text="#{search.user.button}"></button>
         </form>
     </div>
 
@@ -22,7 +22,7 @@ springsecurity4">
             <th scope="col" >Email</th>
             <th scope="col" th:text="#{name.message}"></th>
             <th scope="col" th:text="#{surname.message}"></th>
-            <th sec:authorize="hasRole('ROLE_ADMIN')" scope="col" th:text="#{todelete.message}"></th>
+            <th sec:authorize="hasRole( 'ROLE_ADMIN')" scope="col" th:text="#{todelete.message}"></th>
             <th scope="col"></th>
             <th scope="col"></th>
         </tr>
@@ -52,7 +52,7 @@ springsecurity4">
         </tr>
         </tbody>
     </table>
-    <footer sec:authorize="hasRole('ROLE_USER')" th:replace="fragments/pagination"/> <!-- Only users with ROLE_USER have pagination -->
+    <div sec:authorize="hasRole('ROLE_USER')" th:replace="fragments/pagination"/> <!-- Only users with ROLE_USER have pagination -->
     </div>
     <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" id="deleteButton" class="btn btn-danger" th:text="#{delete.button}"></button>
     <script th:inline="javascript">
