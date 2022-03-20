@@ -62,13 +62,22 @@ public class FriendsService {
         }
     }
 
-    public void sendInvite(Pageable pageable, User from, User to) {
+    /**
+     * returns true if a new invite has been created
+     * @param pageable
+     * @param from
+     * @param to
+     * @return
+     */
+    public boolean sendInvite(Pageable pageable, User from, User to) {
         Page<FriendshipInvites> invitesToUser = getFriendInvitesForUser(pageable, to);
         for (FriendshipInvites i: invitesToUser) {
-            if (i.getFrom().equals(from))
-                return;
+            if (i.getFrom().equals(from)) {
+                return false;
+            }
         }
         FriendshipInvites invite = new FriendshipInvites(from, to, "PENDING");
         friendsRepository.save(invite);
+        return true;
     }
 }

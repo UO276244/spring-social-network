@@ -1,6 +1,7 @@
 package com.uniovi.sdipractica134.services;
 
 import com.uniovi.sdipractica134.entities.User;
+import com.uniovi.sdipractica134.repositories.FriendsRepository;
 import com.uniovi.sdipractica134.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,7 +23,8 @@ public class UsersService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private RolesService rolesService;
-
+    @Autowired
+    private FriendsRepository friendsRepository;
     @PostConstruct
     public void init(){
 
@@ -33,9 +35,9 @@ public class UsersService {
         usersRepository.findAll().forEach(users::add);
         return users;
     }
-    public Page<User> getUsersAdminView(Pageable pageable, Long id){
+    public Page<User> getUsersAdminView(Pageable pageable){
         List<User> users = new ArrayList<>();
-        return usersRepository.getUsersAdminView(pageable, id);
+        return usersRepository.getUsersAdminView(pageable);
     }
 
 
@@ -55,6 +57,13 @@ public class UsersService {
     }
 
     public void deleteByIds(List<Long> ids){
+        //We get the entities of the users to be deleted
+        Iterable<User> users = usersRepository.findAllById(ids);
+        //We iterate through each one and remove his/her friends
+        users.iterator().forEachRemaining( (user) -> user.removeFriends());
+        //we remove every friendship invite involving them
+        friendsRepository.deleteFriendshipInvitesBy(ids);
+        //lastly, we remove the users.
         usersRepository.deleteByIds(ids);
     }
 
@@ -62,7 +71,7 @@ public class UsersService {
 
     public Page<User> getUsersView(Pageable pageable, User authenticated, String searchText) {
         if(authenticated.getRole().toUpperCase().equals(rolesService.getRoles()[RolesService.ADMIN])){
-            return usersRepository.getUsersAdminView(Pageable.unpaged(), authenticated.getId());
+            return usersRepository.getUsersAdminView(Pageable.unpaged());
         }else{
             if(searchText != null && !searchText.isEmpty()){
                 searchText = "%" + searchText + "%";

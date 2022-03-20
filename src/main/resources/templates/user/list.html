@@ -11,7 +11,7 @@ springsecurity4">
                 <input name="searchText" type="text" class="form-control" size="50"
                        th:placeholder="#{search.user.message}">
             </div>
-            <button type="submit" class="btn btn-primary" th:text="#{search.user.button}"></button>
+            <button id="searchButton" type="submit" class="btn btn-primary" th:text="#{search.user.button}"></button>
         </form>
     </div>
 
@@ -22,41 +22,37 @@ springsecurity4">
             <th scope="col" >Email</th>
             <th scope="col" th:text="#{name.message}"></th>
             <th scope="col" th:text="#{surname.message}"></th>
-            <th sec:authorize="hasRole('ROLE_ADMIN')" scope="col" th:text="#{todelete.message}"></th>
+            <th sec:authorize="hasRole( 'ROLE_ADMIN')" scope="col" th:text="#{todelete.message}"></th>
             <th scope="col"></th>
             <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="user : ${usersList}">
-            <td th:text="${user.username}"> 1</td>
+            <td class="username" th:text="${user.username}"> 1</td>
             <td th:text="${user.name}"> Ejercicio 1</td>
             <td th:text="${user.surname}">10</td>
             <td><input sec:authorize="hasRole('ROLE_ADMIN')" type="checkbox" th:id="${user.id}"></td>
             <td>
                 <button th:unless="${user.isFriendsWith(#authentication.getPrincipal().username)}"
-                    th:id="${'sendButton' + user.id}">
-                Add friend
+                    th:id="${'sendButton' + user.id}" th:text="#{friends.add}">
+
                 </button>
                 <script th:inline="javascript">
                     /*<![CDATA[*/
                     $("#sendButton" + "[[${user.id}]]").click(function () {
-                        $.get("/invite/send/[[${user.id}]]", function (data) {
-                            var numberPage = [[${param.page}]];
-                            var urlUpdate = '/user/list/update';
-                            if ( numberPage != null ){
-                                urlUpdate += "?page="+numberPage[0];
-                            }
-                            $("#tableUsers").load(urlUpdate);
-                        });
-                    });
+                        if (document.getElementById("sendButton" + "[[${user.id}]]").innerHTML !== '<span>Enviado</span>')
+                            $.get("/invite/send/[[${user.id}]]", function (data) {
+                                document.getElementById("sendButton" + "[[${user.id}]]").innerHTML = '<span>Enviado</span>';
+                            });
+                    })
                     /*]]>*/
                 </script>
             </td>
         </tr>
         </tbody>
     </table>
-    <footer sec:authorize="hasRole('ROLE_USER')" th:replace="fragments/pagination"/> <!-- Only users with ROLE_USER have pagination -->
+    <div sec:authorize="hasRole('ROLE_USER')" th:replace="fragments/pagination"/> <!-- Only users with ROLE_USER have pagination -->
     </div>
     <button sec:authorize="hasRole('ROLE_ADMIN')" type="button" id="deleteButton" class="btn btn-danger" th:text="#{delete.button}"></button>
     <script th:inline="javascript">

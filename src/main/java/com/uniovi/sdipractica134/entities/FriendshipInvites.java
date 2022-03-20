@@ -60,4 +60,12 @@ public class FriendshipInvites {
         from.addFriend(to);
         to.addFriend(from);
     }
+
+    public User getTo() {
+        return to;
+    }
+
+    public boolean isPending() {
+        return state.equals(PENDING);
+    }
 }
