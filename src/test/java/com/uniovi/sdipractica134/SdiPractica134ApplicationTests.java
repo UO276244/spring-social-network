@@ -8,7 +8,9 @@ import com.uniovi.sdipractica134.pageobjects.*;
 import com.uniovi.sdipractica134.repositories.LogRepository;
 import com.uniovi.sdipractica134.repositories.UsersRepository;
 import com.uniovi.sdipractica134.services.UsersService;
+import com.uniovi.sdipractica134.util.SeleniumUtils;
 import org.apache.logging.log4j.spi.LoggerRegistry;
+import org.hibernate.criterion.Projections;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -19,8 +21,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -299,9 +304,111 @@ class SdiPractica134ApplicationTests {
     }
 
 
+    //Prueba[4-1] Mostrar el listado de usuarios y comprobar que se muestran todos los que existen en el sistema.
+    @Test
+    @Order(11)
+    public void PRO4_1(){
+        loginAs("admin@email.com", "admin");
+        PO_UsersView.goToUsersList(driver);
+
+        List<User> totalUsers = usersRepository.getUsersAdminView(Pageable.unpaged()).getContent();
+
+        List<WebElement> usersInListView = driver.findElements(By.className("username"));
+
+        Assertions.assertTrue( totalUsers.size() == usersInListView.size(),
+                "Sizes differ: size of users with ROLE_USER in DB differ with size of users displayed");
+        List<String> userNames = new LinkedList<>();
+        for (WebElement element:
+                usersInListView) {
+            userNames.add(element.getText());
+        }
+        for (User user:
+                totalUsers) {
+            Assertions.assertTrue(userNames.contains(user.getUsername()), "Username:"+user.getUsername()+" not present in the view ");
+        }
 
 
+    }
+    //Prueba[5-1] Ir a la lista de usuarios, borrar el primer usuario de la lista, comprobar que la lista se actualiza
+    //y dicho usuario desaparece.
+    @Test
+    @Order(12)
+    public void PRO5_1(){
+        loginAs("admin@email.com", "admin");
+        PO_UsersView.goToUsersList(driver);
+       deleteUserInPath("//*[@id=\"tableUsers\"]/tbody/tr[1]/td[4]/input");
 
+
+    }
+    //Prueba[5-2] Ir a la lista de usuarios, borrar el último usuario de la lista, comprobar que la lista se actualiza
+    //y dicho usuario desaparece.
+    @Test
+    @Order(13)
+    public void PRO5_2(){
+        loginAs("admin@email.com", "admin");
+        PO_UsersView.goToUsersList(driver);
+        deleteUserInPath("//*[@id=\"tableUsers\"]/tbody/tr[last()]/td[4]/input");
+
+    }
+    //Prueba[5-3] Ir a la lista de usuarios, borrar 3 usuarios, comprobar que la lista se actualiza y dichos usuarios
+    //desaparecen.
+    @Test
+    @Order(14)
+    public void PRO5_3(){
+        loginAs("admin@email.com", "admin");
+        PO_UsersView.goToUsersList(driver);
+        List<User> totalUsers = usersRepository.getUsersAdminView(Pageable.unpaged()).getContent(); //usersBefore
+        WebElement firstUserEl = driver.findElement(By.xpath("//*[@id=\"tableUsers\"]/tbody/tr[1]/td[4]/input"));
+        WebElement secondUserEl =driver.findElement(By.xpath("//*[@id=\"tableUsers\"]/tbody/tr[2]/td[4]/input"));
+        WebElement thirdUserEl = driver.findElement(By.xpath("//*[@id=\"tableUsers\"]/tbody/tr[last()-1]/td[4]/input"));
+        String idFirstUser = firstUserEl.getAttribute("id");
+        String idSecondUser = secondUserEl.getAttribute("id");
+        String idThirdUser = thirdUserEl.getAttribute("id");
+        User firstDeleted = getUser(Long.valueOf(idFirstUser));
+        User secondDeleted = getUser(Long.valueOf(idSecondUser));
+        User thirdDeleted = getUser(Long.valueOf(idThirdUser));
+        //Select the checkboxes of three users
+        firstUserEl.click();
+        secondUserEl.click();
+        thirdUserEl.click();
+        driver.findElement(By.id("deleteButton")).click(); //Press delete button and delete users.
+        List<User> usersAfterDeleting = usersRepository.getUsersAdminView(Pageable.unpaged()).getContent();
+        Assertions.assertTrue(totalUsers.size() == usersAfterDeleting.size()+3);
+        Assertions.assertTrue(!usersAfterDeleting.contains(firstDeleted), "User with id: "+ idFirstUser+" was not deleted");
+        Assertions.assertTrue(!usersAfterDeleting.contains(secondDeleted), "User with id: "+ idFirstUser+" was not deleted");
+        Assertions.assertTrue(!usersAfterDeleting.contains(thirdDeleted), "User with id: "+ idFirstUser+" was not deleted");
+    }
+    private User getUser(Long id){
+        Optional<User> user = usersRepository.findById(Long.valueOf(id));
+        if(user.isPresent()){
+            return user.get();
+        }else {
+            Assertions.fail("Failed when trying to retrieve user : " +id);
+            return null;
+
+        }
+    }
+    private void loginAs(String username, String password){
+        PO_LoginView.goToLoginPage(driver);
+        PO_LoginView.fillForm(driver,username,password);
+    }
+    private void deleteUserInPath(String xPath){
+
+
+        List<User> totalUsers = usersRepository.getUsersAdminView(Pageable.unpaged()).getContent();
+
+        WebElement element = driver.findElement(By.xpath(xPath)); //delete user in the path
+        String userId = element.getAttribute("id");
+        User userDeleted = getUser(Long.valueOf(userId));
+        Assertions.assertTrue(totalUsers.contains(userDeleted)); //we check that user is present
+        element.click();
+        driver.findElement(By.id("deleteButton")).click(); //we delete the user
+
+        List<User> remainingUsers =  usersRepository.getUsersAdminView(Pageable.unpaged()).getContent();
+        Assertions.assertTrue(!remainingUsers.contains(userDeleted), "User was not deleted");
+        Assertions.assertTrue( totalUsers.size() == remainingUsers.size()+1,
+                "Sizes differ: seems like user was not deleted");
+    }
 
     //[Prueba24] Ir al formulario de crear publicaciones , rellenarlo con datos VÁLIDOS y pulsar el botón de enviar.
     @Test
