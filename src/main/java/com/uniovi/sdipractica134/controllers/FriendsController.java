@@ -6,7 +6,7 @@ import com.uniovi.sdipractica134.services.FriendsService;
 import com.uniovi.sdipractica134.services.LoggerService;
 import com.uniovi.sdipractica134.services.RolesService;
 import com.uniovi.sdipractica134.services.UsersService;
-import net.bytebuddy.implementation.auxiliary.AuxiliaryType;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
-import java.util.List;
+
 
 @Controller
 public class FriendsController {

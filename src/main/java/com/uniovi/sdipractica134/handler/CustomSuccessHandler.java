@@ -1,12 +1,12 @@
 package com.uniovi.sdipractica134.handler;
 
 
-import com.uniovi.sdipractica134.controllers.PostController;
+
 import com.uniovi.sdipractica134.services.LoggerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
