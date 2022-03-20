@@ -65,4 +65,15 @@ public class PO_NavView extends PO_View {
         driver.findElement(By.id("logout")).click();
 
         }
+
+
+    static public void clickListPosts(WebDriver driver){
+
+        WebElement myDynamicElement = (new WebDriverWait(driver,
+                10))
+                .until(ExpectedConditions.presenceOfElementLocated(By.id("accountDropdown")));
+        driver.findElement(By.id("accountDropdown")).click();
+        driver.findElement(By.id("listOwmPosts")).click();
+
+    }
     }

@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -38,17 +39,37 @@ public class PostController {
 
     @RequestMapping("post/list")
     public String listOwnPosts(Model model, Pageable pageable, Principal principal){
-        String email=principal.getName();//El usuario incicia sesión empleando mail y contraseña
-        User user =usersService.getUserByUsername(email);
-        Page<Post> posts=postsService.getPostsByUser(pageable,user);
-        model.addAttribute("postList",posts.getContent());
-        model.addAttribute("page",posts);
+        User authenticatedUser =usersService.getUserByUsername(principal.getName());
         logger.info(
-                loggerService.createPETLog("PostController --> post/list",
+                loggerService.createPETLog("PostController --> post/list/",
                         "GET",
                         new String[] {"User: " + principal.getName()})
         );
+        Page<Post> posts=postsService.getPostsByUser(pageable, authenticatedUser);
+        model.addAttribute("postList",posts.getContent());
+        model.addAttribute("page",posts);
         return "/post/list";
+      //  return getViewListPosts(model,pageable,authenticatedUser);
+    }
+
+    @RequestMapping("post/listFor/{ownerUsername}")
+    public String listFriendsPosts(@PathVariable String ownerUsername, Model model, Pageable pageable, Principal principal){
+        User authenticatedUser =usersService.getUserByUsername(principal.getName());
+        User ownerOfPosts =usersService.getUserByUsername(ownerUsername);
+        //If the user that is trying to list posts is neither friends with the owner nor the owner himself, or if the username does not exist, error page is displayed.
+        if(!authenticatedUser.getUsername().equals(ownerUsername) && !authenticatedUser.isFriendsWith(ownerOfPosts.getUsername())|| ownerOfPosts==null){
+             return "error";
+        }
+        logger.info(
+                loggerService.createPETLog("PostController --> post/list/"+ownerUsername,
+                        "GET",
+                        new String[] {"User: " + principal.getName()})
+        );
+        Page<Post> posts=postsService.getPostsByUser(pageable, ownerOfPosts);
+        model.addAttribute("postList",posts.getContent());
+        model.addAttribute("page",posts);
+        return "/post/list";
+       // return getViewListPosts(model,pageable,ownerOfPosts);
     }
 
     @RequestMapping(value="post/add", method= RequestMethod.POST)
