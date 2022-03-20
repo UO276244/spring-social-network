@@ -50,10 +50,6 @@ public class User {
 
     private String role;
 
-    public Set<FriendshipInvites> getFriendShipsSent() {
-        return friendShipsSent;
-    }
-
     public String getName() {
         return name;
     }
@@ -88,11 +84,6 @@ public class User {
 
     public void setFriendShipsSent(Set<FriendshipInvites> friendShipsSent) {
         this.friendShipsSent = friendShipsSent;
-
-    }
-
-    private void addFriendshipReceived(FriendshipInvites received) {
-        this.friendShipsReceived.add(received);
     }
 
     public void setName(String name) {
@@ -113,7 +104,6 @@ public class User {
 
     public Set<Post> getPosts() {
         return new HashSet<Post>(this.posts);
-
     }
 
     public Long getId() {
@@ -123,7 +113,7 @@ public class User {
     /**
      * Método para comprobar si este usuario puede recibir una invitación del usuario especificado
      * @param username
-     * @return
+     * @return true si puede recibir invitación y false si no
      */
     public boolean canReceiveFriendshipInvite(String username){
         List<User> friends = getFriends();
@@ -153,7 +143,7 @@ public class User {
 
     /**
      * Método que devuelve una lista con todos los amigos de un usuario
-     * @return
+     * @return lista con todos los amigos de un usuario
      */
     public List<User> getFriends() {
         List<User> friends = new ArrayList<>();
@@ -173,7 +163,7 @@ public class User {
 
     /**
      * Método que devuelve la lista de invitaciones pendientes por aceptar por este usuario
-     * @return
+     * @return lista de invitaciones pendientes
      */
     public List<FriendshipInvites> getFriendShipsReceivedNPending() {
         List<FriendshipInvites> result = new ArrayList<>();
@@ -187,7 +177,7 @@ public class User {
     /**
      * Método que devuelve si este usuario es amigo del especificado
      * @param user
-     * @return
+     * @return boolean true si son amigos y false si no
      */
     public boolean isFriendsWith(User user) {
         List<User> friends = getFriends();

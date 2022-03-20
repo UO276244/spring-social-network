@@ -23,8 +23,7 @@ springsecurity4">
             <th scope="col" th:text="#{name.message}"></th>
             <th scope="col" th:text="#{surname.message}"></th>
             <th sec:authorize="hasRole( 'ROLE_ADMIN')" scope="col" th:text="#{todelete.message}"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
+            <th sec:authorize="hasRole('ROLE_USER')" scope="col"></th>
         </tr>
         </thead>
         <tbody>
@@ -32,8 +31,8 @@ springsecurity4">
             <td class="username" th:text="${user.username}"> 1</td>
             <td th:text="${user.name}"> Ejercicio 1</td>
             <td th:text="${user.surname}">10</td>
-            <td><input sec:authorize="hasRole('ROLE_ADMIN')" type="checkbox" th:id="${user.id}"></td>
-            <td>
+            <td sec:authorize="hasRole('ROLE_ADMIN')"><input type="checkbox" th:id="${user.id}"></td>
+            <td sec:authorize="hasRole('ROLE_USER')">
                 <button th:unless="${user.canReceiveFriendshipInvite(#authentication.getPrincipal().username)}"
                     th:id="${'sendButton' + user.id}" th:text="#{friends.add}">
 

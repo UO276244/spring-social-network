@@ -15,6 +15,10 @@ import java.util.List;
 
 public interface FriendsRepository extends CrudRepository<FriendshipInvites, Long> {
 
+    /**
+     * Borra todas las friendship invites que contienen a los usuarios con id en la lista
+     * @param userIds
+     */
     @Modifying
     @Transactional
     @Query("DELETE FROM FriendshipInvites f where f.from.id in ?1 or f.to.id in ?1")

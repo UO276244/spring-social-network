@@ -45,16 +45,12 @@ public class UserController {
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
-
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
     public String signup(@Validated User user, BindingResult result) {
-
-
         String[] params = new String[] {"username="+user.getUsername(),
                 "passwd="+user.getPassword(),
                 "name="+user.getName(),
                 "surname="+user.getSurname()};
-
 
         logger.info(
                 loggerService.createPETLog("UserController --> /signup","POST",params)
@@ -68,22 +64,16 @@ public class UserController {
         user.setRole(rolesService.getRoles()[0]);
         usersService.addUser(user);
 
-
         logger.info(
                 loggerService.createALTALog("UserController","POST",params )
         );
 
         securityService.autoLogin(user.getUsername(), user.getPasswordConfirm());
-
-
-
         return "redirect:home";
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String signup(Model model) {
-
-
         logger.info(
                 loggerService.createPETLog("UserController --> /signup","GET", new String[] {})
         );
@@ -92,36 +82,25 @@ public class UserController {
         return "signup";
     }
 
-
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model) {
-
         logger.info(
                 loggerService.createPETLog("UserController --> /login","GET", new String[] {})
         );
-
 
         model.addAttribute("user", new User());
         return "login";
     }
 
-
-
     @RequestMapping(value = "/prevlogout", method = RequestMethod.GET)
     public String prevlogout() {
-
         String loggedIn = securityService.findLoggedInUsername();
 
         logger.info(
                 loggerService.createLOGOUTLog(loggedIn)
         );
-
-
-
         return "redirect:logout";
     }
-
-
 
     @RequestMapping("/user/list")
     public String getList(Model model, Pageable pageable, @RequestParam(value="", required = false)String searchText) {
@@ -138,11 +117,18 @@ public class UserController {
     @RequestMapping(value="/user/list/delete/{userIds}")
     public String deleteUsers(Model model, @PathVariable List<Long> userIds) {
         usersService.deleteByIds(userIds);
-        User authenticated = getAuthenticatedUser();
         model.addAttribute("usersList", usersService.getUsersAdminView(Pageable.unpaged()));
-        //TODO añadir los ids como parametros en el logger....
+
+        //add the ids to the log
+        String controller = "";
+        String sep = "";
+        String path = "/user/list/delete/";
+        for (Long id: userIds) {
+            controller += sep + path + id.toString();
+            if (sep.equals("")) sep = ", ";
+        }
         logger.info(
-                loggerService.createPETLog("UserController --> /user/list/delete/{userIds} Falta Mirar IDs params","GET", new String[] {})
+                loggerService.createPETLog("UserController --> " + controller,"GET", new String[] {})
         );
 
         return "user/list :: tableUsers";

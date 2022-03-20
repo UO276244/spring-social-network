@@ -35,9 +35,9 @@
         <div th:if="${#lists.isEmpty(inviteList)}" th:text="#{noinvites.message}"></div>
     </div>
 
-    <!-- does not work :D <footer th:replace="fragments/pagination"></footer>-->
 </div>
-
+<footer th:replace="fragments/pagination"></footer>
+</div>
 <footer th:replace="fragments/footer"></footer>
 </body>
 </html>

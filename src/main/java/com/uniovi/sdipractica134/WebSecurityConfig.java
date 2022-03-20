@@ -23,7 +23,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -34,12 +33,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public CustomSuccessHandler successHandler() {
         return new CustomSuccessHandler();
     }
+
     @Bean
     public CustomFailureHandler failureHandler() {
         return new CustomFailureHandler();
     }
+
     @Bean
-    public LogoutSuccessHandler logoutSuccessHandler(){return  new CustomSuccessLogoutHandler();
+    public LogoutSuccessHandler logoutSuccessHandler(){
+        return  new CustomSuccessLogoutHandler();
     }
 
     @Bean
@@ -47,7 +49,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean public SpringSecurityDialect securityDialect() { return new SpringSecurityDialect(); }
+    @Bean
+    public SpringSecurityDialect securityDialect() {
+        return new SpringSecurityDialect();
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

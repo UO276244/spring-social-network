@@ -33,7 +33,13 @@ public class LoggerService {
 
     }
 
-
+    /**
+     * Crea e inserta un log de tipo PET
+     * @param controller controlador desde el que se crea
+     * @param httpMethod método http
+     * @param params parámetros que forman parte de la descripción
+     * @return String descripción
+     */
     public String createPETLog(String controller, String httpMethod, String... params){
 
         String description = "Controller: " + controller + " - Method " + httpMethod + " - Params: ";
@@ -47,6 +53,13 @@ public class LoggerService {
         return description;
     }
 
+    /**
+     * Crea e inserta un log de tipo ALTA
+     * @param controller controlador desde el que se crea
+     * @param httpMethod método http
+     * @param params parámetros que forman parte de la descripción
+     * @return String descripción
+     */
     public String createALTALog(String controller, String httpMethod, String... params){
 
         String description = "Controller: " + controller + " - Method " + httpMethod + " - Params: ";
@@ -60,7 +73,11 @@ public class LoggerService {
         return description;
     }
 
-
+    /**
+     * Crea e inserta un log de tipo LOGIN_EX (login éxito)
+     * @param username nombre de usuario del usuario que ha iniciado sesión correctamente
+     * @return String descripción
+     */
     public String createLOGIN_EXLog(String username){
 
         String description = "LogIn success by user: " + username;
@@ -71,6 +88,11 @@ public class LoggerService {
         return description;
     }
 
+    /**
+     * Crea e inserta un log de tipo LOGIN_ERR (login error)
+     * @param username nombre de usuario del usuario que ha iniciado sesión erróneamente
+     * @return String descripción
+     */
     public String createLOGIN_ERRLog(String username){
 
         String description = "LogIn error by user: " + username;
@@ -81,6 +103,11 @@ public class LoggerService {
         return description;
     }
 
+    /**
+     * Crea e inserta un log de tipo LOGOUT
+     * @param username nombre de usuario del usuario que ha cerrado sesión
+     * @return String descripción
+     */
     public String createLOGOUTLog(String username){
 
         String description = "LogOut by user: " + username;
@@ -91,14 +118,17 @@ public class LoggerService {
         return description;
     }
 
-
+    /**
+     * Método para insertar un log
+     * @param type tipo de log
+     * @param description mensaje descriptivo del log
+     */
     private void insertLog(LogType type, String description){
 
         Log l = new Log(type.toString()
                 ,new Timestamp(System.currentTimeMillis())
                 ,description);
         logRepo.save(l);
-
 
     }
 

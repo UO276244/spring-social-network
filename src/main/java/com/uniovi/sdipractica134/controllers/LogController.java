@@ -23,14 +23,11 @@ public class LogController {
     private LoggerService loggerService;
 
     @RequestMapping("/logs/list")
-    public String getList(Model model,
-                          @RequestParam(value = "", required = false) String logType){
-
-
+    public String getList(Model model, @RequestParam(value = "", required = false) String logType){
         logger.info(
                 loggerService.createPETLog("LogController --> /logs/list",
-                        "GET",
-                        new String[] {"logType="+logType})
+                "GET",
+                new String[] {"logType="+logType})
         );
 
         findLogsAndReturnFragment(logType,model);
@@ -55,27 +52,18 @@ public class LogController {
         return "logs/list :: tableLogs";
     }
 
-//th:href="${'/logs/delete/' + log.getId()}"
-
-
     @RequestMapping("/logs/list/update")
     public String update(Model model, @RequestParam(value = "", required = false) String logType) {
-
-
-        /*
         logger.info(
                 loggerService.createPETLog("LogController --> /logs/list/update",
                         "GET",
                         new String[] {"logType="+logType})
         );
-*/
 
         return findLogsAndReturnFragment(logType,model);
     }
 
-
     private String findLogsAndReturnFragment(String logType, Model model){
-
         List<Log> logs = loggerService.getAllByType(logType);
 
         //Se ordena de más antiguo a más reciente
@@ -87,7 +75,6 @@ public class LogController {
         model.addAttribute("logsList", logs);
 
         return "logs/list :: tableLogs";
-
     }
 
 }

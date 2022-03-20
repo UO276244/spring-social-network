@@ -17,12 +17,22 @@ public class FriendsService {
     @Autowired
     private FriendsRepository friendsRepository;
 
-
+    /**
+     * Devuelve todos los amigos de un usuario
+     * @param user usuario
+     * @return Page User amigos
+     */
     public Page<User> getFriendsForUser(User user) {
         List<User> friendList = user.getFriends();
         return new PageImpl<>(friendList);
     }
 
+    /**
+     * Devuelve todos los amigos de un usuario cuyo nombre contenga el texto del parámetro
+     * @param searchText texto a buscar
+     * @param user usuario
+     * @return Page User amigos
+     */
     public Page<User> searchFriendsByNameForUser(String searchText, User user) {
         List<User> friendList = user.getFriends();
         List<User> result = new ArrayList<>();
@@ -33,12 +43,24 @@ public class FriendsService {
         return new PageImpl<>(result);
     }
 
+    /**
+     * Devuelve todas las invitaciones pendientes de aceptar que ha recibido un usuario
+     * @param user usuario
+     * @return Page FriendshipInvites invitaciones de amistad
+     */
     public Page<FriendshipInvites> getFriendInvitesForUser(User user) {
         List<FriendshipInvites> invitesList = user.getFriendShipsReceivedNPending();
         return new PageImpl<>(invitesList);
     }
 
-    public Page<FriendshipInvites> searchFriendInvitesByNameForUser(Pageable pageable, String searchText, User user) {
+    /**
+     * Devuelve todas las invitaciones pendientes de aceptar que ha recibido un usuario por otro usuario cuyo nombre
+     * contiene el texto especificado de parámetro
+     * @param searchText texto a buscar
+     * @param user usuario
+     * @return Page FriendshipInvites invitaciones de amistad
+     */
+    public Page<FriendshipInvites> searchFriendInvitesByNameForUser(String searchText, User user) {
         List<FriendshipInvites> invitesList = user.getFriendShipsReceivedNPending();
         List<FriendshipInvites> result = new ArrayList<>();
         for (FriendshipInvites invite: invitesList) {
@@ -48,9 +70,14 @@ public class FriendsService {
         return new PageImpl<>(result);
     }
 
+    /**
+     * Aceptar una invitación de amistad con el id especificado
+     * @param id
+     */
     public void acceptFriendshipInvite(Long id) {
         Optional<FriendshipInvites> inviteOp = friendsRepository.findById(id);
         FriendshipInvites invite;
+        //if invite exists
         if (inviteOp.isPresent()) {
             invite = inviteOp.get();
             invite.accept();
@@ -58,6 +85,12 @@ public class FriendsService {
         }
     }
 
+    /**
+     * Enviar una invitación de amistad del usuario from al usuario to
+     * Solo se envía si el usuario to no ha recibido ya una invitación de el usuario from
+     * @param from usuario que envía la invitación
+     * @param to usuario que recibe la invitación
+     */
     public void sendInvite(User from, User to) {
         Page<FriendshipInvites> invitesToUser = getFriendInvitesForUser(to);
         for (FriendshipInvites i: invitesToUser) {
@@ -65,7 +98,10 @@ public class FriendsService {
                 return;
             }
         }
-        FriendshipInvites invite = new FriendshipInvites(from, to, "PENDING");
-        friendsRepository.save(invite);
+        //only if users exist
+        if (from != null && to != null) {
+            FriendshipInvites invite = new FriendshipInvites(from, to, "PENDING");
+            friendsRepository.save(invite);
+        }
     }
 }

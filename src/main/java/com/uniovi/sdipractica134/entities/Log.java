@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 
 @Entity
-public class Log implements   Comparable<Log>{
+public class Log implements Comparable<Log>{
 
     @Id
     @GeneratedValue

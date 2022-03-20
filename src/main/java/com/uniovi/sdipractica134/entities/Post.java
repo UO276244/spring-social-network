@@ -39,7 +39,6 @@ public class Post {
         this.content = content;
     }
 
-
     public String getPictureURL() {
         return pictureURL;
     }
@@ -47,6 +46,7 @@ public class Post {
     public void setPictureURL(String pictureURL) {
         this.pictureURL = pictureURL;
     }
+
     public String getTitle() {
         return title;
     }
@@ -63,12 +63,9 @@ public class Post {
         this.dateOfCreation = dateOfCreation;
     }
 
-
-
     private void setId(Long id) {
         this.id = id;
     }
-
 
     public Long getId() {
         return id;

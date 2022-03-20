@@ -37,6 +37,8 @@ public class PostController {
     @Autowired
     private LoggerService loggerService;
 
+    Logger logger = LoggerFactory.getLogger(FriendsController.class);
+
     @RequestMapping("post/list")
     public String listOwnPosts(Model model, Pageable pageable, Principal principal){
         User authenticatedUser =usersService.getUserByUsername(principal.getName());
@@ -56,20 +58,21 @@ public class PostController {
     public String listFriendsPosts(@PathVariable String ownerUsername, Model model, Pageable pageable, Principal principal){
         User authenticatedUser =usersService.getUserByUsername(principal.getName());
         User ownerOfPosts =usersService.getUserByUsername(ownerUsername);
-        //If the user that is trying to list posts is neither friends with the owner nor the owner himself, or if the username does not exist, error page is displayed.
-        if(!authenticatedUser.getUsername().equals(ownerUsername) && !authenticatedUser.isFriendsWith(ownerOfPosts)|| ownerOfPosts==null){
+        //If the user that is trying to list posts is neither friends with the owner nor the owner himself,
+        // or if the username does not exist, error page is displayed.
+        if(!authenticatedUser.getUsername().equals(ownerUsername) && !authenticatedUser.isFriendsWith(ownerOfPosts)
+                || ownerOfPosts == null ){
              return "error";
         }
         logger.info(
                 loggerService.createPETLog("PostController --> post/list/"+ownerUsername,
-                        "GET",
-                        new String[] {"User: " + principal.getName()})
+                "GET",
+                new String[] {"User: " + principal.getName()})
         );
         Page<Post> posts=postsService.getPostsByUser(pageable, ownerOfPosts);
         model.addAttribute("postList",posts.getContent());
         model.addAttribute("page",posts);
         return "/post/list";
-       // return getViewListPosts(model,pageable,ownerOfPosts);
     }
 
     @RequestMapping(value="post/add", method= RequestMethod.POST)
@@ -86,19 +89,18 @@ public class PostController {
         postsService.addNewPost(post);
         logger.info(
                 loggerService.createPETLog("PostController --> post/add",
-                        "GET",
-                        new String[] {})
+                "GET",
+                new String[] {})
         );
 
         return "redirect:/post/list";
     }
+
     @RequestMapping(value="post/add" , method=RequestMethod.GET)
     public String getPost(Model model){
-
         model.addAttribute("post",new Post());
         //The controller that answers the form must include an empty entity in the view.
         return "post/add";
     }
 
-    Logger logger = LoggerFactory.getLogger(FriendsController.class);
 }

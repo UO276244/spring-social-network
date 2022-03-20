@@ -24,6 +24,11 @@ public class SignUpFormValidator implements Validator {
         return User.class.equals(aClass);
     }
 
+    /**
+     * Valida si un usuario se está registrando correctamente
+     * @param target usuario que intenta registrarse
+     * @param errors errores que comete
+     */
     @Override
     public void validate(Object target, Errors errors) {
         User user = (User) target;
@@ -32,30 +37,29 @@ public class SignUpFormValidator implements Validator {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "surname", "Error.empty");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "Error.empty");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordConfirm", "Error.empty");
+
         if (!VALID_EMAIL_ADDRESS_REGEX.matcher(user.getUsername()).matches()) {
-
             errors.rejectValue("username", "Error.signup.username.length");
-
         }
+
         if (usersService.getUserByUsername(user.getUsername()) != null) {
             errors.rejectValue("username", "Error.signup.username.duplicate");
-
         }
 
         if (user.getName().length() < 3 || user.getName().length() > 24) {
             errors.rejectValue("name", "Error.signup.name.length");
-
         }
+
         if (user.getSurname().length() < 3 || user.getSurname().length() > 24) {
             errors.rejectValue("surname", "Error.signup.surname.length");
-
         }
+
         if (user.getPassword().length() < 5 ) {
             errors.rejectValue("password", "Error.signup.password.length");
         }
+
         if (!user.getPasswordConfirm().equals(user.getPassword())) {
             errors.rejectValue("passwordConfirm", "Error.signup.passwordConfirm.coincidence");
-
         }
 
     }

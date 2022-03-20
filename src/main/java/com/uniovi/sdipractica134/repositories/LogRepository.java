@@ -13,5 +13,4 @@ public interface LogRepository extends CrudRepository<Log, Long> {
     @Query("SELECT l FROM Log l WHERE l.logType = (?1)")
     List<Log> findAllByLogtype(String logType);
 
-
 }

@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
-;
 
 @Service
 public class SecurityService {
@@ -22,6 +21,10 @@ public class SecurityService {
     @Autowired
     private LoggerService loggerService;
 
+    /**
+     * Devuelve el nombre de usuario del usuario cuya sesión está iniciada
+     * @return String nombre de usuario
+     */
     public String findLoggedInUsername() {
         Object userDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.println(userDetails.toString());
@@ -31,9 +34,11 @@ public class SecurityService {
         return null;
     }
 
-
-
-
+    /**
+     * Inicia sesión con el nombre de usuario y contraseña especificados
+     * @param username nombre de usuario
+     * @param password contraseña
+     */
     public void autoLogin(String username, String password) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken aToken = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());

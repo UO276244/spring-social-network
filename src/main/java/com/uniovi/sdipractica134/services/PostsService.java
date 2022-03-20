@@ -15,12 +15,23 @@ import java.util.LinkedList;
 public class PostsService {
     @Autowired
     PostsRepository postsRepository;
+
+    /**
+     * Devuelve todas las publicaciones de un usuario
+     * @param pageable
+     * @param user usuario
+     * @return
+     */
     public Page<Post> getPostsByUser(Pageable pageable, User user){
         Page<Post> posts =new PageImpl<Post>(new LinkedList<Post>());
         posts = postsRepository.findAllByUser(pageable,user);
         return posts;
     }
 
+    /**
+     * Crea una nueva publicación
+     * @param post publicación
+     */
     public void addNewPost(Post post) {
         postsRepository.save(post);
     }

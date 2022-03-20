@@ -18,15 +18,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpSession;
 import java.security.Principal;
 
 
 @Controller
 public class FriendsController {
-
-    @Autowired
-    private HttpSession httpSession;
 
     @Autowired
     private UsersService usersService;
@@ -42,26 +38,24 @@ public class FriendsController {
 
     Logger logger = LoggerFactory.getLogger(FriendsController.class);
 
-
     @RequestMapping("/friends/list")
-    public String getList(Model model,
-                          Pageable pageable,
-                          Principal principal,
-                          @RequestParam(value = "", required = false) String searchText){
-
-
-        logger.info(
-                loggerService.createPETLog("FriendsController --> /friends/list",
-                        "GET",
-                        new String[] {"searchText="+searchText})
-        );
-
+    public String getList(Model model, Principal principal, @RequestParam(value = "", required = false) String searchText){
         String username = principal.getName();
         User user = usersService.getUserByUsername(username);
         Page<User> friends = null;
         if (searchText != null && !searchText.isEmpty()){
+            logger.info(
+                    loggerService.createPETLog("FriendsController --> /friends/list",
+                    "GET",
+                    new String[] {"searchText="+searchText})
+            );
             friends = friendsService.searchFriendsByNameForUser(searchText, user);
         } else{
+            logger.info(
+                    loggerService.createPETLog("FriendsController --> /friends/list",
+                    "GET",
+                    new String[] {})
+            );
             friends = friendsService.getFriendsForUser(user);
         }
         model.addAttribute("friendList", friends.getContent());
@@ -71,21 +65,27 @@ public class FriendsController {
     }
 
     @RequestMapping("/friends/invites")
-    public String getInvites(Model model, Pageable pageable, Principal principal, @RequestParam(value = "", required = false) String searchText){
-        logger.info(
-                loggerService.createPETLog("FriendsController --> /friends/invites",
-                        "GET",
-                        new String[] {"searchText="+searchText})
-        );
+    public String getInvites(Model model, Principal principal, @RequestParam(value = "", required = false) String searchText){
         String username = principal.getName();
         User user = usersService.getUserByUsername(username);
         Page<FriendshipInvites> invites = null;
         if (searchText != null && !searchText.isEmpty()){
-            invites = friendsService.searchFriendInvitesByNameForUser(pageable, searchText, user);
+            logger.info(
+                    loggerService.createPETLog("FriendsController --> /friends/invites",
+                    "GET",
+                    new String[] {"searchText="+searchText})
+            );
+            invites = friendsService.searchFriendInvitesByNameForUser(searchText, user);
         } else {
+            logger.info(
+                    loggerService.createPETLog("FriendsController --> /friends/invites",
+                    "GET",
+                    new String[] {})
+            );
             invites = friendsService.getFriendInvitesForUser(user);
         }
         model.addAttribute("inviteList", invites.getContent());
+        model.addAttribute("page", invites);
 
         return "friends/invites";
     }
@@ -94,20 +94,22 @@ public class FriendsController {
     public String delete(@PathVariable Long id) {
         logger.info(
                 loggerService.createPETLog("FriendsController --> /invite/accept/" + id,
-                        "GET",
-                        new String[] {})
+                "GET",
+                new String[] {})
         );
+
         friendsService.acceptFriendshipInvite(id);
         return "redirect:/friends/invites";
     }
 
     @RequestMapping("/invite/send/{id}")
-    public String sendFriendshipInvite(Pageable pageable, Model model, Principal principal, @PathVariable Long id){
+    public String sendFriendshipInvite(Principal principal, @PathVariable Long id){
         logger.info(
                 loggerService.createPETLog("FriendsController --> /invite/send/" + id,
-                        "GET",
-                        new String[] {})
+                "GET",
+                new String[] {})
         );
+
         String username = principal.getName();
         User from = usersService.getUserByUsername(username);
         User to = usersService.getUser(id);

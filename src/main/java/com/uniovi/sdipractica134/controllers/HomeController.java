@@ -18,9 +18,6 @@ public class HomeController {
 
     @RequestMapping(value = {"/","/home"})
     public String index(){
-
-
-
         logger.info(
                 loggerService.createPETLog("HomeController --> /",
                 "GET",
