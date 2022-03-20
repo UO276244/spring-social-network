@@ -29,7 +29,7 @@
         <td th:text="${user.name}"/></td>
         <td th:text="${user.surname}"></td>
         <td th:text="${user.username}"></td>
-        <td><a th:href="${'/post/list/' + user.id}" th:text="#{post.list.friends.posts}"/></td>
+        <td><a th:href="${'/post/list/' + user.username}" th:text="#{post.list.friends.posts}"/></td>
       </tr>
       </tbody>
     </table>
