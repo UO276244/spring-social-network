@@ -147,6 +147,17 @@ public class InsertSampleDataService {
         posts.add(new Post("COVID:(",date," Pensaba que iban a ser solo 15 días..."));
         date= LocalDate.of(2022,01,15);
         posts.add(new Post("dia de la marmota",date," no puedo más!!!!!!!!!!!!!!!!!!"));
+        date= LocalDate.of(2022,01,29);
+        posts.add(new Post("Cuándo estaremos tranquilos?",date,"Solo quiero un poco de tranquiliad!"));
+        date= LocalDate.of(2022,02,2);
+        posts.add(new Post("FELICITADME TODOS!",date,"hoy es mi santo !!!!!!! :)"));
+        date= LocalDate.of(2022,03,7);
+        posts.add(new Post("Qué agobio",date," Ya no queda nada para los exámenes!"));
+        date= LocalDate.of(2020,10,23);
+        posts.add(new Post("Aburrimiento",date," Alguien me recomienda una película? Que sea buena eh!"));
+        date= LocalDate.of(2022,3,27);
+        posts.add(new Post("otro mes se va",date,"Este mes se me ha hecho CORTÍSIMO ..."));
+
         user17.setPosts(posts);
         for (var post:posts) {
             post.setOwner(user17);

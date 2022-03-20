@@ -336,12 +336,15 @@ class SdiPractica134ApplicationTests {
         //Una vez inciada la sesión , el usuario podrá ver sus publicaciones.
         PO_NavView.clickListPosts(driver);
         //Una vez el usuario seleccione la opción de ver sus publicaciones, comprobamos que realmente se muestran.
-         PO_ListPostsView.checkPosts(driver,5);
-
+         PO_ListPostsView.checkPosts(driver,5);//primera página.
+        List<WebElement> elements= PO_View.checkElementBy(driver, "free", "//a[contains(@class, 'page-link')]");
+        //Nos vamos a la última página
+        elements.get(1).click();
+        PO_ListPostsView.checkPosts(driver,5);//segunda página.
     }
     //[Prueba26-EXTRA]Mostrar el listado de publicaciones de un usuario que no tiene ninguna-> mensaje "No hay publicaciones"
     @Test
-    @Order(26)
+    @Order(38)
     public void PR013B() {
         //El usuario debe estar registrado para hacer un post , por tanto
         PO_LoginView.fillForm(driver,"user01@email.com","user01");
@@ -355,7 +358,7 @@ class SdiPractica134ApplicationTests {
 
     //[PRUEBA EXTRA APARTADO 12]Comprobar que no se puede realizar una publicación sin cuerpo.
     @Test
-    @Order(26)
+    @Order(35)
     public void PR012B2() {
         //El usuario debe estar registrado para hacer un post , por tanto
         PO_LoginView.fillForm(driver,"user01@email.com","user01");
@@ -367,7 +370,7 @@ class SdiPractica134ApplicationTests {
     }
     //[PRUEBA EXTRA APARTADO 12]Comprobar que no se puede realizar una publicación con un título demasiado corto (menor a 10 caracteres)
     @Test
-    @Order(27)
+    @Order(36)
     public void PR012C() {
         //El usuario debe estar registrado para hacer un post , por tanto
         PO_LoginView.fillForm(driver,"user01@email.com","user01");
@@ -379,7 +382,7 @@ class SdiPractica134ApplicationTests {
     }
     //[PRUEBA EXTRA APARTADO 12]Comprobar que no se puede realizar una publicación con una descripción demasiado corta (menor a 15 caracteres)
     @Test
-    @Order(28)
+    @Order(37)
     public void PR012D() {
         //El usuario debe estar registrado para hacer un post , por tanto
         PO_LoginView.fillForm(driver,"user01@email.com","user01");
