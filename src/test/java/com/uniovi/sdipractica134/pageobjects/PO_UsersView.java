@@ -1,6 +1,5 @@
 package com.uniovi.sdipractica134.pageobjects;
 
-import com.uniovi.sdipractica134.util.SeleniumUtils;
 import org.openqa.selenium.WebDriver;
 
 public class PO_UsersView extends PO_NavView{
