@@ -8,6 +8,7 @@ import com.uniovi.sdipractica134.pageobjects.*;
 import com.uniovi.sdipractica134.repositories.LogRepository;
 import com.uniovi.sdipractica134.repositories.UsersRepository;
 import com.uniovi.sdipractica134.services.UsersService;
+import com.uniovi.sdipractica134.util.SeleniumUtils;
 import org.apache.logging.log4j.spi.LoggerRegistry;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
@@ -27,10 +28,13 @@ import java.util.List;
 class SdiPractica134ApplicationTests {
 
 
-    static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
+    //static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
     //static String Geckodriver = "C:\\Path\\geckodriver-v0.30.0-win64.exe";
-    static String Geckodriver = "C:\\Users\\usuario\\Desktop\\Eii\\AÑO 3 GRADO INGENIERIA INFORMATICA\\Sistemas Distribuidos e Internet\\Lab\\sesion05\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
+    //static String Geckodriver = "C:\\Users\\usuario\\Desktop\\Eii\\AÑO 3 GRADO INGENIERIA INFORMATICA\\Sistemas Distribuidos e Internet\\Lab\\sesion05\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe";
 
+    //ce
+    static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
+    static String Geckodriver = "E:\\UNIOVI\\TERCERO\\Segundo cuatri\\SDI\\PL-SDI-Sesión5-material\\geckodriver-v0.30.0-win64.exe"; //CASA
 
 
     /* SARA
@@ -484,6 +488,138 @@ class SdiPractica134ApplicationTests {
 
     }
 
+
+    //[Prueba 19] Iniciamos sesión, mandamos una invitación de amistad a otro usuario, cerramos sesión y entramos como
+    // el otro usuario para comprobar que la nueva invitación aparece en la lista.
+    @Test
+    @Order(40)
+    void PR019(){
+        PO_LoginView.goToLoginPage(driver);
+        PO_LoginView.fillForm(driver,"user10@email.com","user10");
+
+        //send invite
+        driver.findElement(By.xpath("//*[@id=\"sendButton1\"]")).click();
+
+        //logout
+        PO_NavView.clickLogout(driver);
+
+        //login as user01
+        PO_LoginView.fillForm(driver,"user01@email.com","user01");
+
+        //go to invite list
+        PO_FriendsView.goToListFriendsInvitations(driver);
+
+        //check that user 10 is there
+        String checkText = "User10Nombre";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+    }
+
+    //[Prueba 20] Iniciamos sesión, mandamos una invitación de amistad a otro usuario, y tratamos de volver a mandar una
+    //invitación. El mensaje "enviado" aparecerá en el botón y no nos dejará volver a enviar invitación
+    @Test
+    @Order(41)
+    void PR020(){
+        PO_LoginView.goToLoginPage(driver);
+        PO_LoginView.fillForm(driver,"user10@email.com","user10");
+
+        //send invite
+        By path = By.xpath("//*[@id=\"sendButton1\"]");
+        driver.findElement(path).click();
+
+        //check that it was sent
+        Assertions.assertEquals(driver.findElement(path).getText(), "Enviado");
+    }
+
+    //[Prueba 21] Iniciamos sesión y mostramos el listado de invitaciones de amistad recibidas
+    @Test
+    @Order(42)
+    void PR021(){
+        PO_LoginView.goToLoginPage(driver);
+        PO_LoginView.fillForm(driver,"user05@email.com","user05");
+
+        //go to invite list
+        PO_FriendsView.goToListFriendsInvitations(driver);
+
+        //check that all invites inputted are there
+        List<WebElement> inviteList = SeleniumUtils.waitLoadElementsBy(driver, "free", "//tbody/tr", PO_View.getTimeout());
+        Assertions.assertEquals(3, inviteList.size());
+    }
+
+    //[Prueba 22] Sobre el listado de invitaciones recibidas. Hacer clic en el botón/enlace de una de ellas y comprobar
+    // que dicha solicitud desaparece del listado de invitaciones
+    @Test
+    @Order(43)
+    void PR022(){
+        PO_LoginView.goToLoginPage(driver);
+        PO_LoginView.fillForm(driver,"user05@email.com","user05");
+
+        //go to invite list
+        PO_FriendsView.goToListFriendsInvitations(driver);
+
+        //accept invite
+        By path = By.xpath("//*[@id=\"tableInvites\"]/tbody/tr[1]/td[3]/a");
+        driver.findElement(path).click();
+
+        //check that it disappears from the invite list
+        SeleniumUtils.waitTextIsNotPresentOnPage(driver, "User02Nombre", PO_View.getTimeout());
+    }
+
+    //[Prueba 22-1] Prueba adicional para comprobar que tras aceptar la invitación, aparece el usuario en el listado de
+    // amigos
+    @Test
+    @Order(44)
+    void PR022_1(){
+        PO_LoginView.goToLoginPage(driver);
+        PO_LoginView.fillForm(driver,"user05@email.com","user05");
+
+        String checkText = PO_NavView.getP().getString("nofriends.message", PO_Properties.getSPANISH());
+
+        //go to friends list
+        PO_FriendsView.goToListFriends(driver);
+
+        //check that user is NOT there
+        PO_View.checkElementBy(driver, "text", checkText);
+
+        //go to invite list
+        PO_FriendsView.goToListFriendsInvitations(driver);
+
+        //accept invite
+        By path = By.xpath("//*[@id=\"tableInvites\"]/tbody/tr[1]/td[3]/a");
+        driver.findElement(path).click();
+
+        //go to friends list
+        PO_FriendsView.goToListFriends(driver);
+
+        //check that user is now there
+        List<WebElement> friendList = SeleniumUtils.waitLoadElementsBy(driver, "free", "//tbody/tr", PO_View.getTimeout());
+        Assertions.assertEquals(1, friendList.size());
+    }
+
+    //[Prueba 23] Mostrar el listado de amigos de un usuario. Comprobar que el listado contiene los amigos que deben ser
+    @Test
+    @Order(45)
+    void PR023(){
+        PO_LoginView.goToLoginPage(driver);
+        PO_LoginView.fillForm(driver,"user01@email.com","user01");
+
+        //go to friends list
+        PO_FriendsView.goToListFriends(driver);
+
+        //check correct number of friends
+        List<WebElement> friendList = SeleniumUtils.waitLoadElementsBy(driver, "free", "//tbody/tr", PO_View.getTimeout());
+        Assertions.assertEquals(3, friendList.size());
+
+        //Check specifically every friend
+        String checkText = "User02Nombre";
+        PO_View.checkElementBy(driver, "text", checkText);
+
+        checkText = "User03Nombre";
+        PO_View.checkElementBy(driver, "text", checkText);
+
+        checkText = "User07Nombre";
+        PO_View.checkElementBy(driver, "text", checkText);
+    }
 
 
 }

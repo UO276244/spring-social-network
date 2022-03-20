@@ -35,15 +35,15 @@ springsecurity4">
             <td><input sec:authorize="hasRole('ROLE_ADMIN')" type="checkbox" th:id="${user.id}"></td>
             <td>
                 <button th:unless="${user.isFriendsWith(#authentication.getPrincipal().username)}"
-                    th:id="${'sendButton' + user.id}">
-                Add friend
+                    th:id="${'sendButton' + user.id}" th:text="#{friends.add}">
+
                 </button>
                 <script th:inline="javascript">
                     /*<![CDATA[*/
                     $("#sendButton" + "[[${user.id}]]").click(function () {
-                        if (document.getElementById("sendButton" + "[[${user.id}]]").innerHTML != '<span>SENT</span>')
+                        if (document.getElementById("sendButton" + "[[${user.id}]]").innerHTML !== '<span>Enviado</span>')
                             $.get("/invite/send/[[${user.id}]]", function (data) {
-                                document.getElementById("sendButton" + "[[${user.id}]]").innerHTML = '<span>SENT</span>';
+                                document.getElementById("sendButton" + "[[${user.id}]]").innerHTML = '<span>Enviado</span>';
                             });
                     })
                     /*]]>*/

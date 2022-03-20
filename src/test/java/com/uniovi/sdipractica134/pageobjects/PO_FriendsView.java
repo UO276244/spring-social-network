@@ -9,4 +9,7 @@ public class PO_FriendsView extends PO_View{
         driver.get("localhost:8090/friends/invites");
     }
 
+    public static void goToListFriends(WebDriver driver) {
+        driver.get("localhost:8090/friends/list");
+    }
 }
