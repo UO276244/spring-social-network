@@ -13,19 +13,19 @@
             </li>
             <li class="nav-item dropdown active" sec:authorize="hasRole('ROLE_USER')">
                 <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
-                   data-toggle="dropdown" href="#" id="accountDropdown" role="button"> Mi Cuenta </a>
+                   data-toggle="dropdown" th:text="#{nav.myaccount}" href="#" id="accountDropdown" role="button">Mi cuenta</a>
                 <div aria-labelledby="navbarDropdown" class="dropdown-menu">
-                    <a class="dropdown-item" id="listOwmPosts" href="/post/list/">Mis publicaciones</a>
+                    <a class="dropdown-item" id="listOwmPosts" href="/post/list/" th:text="#{nav.myaccount.posts}">Mis publicaciones</a>
 
-                    <a class="dropdown-item" href="/post/add">Publicar</a>
+                    <a class="dropdown-item" th:text="#{nav.myaccount.new.post}" href="/post/add">Publicar</a>
 
                 </div>
             </li>
             <li class="nav-item dropdown active" sec:authorize="hasRole('ROLE_USER')">
                 <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
-                   data-toggle="dropdown" href="#" id="friendsDropdown" role="button"> Amigos </a>
+                   data-toggle="dropdown" href="#" id="friendsDropdown" role="button" th:text="#{nav.friends}">Amigos</a>
                 <div aria-labelledby="navbarDropdown" class="dropdown-menu">
-                    <a class="dropdown-item" href="/friends/list">Listar amigos</a>
+                    <a class="dropdown-item" href="/friends/list" th:text="#{nav.friends.list}">Listar amigos</a>
 
 
 
@@ -33,18 +33,18 @@
             </li>
             <li class="nav-item dropdown active" sec:authorize="isAuthenticated()">
                 <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
-                   data-toggle="dropdown" href="#" id="userDropdown" role="button"> Usuarios </a>
+                   data-toggle="dropdown" href="#" id="userDropdown" role="button" th:text="#{nav.users}">Usuarios</a>
                 <div aria-labelledby="navbarDropdown" class="dropdown-menu">
-                    <a class="dropdown-item" href="/user/list">Listar usuarios</a>
+                    <a class="dropdown-item" href="/user/list" th:text="#{nav.users.list}">Listar usuarios</a>
 
 
                 </div>
             </li>
             <li class="nav-item dropdown active" sec:authorize="hasRole('ROLE_USER')">
                 <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"
-                   data-toggle="dropdown" href="#" id="friendshipsDropdown" role="button"> Notificaciones </a>
+                   data-toggle="dropdown" href="#" id="friendshipsDropdown" role="button" th:text="#{nav.notifications}"> Notificaciones </a>
                 <div aria-labelledby="navbarDropdown" class="dropdown-menu">
-                    <a class="dropdown-item" href="/friends/invites">Peticiones de amistad</a>
+                    <a class="dropdown-item" href="/friends/invites" th:text="#{nav.notifications.friend.request}">Peticiones de amistad</a>
 
                 </div>
             </li>
