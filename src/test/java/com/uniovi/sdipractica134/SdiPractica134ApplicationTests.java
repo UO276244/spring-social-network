@@ -741,7 +741,7 @@ class SdiPractica134ApplicationTests {
     @Order(23)
     public void PR013_2() {
         //El usuario debe estar registrado para hacer un post , por tanto
-        PO_LoginView.fillForm(driver,"user01@email.com","user01");
+        PO_LoginView.fillForm(driver,"userExtra@email.com","userExtra");
         //Una vez inciada la sesión , el usuario podrá ver sus publicaciones.(No tiene)
         PO_NavView.clickListPosts(driver);
         //Una vez el usuario seleccione la opción de ver sus publicaciones, comprobamos que realmente se muestran.
@@ -786,10 +786,10 @@ class SdiPractica134ApplicationTests {
     @Order(26)
     public void PR014_3() {
         //El usuario debe estar registrado para hacer un post , por tanto
-        PO_LoginView.fillForm(driver,"user01@email.com","user01");
-        //El usuario 01 es amigo del usuario 03, que NO tiene publicaciones.
+        PO_LoginView.fillForm(driver,"user02@email.com","user02");
+        //El usuario 02 es amigo del usuario extra, que NO tiene publicaciones.
         PO_FriendsView.goToListFriends(driver);
-        By enlace = By.id("User03Nombre");
+        By enlace = By.id("UserExtraNombre");
         driver.findElement(enlace).click();
         //Una vez el usuario seleccione la opción de ver sus publicaciones, comprobamos que realmente se muestran.
         List<WebElement>  noPostsMsg=PO_View.checkElementBy(driver, "text", PO_View.getP().getString("posts.list.noPosts",PO_Properties.getSPANISH()));
