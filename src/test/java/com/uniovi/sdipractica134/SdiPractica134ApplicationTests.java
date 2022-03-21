@@ -301,8 +301,8 @@ class SdiPractica134ApplicationTests {
 
     //Prueba[4-1] Mostrar el listado de usuarios y comprobar que se muestran todos los que existen en el sistema.
     @Test
-    @Order(27)
-    public void PRO4_1(){
+    @Order(32)
+    public void PR04_1(){
         loginAs("admin@email.com", "admin");
         PO_UsersView.goToUsersList(driver);
 
@@ -327,8 +327,8 @@ class SdiPractica134ApplicationTests {
     //Prueba[5-1] Ir a la lista de usuarios, borrar el primer usuario de la lista, comprobar que la lista se actualiza
     //y dicho usuario desaparece.
     @Test
-    @Order(28)
-    public void PRO5_1(){
+    @Order(33)
+    public void PR05_1(){
         loginAs("admin@email.com", "admin");
         PO_UsersView.goToUsersList(driver);
         deleteUserInPath("//*[@id=\"tableUsers\"]/tbody/tr[1]/td[4]/input");
@@ -338,8 +338,8 @@ class SdiPractica134ApplicationTests {
     //Prueba[5-2] Ir a la lista de usuarios, borrar el último usuario de la lista, comprobar que la lista se actualiza
     //y dicho usuario desaparece.
     @Test
-    @Order(29)
-    public void PRO5_2(){
+    @Order(34)
+    public void PR05_2(){
         loginAs("admin@email.com", "admin");
         PO_UsersView.goToUsersList(driver);
         deleteUserInPath("//*[@id=\"tableUsers\"]/tbody/tr[last()]/td[4]/input");
@@ -348,8 +348,8 @@ class SdiPractica134ApplicationTests {
     //Prueba[5-3] Ir a la lista de usuarios, borrar 3 usuarios, comprobar que la lista se actualiza y dichos usuarios
     //desaparecen.
     @Test
-    @Order(30)
-    public void PRO5_3(){
+    @Order(35)
+    public void PR05_3(){
         loginAs("admin@email.com", "admin");
         PO_UsersView.goToUsersList(driver);
         List<User> totalUsers = usersRepository.getUsersAdminView(Pageable.unpaged()).getContent(); //usersBefore
@@ -418,7 +418,7 @@ class SdiPractica134ApplicationTests {
     //Prueba[5-2] Mostrar el listado de usuarios y comprobar que se muestran todos los que existen en el sistema,
     //excepto el propio usuario y aquellos que sean Administradores
     @Test
-    @Order(31)
+    @Order(36)
     public void PR06_1(){
         //Login como user01 y nos vamos a la vista de listar usuarios
         loginAs("user01@email.com", "user01");
@@ -470,7 +470,7 @@ class SdiPractica134ApplicationTests {
     //Prueba[7_1]Hacer una búsqueda con el campo vacío y comprobar que se muestra la página que
     //corresponde con el listado usuarios existentes en el sistema.
     @Test
-    @Order(32)
+    @Order(37)
     public void PR07_1(){
         //Login como user01 y nos vamos a la vista de listar usuarios
         loginAs("user01@email.com", "user01");
@@ -482,7 +482,7 @@ class SdiPractica134ApplicationTests {
     //Prueba[7_2]Hacer una búsqueda escribiendo en el campo un texto que no exista y comprobar que se
     //muestra la página que corresponde, con la lista de usuarios vacía.
     @Test
-    @Order(33)
+    @Order(38)
     public void PR07_2(){
         //Login como user01 y nos vamos a la vista de listar usuarios
         loginAs("user01@email.com", "user01");
@@ -496,7 +496,7 @@ class SdiPractica134ApplicationTests {
     //corresponde, con la lista de usuarios en los que el texto especificado sea parte de su nombre, apellidos o
     //de su email.
     @Test
-    @Order(34)
+    @Order(39)
     public void PR07_3(){
         //Login como user01 y nos vamos a la vista de listar usuarios
         loginAs("user01@email.com", "user01");
@@ -519,7 +519,7 @@ class SdiPractica134ApplicationTests {
     // el otro usuario para comprobar que la nueva invitación aparece en la lista.
     @Test
     @Order(11)
-    void PR08_1(){
+    public void PR08_1(){
         PO_LoginView.goToLoginPage(driver);
         PO_LoginView.fillForm(driver,"user10@email.com","user10");
 
@@ -545,7 +545,7 @@ class SdiPractica134ApplicationTests {
     //invitación. El mensaje "enviado" aparecerá en el botón y no nos dejará volver a enviar invitación
     @Test
     @Order(12)
-    void PR08_2(){
+    public void PR08_2(){
         PO_LoginView.goToLoginPage(driver);
         PO_LoginView.fillForm(driver,"user04@email.com","user04");
 
@@ -560,7 +560,7 @@ class SdiPractica134ApplicationTests {
     //[Prueba 9-1] Iniciamos sesión y mostramos el listado de invitaciones de amistad recibidas
     @Test
     @Order(13)
-    void PR09_1(){
+    public void PR09_1(){
         PO_LoginView.goToLoginPage(driver);
         PO_LoginView.fillForm(driver,"user05@email.com","user05");
 
@@ -576,7 +576,7 @@ class SdiPractica134ApplicationTests {
     // que dicha solicitud desaparece del listado de invitaciones
     @Test
     @Order(14)
-    void PR10_1(){
+    public void PR010_1(){
         PO_LoginView.goToLoginPage(driver);
         PO_LoginView.fillForm(driver,"user05@email.com","user05");
 
@@ -596,7 +596,7 @@ class SdiPractica134ApplicationTests {
     // amigos
     @Test
     @Order(15)
-    void PR10_2(){
+    public void PR010_2(){
         PO_LoginView.goToLoginPage(driver);
         PO_LoginView.fillForm(driver,"user05@email.com","user05");
 
@@ -628,7 +628,7 @@ class SdiPractica134ApplicationTests {
     //[Prueba 11-1] Mostrar el listado de amigos de un usuario. Comprobar que el listado contiene los amigos que deben ser
     @Test
     @Order(16)
-    void PR11_1(){
+    public void PR011_1(){
         PO_LoginView.goToLoginPage(driver);
         PO_LoginView.fillForm(driver,"user01@email.com","user01");
 
@@ -654,7 +654,7 @@ class SdiPractica134ApplicationTests {
     //[Prueba24] Ir al formulario de crear publicaciones , rellenarlo con datos VÁLIDOS y pulsar el botón de enviar.
     @Test
     @Order(17)
-    public void PR012A() {
+    public void PR012_1() {
         //El usuario debe estar registrado para hacer un post , por tanto
         PO_LoginView.fillForm(driver,"user17@email.com","user17");
         //Una vez autenticado el usuario,rellena el formulario
@@ -667,12 +667,12 @@ class SdiPractica134ApplicationTests {
         elements=PO_View.checkElementBy(driver, "text", "Días de vacaciones");
         //Comprobamos que aparece la nueva publicación.
         Assertions.assertEquals("Días de vacaciones",elements.get(0).getText());
-
     }
+
     //[Prueba25] Ir al formulario de crear publicaciones , rellenarlo con datos INVÁLIDOS (título vacío) y pulsar el botón de enviar.
     @Test
     @Order(18)
-    public void PR012B() {
+    public void PR012_2() {
         //El usuario debe estar registrado para hacer un post , por tanto
         PO_LoginView.fillForm(driver,"user01@email.com","user01");
         //Una vez autenticado el usuario,rellena el formulario
@@ -686,7 +686,7 @@ class SdiPractica134ApplicationTests {
     //[PRUEBA EXTRA APARTADO 12]Comprobar que no se puede realizar una publicación sin cuerpo.
     @Test
     @Order(19)
-    public void PR012B2() {
+    public void PR012_3() {
         //El usuario debe estar registrado para hacer un post , por tanto
         PO_LoginView.fillForm(driver,"user01@email.com","user01");
         //Una vez autenticado el usuario,rellena el formulario
@@ -698,7 +698,7 @@ class SdiPractica134ApplicationTests {
     //[PRUEBA EXTRA APARTADO 12]Comprobar que no se puede realizar una publicación con un título demasiado corto (menor a 10 caracteres)
     @Test
     @Order(20)
-    public void PR012C() {
+    public void PR012_4() {
         //El usuario debe estar registrado para hacer un post , por tanto
         PO_LoginView.fillForm(driver,"user01@email.com","user01");
         //Una vez autenticado el usuario,rellena el formulario
@@ -710,7 +710,7 @@ class SdiPractica134ApplicationTests {
     //[PRUEBA EXTRA APARTADO 12]Comprobar que no se puede realizar una publicación con una descripción demasiado corta (menor a 15 caracteres)
     @Test
     @Order(21)
-    public void PR012D() {
+    public void PR012_5() {
         //El usuario debe estar registrado para hacer un post , por tanto
         PO_LoginView.fillForm(driver,"user01@email.com","user01");
         //Una vez autenticado el usuario,rellena el formulario
@@ -720,17 +720,86 @@ class SdiPractica134ApplicationTests {
 
     }
 
+    //[Prueba26]Mostrar el listado de publicaciones de un usuario y comprobar que se muestran todas las que existen para dicho usuario.
+    @Test
+    @Order(22)
+    public void PR013_1() {
+        //El usuario debe estar registrado para hacer un post , por tanto
+        PO_LoginView.fillForm(driver,"user17@email.com","user17");
+        //Una vez inciada la sesión , el usuario podrá ver sus publicaciones.
+        PO_NavView.clickListPosts(driver);
+        //Una vez el usuario seleccione la opción de ver sus publicaciones, comprobamos que realmente se muestran.
+        PO_ListPostsView.checkPosts(driver,5);//primera página.
+        List<WebElement> elements= PO_View.checkElementBy(driver, "free", "//a[contains(@class, 'page-link')]");
+        //Nos vamos a la última página
+        elements.get(1).click();
+        PO_ListPostsView.checkPosts(driver,5);//segunda página.
+    }
 
+    //[Prueba26-EXTRA]Mostrar el listado de publicaciones de un usuario que no tiene ninguna-> mensaje "No hay publicaciones"
+    @Test
+    @Order(23)
+    public void PR013_2() {
+        //El usuario debe estar registrado para hacer un post , por tanto
+        PO_LoginView.fillForm(driver,"user01@email.com","user01");
+        //Una vez inciada la sesión , el usuario podrá ver sus publicaciones.(No tiene)
+        PO_NavView.clickListPosts(driver);
+        //Una vez el usuario seleccione la opción de ver sus publicaciones, comprobamos que realmente se muestran.
+        List<WebElement>  noPostsMsg=PO_View.checkElementBy(driver, "text", PO_View.getP().getString("posts.list.noPosts",PO_Properties.getSPANISH()));
+        Assertions.assertEquals("No hay publicaciones disponibles.",noPostsMsg.get(0).getText());
+    }
 
+    //[PRUEBA 27]Mostrar el listado de publicaciones de un usuario amigo y comprobar que se muestran todas las que existen para dicho usuario.
+    @Test
+    @Order(24)
+    public void PR014_1() {
+        //El usuario debe estar registrado para hacer un post , por tanto
+        PO_LoginView.fillForm(driver,"user01@email.com","user01");
+        //El usuario 01 es amigo del usuario 17, que tiene 10 publicaciones.
+        PO_FriendsView.goToListFriends(driver);
+        By enlace = By.id("User17Nombre");
+        driver.findElement(enlace).click();
+        List<WebElement> postMessage= PO_View.checkElementBy(driver, "text", PO_View.getP().getString("posts.list.message",PO_Properties.getSPANISH()));
+        Assertions.assertEquals("Estas son las publicaciones del usuario:",postMessage.get(0).getText());
+        //Una vez el usuario seleccione la opción de ver sus publicaciones, comprobamos que realmente se muestran.
+        PO_ListPostsView.checkPosts(driver,5);//primera página.
+        List<WebElement> elements= PO_View.checkElementBy(driver, "free", "//a[contains(@class, 'page-link')]");
+        //Nos vamos a la última página
+        elements.get(1).click();
+        PO_ListPostsView.checkPosts(driver,5);//segunda página.
+    }
 
+    //[PRUEBA 24]Utilizando un acceso vía URL u otra alternativa, tratar de listar las publicaciones de un usuario que no sea amigo del usuario identificado en sesión. Comprobar que el sistema da un error de autorización.
+    @Test
+    @Order(25)
+    public void PR014_2() {
+        //El usuario debe estar registrado para hacer un post , por tanto
+        PO_LoginView.fillForm(driver,"user02@email.com","user02");
+        //El usuario 02 NO es amigo del usuario 17, que tiene 10 publicaciones.
+        driver.get("http://localhost:8090/posts/listFor/user17@email.com");
+        List<WebElement> forbiddenMessage= PO_View.checkElementBy(driver, "text", PO_View.getP().getString("error.message",PO_Properties.getSPANISH()));
+        Assertions.assertEquals("Parece que este sitio no existe o no tienes acceso a él :(",forbiddenMessage.get(0).getText());
+    }
 
-
-
+    //[PRUEBA EXTRA APARTADO 14]Mostrar el listado de publicaciones de un usuario amigo que no tiene publicaciones.
+    @Test
+    @Order(26)
+    public void PR014_3() {
+        //El usuario debe estar registrado para hacer un post , por tanto
+        PO_LoginView.fillForm(driver,"user01@email.com","user01");
+        //El usuario 01 es amigo del usuario 03, que NO tiene publicaciones.
+        PO_FriendsView.goToListFriends(driver);
+        By enlace = By.id("User03Nombre");
+        driver.findElement(enlace).click();
+        //Una vez el usuario seleccione la opción de ver sus publicaciones, comprobamos que realmente se muestran.
+        List<WebElement>  noPostsMsg=PO_View.checkElementBy(driver, "text", PO_View.getP().getString("posts.list.noPosts",PO_Properties.getSPANISH()));
+        Assertions.assertEquals("No hay publicaciones disponibles.",noPostsMsg.get(0).getText());
+    }
 
     //[Prueba16-1] Intentar acceder sin estar autenticado a la opción de
     //listado de usuarios. Se deberá volver al formulario de login.
     @Test
-    @Order(22)
+    @Order(27)
     void PR016_1() {
 
         PO_LogsView.goToLogsPage(driver);
@@ -740,13 +809,12 @@ class SdiPractica134ApplicationTests {
                 PO_View.getP().getString("login.message",
                         PO_Properties.getSPANISH()));
 
-
     }
 
     //[Prueba16-2] Intentar acceder sin estar autenticado a la opción de listado de invitaciones de amistad
     // recibida de un usuario estándar. Se deberá volver al formulario de login
     @Test
-    @Order(23)
+    @Order(28)
     void PR016_2() {
 
         PO_FriendsView.goToListFriendsInvitations(driver);
@@ -756,7 +824,6 @@ class SdiPractica134ApplicationTests {
                 PO_View.getP().getString("login.message",
                         PO_Properties.getSPANISH()));
 
-
     }
 
 
@@ -764,7 +831,7 @@ class SdiPractica134ApplicationTests {
     // solo para usuarios administradores (Añadir menú de auditoria (visualizar logs)).
     // Se deberá indicar un mensaje de acción prohibida.
     @Test
-    @Order(24)
+    @Order(29)
     void PR016_3() {
 
         PO_SignUpView.goToSignUpPage(driver);
@@ -780,9 +847,6 @@ class SdiPractica134ApplicationTests {
 
         Assertions.assertEquals(ohohMessage.get(0).getText(), "OhOh");
 
-
-
-
     }
 
 
@@ -791,7 +855,7 @@ class SdiPractica134ApplicationTests {
     // Esta prueba deberá generar al menos dos interacciones de cada tipo y
     // comprobar que el listado incluye los logs correspondientes.
     @Test
-    @Order(25)
+    @Order(30)
     void PR016_4() {
 
         //Generate several logs of different types
@@ -819,7 +883,7 @@ class SdiPractica134ApplicationTests {
     // ir a visualización de logs, pulsar el botón/enlace borrar logs y
     // comprobar que se eliminan los logs de la base de datos
     @Test
-    @Order(26)
+    @Order(31)
     void PR016_5() {
         PO_LoginView.goToLoginPage(driver);
         PO_LoginView.fillForm(driver,"admin@email.com","admin");
@@ -840,8 +904,5 @@ class SdiPractica134ApplicationTests {
         Assertions.assertTrue(sizeAfterDeletion + 1 == sizeBeforeDeletion);
 
     }
-
-
-
 
 }
