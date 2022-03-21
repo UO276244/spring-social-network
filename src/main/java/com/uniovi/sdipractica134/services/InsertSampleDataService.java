@@ -94,30 +94,7 @@ public class InsertSampleDataService {
         extra.setPassword("userExtra");//USER CON POSTS
         extra.setRole(rolesService.getRoles()[RolesService.USER]);
 
-        Set<Post> postsForTest =new HashSet<>();
-        //Creación de posts
-        LocalDate date= LocalDate.of(2021,2,21);
-        postsForTest.add(new Post("Hola a todos!",date,"He ido a dar un paseo y me he roto la pierna!"));
 
-        date= LocalDate.of(2022,11,5);
-        postsForTest.add(new Post("Mi verano en la playa",date,"Os voy a contar todo lo que hice en verano"));
-        date= LocalDate.of(2020,3,18);
-        postsForTest.add(new Post("COVID?",date," 15 días sin  cole qué bien"));
-        date= LocalDate.of(2020,10,23);
-        postsForTest.add(new Post("COVID:(",date," Pensaba que iban a ser solo 15 días..."));
-        date= LocalDate.of(2022,01,15);
-        postsForTest.add(new Post("dia de la marmota",date," no puedo más!!!!!!!!!!!!!!!!!!"));
-        date= LocalDate.of(2022,01,29);
-        postsForTest.add(new Post("Cuándo estaremos tranquilos?",date,"Solo quiero un poco de tranquiliad!"));
-        date= LocalDate.of(2022,02,2);
-        postsForTest.add(new Post("FELICITADME TODOS!",date,"hoy es mi santo !!!!!!! :)"));
-        date= LocalDate.of(2022,03,7);
-        postsForTest.add(new Post("Qué agobio",date," Ya no queda nada para los exámenes!"));
-        date= LocalDate.of(2020,10,23);
-        postsForTest.add(new Post("Aburrimiento",date," Alguien me recomienda una película? Que sea buena eh!"));
-        date= LocalDate.of(2022,3,27);
-        postsForTest.add(new Post("otro mes se va",date,"Este mes se me ha hecho CORTÍSIMO ..."));
-        user17.setPosts(postsForTest);
 
         //El usuario extra no tiene post.
 
@@ -150,66 +127,101 @@ public class InsertSampleDataService {
 
 
 
-
-        usersService.addUser(user1);
         generateDefaultPosts(user1);
+        usersService.addUser(user1);
 
-
-
-        usersService.addUser(user2);
         generateDefaultPosts(user2);
-        usersService.addUser(user3);
+        usersService.addUser(user2);
+
         generateDefaultPosts(user3);
-        usersService.addUser(user4);
+        usersService.addUser(user3);
+
         generateDefaultPosts(user4);
-        usersService.addUser(user5);
+        usersService.addUser(user4);
+
         generateDefaultPosts(user5);
-        usersService.addUser(user6);
+        usersService.addUser(user5);
+
         generateDefaultPosts(user6);
-        usersService.addUser(user7);
+        usersService.addUser(user6);
+
         generateDefaultPosts(user7);
-        usersService.addUser(user8);
+        usersService.addUser(user7);
+
         generateDefaultPosts(user8);
-        usersService.addUser(user9);
+        usersService.addUser(user8);
+
         generateDefaultPosts(user9);
-        usersService.addUser(user10);
+        usersService.addUser(user9);
+
         generateDefaultPosts(user10);
-        usersService.addUser(user11);
+        usersService.addUser(user10);
+
         generateDefaultPosts(user11);
-        usersService.addUser(user12);
+        usersService.addUser(user11);
+
         generateDefaultPosts(user12);
-        usersService.addUser(user13);
+        usersService.addUser(user12);
+
         generateDefaultPosts(user13);
-        usersService.addUser(user14);
+        usersService.addUser(user13);
+
         generateDefaultPosts(user14);
-        usersService.addUser(user15);
+        usersService.addUser(user14);
+
         generateDefaultPosts(user15);
+        usersService.addUser(user15);
+
+        //ADMIN HAS NO POSTS
         usersService.addUser(user16);
-        generateDefaultPosts(user16);
-        usersService.addUser(user17);
+
+        Set<Post> postsForTest =new HashSet<>();
+        //Creación de posts
+        LocalDate date= LocalDate.of(2021,2,21);
+        postsForTest.add(new Post("Hola a todos!",date,"He ido a dar un paseo y me he roto la pierna!"));
+
+        date= LocalDate.of(2022,11,5);
+        postsForTest.add(new Post("Mi verano en la playa",date,"Os voy a contar todo lo que hice en verano"));
+        date= LocalDate.of(2020,3,18);
+        postsForTest.add(new Post("COVID?",date," 15 días sin  cole qué bien"));
+        date= LocalDate.of(2020,10,23);
+        postsForTest.add(new Post("COVID:(",date," Pensaba que iban a ser solo 15 días..."));
+        date= LocalDate.of(2022,01,15);
+        postsForTest.add(new Post("dia de la marmota",date," no puedo más!!!!!!!!!!!!!!!!!!"));
+        date= LocalDate.of(2022,01,29);
+        postsForTest.add(new Post("Cuándo estaremos tranquilos?",date,"Solo quiero un poco de tranquiliad!"));
+        date= LocalDate.of(2022,02,2);
+        postsForTest.add(new Post("FELICITADME TODOS!",date,"hoy es mi santo !!!!!!! :)"));
+        date= LocalDate.of(2022,03,7);
+        postsForTest.add(new Post("Qué agobio",date," Ya no queda nada para los exámenes!"));
+        date= LocalDate.of(2020,10,23);
+        postsForTest.add(new Post("Aburrimiento",date," Alguien me recomienda una película? Que sea buena eh!"));
+        date= LocalDate.of(2022,3,27);
+        postsForTest.add(new Post("otro mes se va",date,"Este mes se me ha hecho CORTÍSIMO ..."));
         user17.setPosts(postsForTest);
+        addPostsToRepo(user17, postsForTest);
+        usersService.addUser(user17);
 
-
+        //USER EXTRA HAS NO POSTS
+        usersService.addUser(extra);
 
 
 }
 
     private void  generateDefaultPosts(User user) {//Por cada usuario los post tienen que ser nuevos, o se producirán errores de integridad en la base de datos debido a repeticiones de iD.
         Set<Post> posts = new HashSet<>();
-        LocalDate date;
+        LocalDate date = null;
         for (int i = 0; i <10; i++) {
             date= LocalDate.of(2022,3,i+1);
            posts.add(new Post("Título por defecto",date,"Él unico usuario que tiene post realistas es el @user17Nombre, que es el que se emplea en los test de post."));
         }
-        addPostsToRepo(user, posts);
         user.setPosts(posts);
-
+        addPostsToRepo(user, posts);
     }
 
     private void addPostsToRepo(User user, Set<Post> posts) {
         for (var post: posts) {
             post.setOwner(user);
-            postsService.addNewPost(post);
         }
     }
 }
