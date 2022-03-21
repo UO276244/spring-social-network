@@ -54,11 +54,6 @@ public class LogController {
 
     @RequestMapping("/logs/list/update")
     public String update(Model model, @RequestParam(value = "", required = false) String logType) {
-        logger.info(
-                loggerService.createPETLog("LogController --> /logs/list/update",
-                        "GET",
-                        new String[] {"logType="+logType})
-        );
 
         return findLogsAndReturnFragment(logType,model);
     }

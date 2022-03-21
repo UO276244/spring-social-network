@@ -104,6 +104,7 @@ public class User {
 
     public Set<Post> getPosts() {
         return new HashSet<Post>(this.posts);
+
     }
 
     public Long getId() {
