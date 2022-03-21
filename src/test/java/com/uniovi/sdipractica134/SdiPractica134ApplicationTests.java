@@ -795,7 +795,29 @@ class SdiPractica134ApplicationTests {
         List<WebElement>  noPostsMsg=PO_View.checkElementBy(driver, "text", PO_View.getP().getString("posts.list.noPosts",PO_Properties.getSPANISH()));
         Assertions.assertEquals("No hay publicaciones disponibles.",noPostsMsg.get(0).getText());
     }
+    //[PRUEBA EXTRA APARTADO 14]Visualizar al menos cuatro páginas en español/inglés/español
+    // (comprobando que algunas de las etiquetas cambian al idioma correspondiente).
+    // Ejemplo, Página principal/Opciones Principales de Usuario/Listado de Usuarios.
+    @Test
+    @Order(99)
+    public void PR015_1() {
 
+        //Nos vamos a la página de inicio de session
+        PO_LoginView.goToLoginPage(driver);
+
+        //El texto de bienvenida debe estar en español
+        List<WebElement>  loginText=PO_View.checkElementBy(driver, "text", PO_View.getP().getString("login.title",PO_Properties.getSPANISH()));
+        Assertions.assertEquals("Identifícate",loginText.get(0).getText());
+
+        //Cambiamos a inglés
+        driver.findElement(By.id("btnLanguage")).click();
+        driver.findElement(By.id("btnEnglish")).click();
+
+        //El texto de bienvenida debe estar en ingles
+        loginText=PO_View.checkElementBy(driver, "text", PO_View.getP().getString("login.title",PO_Properties.getENGLISH()));
+        Assertions.assertEquals("Login to enter",loginText.get(0).getText());
+
+    }
     //[Prueba16-1] Intentar acceder sin estar autenticado a la opción de
     //listado de usuarios. Se deberá volver al formulario de login.
     @Test
