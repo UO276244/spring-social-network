@@ -9,7 +9,7 @@
 
         <ul class="navbar-nav mr-auto">
             <li class="nav-item ">
-                <a class="nav-link" href="/home">Home<span class="sr-only">(current)</span> </a>
+                <a class="nav-link" th:text="#{nav.home}" href="/home">Home<span class="sr-only">(current)</span> </a>
             </li>
             <li class="nav-item dropdown active" sec:authorize="hasRole('ROLE_USER')">
                 <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle"

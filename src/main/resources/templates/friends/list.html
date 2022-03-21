@@ -19,17 +19,18 @@
     <table class="table table-hover" th:fragment="tableFriends" id="tableFriends">
       <thead>
       <tr>
-        <th scope="col">Nombre</th>
-        <th scope="col">Apellidos</th>
-        <th scope="col">Email</th>
+        <th scope="col" th:text="#{name.message}">Nombre</th>
+        <th scope="col" th:text="#{surname.message}">Apellidos</th>
+        <th scope="col" th:text="#{email.message}">Email</th>
       </tr>
       </thead>
       <tbody>
-      <tr th:each="friend : ${friendList}">
-
-        <td><a  th:href="${'/post/listFor/' + friend.username}" th:id="${friend.name}"  th:text="${friend.name}"> </a></td>
-        <td th:text="${friend.surname}"></td>
-        <td th:text="${friend.username}"></td>
+        <tr th:each="friend : ${friendList}">
+          <td>
+            <a  th:href="${'/post/listFor/' + friend.username}" th:id="${friend.name}"  th:text="${friend.name}"> </a>
+          </td>
+          <td th:text="${friend.surname}"></td>
+          <td th:text="${friend.username}"></td>
         </tr>
       </tbody>
     </table>

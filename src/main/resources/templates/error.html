@@ -1,20 +1,15 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head"/>
+
 <body>
 <nav th:replace="fragments/nav"/>
 
 <div class="container">
-
-
     <h1 name="title" th:text="#{ohoh.message}">OhOh</h1>
     <h2 th:text="#{error.message}">Parece que este sitio no existe o no tienes acceso a él :(</h2>
     <a href="/" th:text="#{goback.message}">Volver</a>
-
-
-
 </div>
-
 
 </body>
 </html>
